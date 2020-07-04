@@ -1,0 +1,20 @@
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+packages
+
+# Visual Studio temp something
+.vs/
+
+# Rider temp something
+.idea/
+
+.leu
+*.pubxml
+appsettings.machine.json
+*.log
+jre*
+*.class
+*maven*
