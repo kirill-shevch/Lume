@@ -1,23 +1,19 @@
 ﻿using DAL.Authorization.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DAL.Authorization
 {
 	public class AuthorizationDbContext : DbContext
 	{
-		private readonly string _connectionString;
-		public AuthorizationDbContext(string connectionString) : base()
+		public AuthorizationDbContext(DbContextOptions<AuthorizationDbContext> options) : base(options)
 		{
-			_connectionString = connectionString;
 		}
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.UseSqlServer(_connectionString);
-		}
+		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		//{
+		//	optionsBuilder.UseSqlServer(connectionString);
+		//	base.OnConfiguring(optionsBuilder);	
+		//}
 
 		DbSet<UserAuthEntity> UserAuthEntities { get; set; }
 	}
