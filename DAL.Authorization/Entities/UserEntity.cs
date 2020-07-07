@@ -11,7 +11,7 @@ namespace DAL.Authorization.Entities
 		public string PhoneNumber { get; set; }
 		public string AccessKey { get; set; }
 		public string RefreshKey { get; set; }
-		public string ExpirationTime { get; set; }
+		public DateTime? ExpirationTime { get; set; }
 		public string TemporaryCode { get; set; }
 	}
 }

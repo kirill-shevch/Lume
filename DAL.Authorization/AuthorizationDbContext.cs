@@ -9,11 +9,11 @@ namespace DAL.Authorization
 		{
 		}
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.UseSqlServer("server=localhost;database=FlyerDB;User Id=sa;Password=Passw0rd");
-			base.OnConfiguring(optionsBuilder);
-		}
+		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		//{
+		//	optionsBuilder.UseSqlServer("server=localhost;database=FlyerDB;User Id=sa;Password=Passw0rd");
+		//	base.OnConfiguring(optionsBuilder);
+		//}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -21,6 +21,6 @@ namespace DAL.Authorization
 			modelBuilder.Entity<UserAuthEntity>().HasAlternateKey(a => a.UserUid);
 		}
 
-		DbSet<UserAuthEntity> UserAuthEntities { get; set; }
+		public DbSet<UserAuthEntity> UserAuthEntities { get; set; }
 	}
 }
