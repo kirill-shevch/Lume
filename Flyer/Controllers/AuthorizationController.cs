@@ -22,8 +22,8 @@ namespace WebApi.Controllers
         public async Task<ActionResult<SignInResponse>> SignIn(string phoneNumber)
         {
             var code = "0000";
-            await _authorizationLogic.SendCodeToPhone(code);
-            var userUid = await _authorizationLogic.AddUser(code);
+            await _authorizationLogic.SendCodeToPhone(code, phoneNumber).ConfigureAwait(false);
+            var userUid = await _authorizationLogic.AddUser(code, phoneNumber).ConfigureAwait(false);
             return new SignInResponse { UserUid = userUid };
         }
     }

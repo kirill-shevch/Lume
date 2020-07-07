@@ -8,6 +8,7 @@ namespace DAL.Authorization.Entities
 		[Key]
 		public int UserId { get; set; }
 		public Guid UserUid { get; set; }
+		public string PhoneNumber { get; set; }
 		public string AccessKey { get; set; }
 		public string RefreshKey { get; set; }
 		public string ExpirationTime { get; set; }

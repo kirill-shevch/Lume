@@ -14,7 +14,7 @@ namespace BLL.Authorization
 			_authorizationRepository = authorizationRepository;
 		}
 
-		public async Task<Guid> AddUser(string code)
+		public async Task<Guid> AddUser(string code, string phoneNumber)
 		{
 			var uid = Guid.NewGuid();
 			await _authorizationRepository.AddUser(new UserAuthEntity
@@ -25,7 +25,7 @@ namespace BLL.Authorization
 			return uid;
 		}
 
-		public async Task SendCodeToPhone(string code)
+		public async Task SendCodeToPhone(string code, string phoneNumber)
 		{
 			//throw new NotImplementedException();
 		}
