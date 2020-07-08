@@ -1,5 +1,6 @@
 using BLL.Authorization;
 using BLL.Authorization.Interfaces;
+using Constants;
 using DAL.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using WebApi.Middleware;
 
 namespace Flyer
 {
@@ -42,6 +44,12 @@ namespace Flyer
 			}
 
 			app.UseHttpsRedirection();
+
+			app.UseWhen(context => !AuthIgnoreRoutes.IgnoredRoutes.Contains(context.Request.Path),
+				builder =>
+				{
+					builder.UseMiddleware<AuthorizationMiddleware>();
+				});
 
 			app.UseRouting();
 
