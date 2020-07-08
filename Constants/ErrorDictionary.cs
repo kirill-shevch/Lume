@@ -13,6 +13,6 @@ namespace Constants
 			[5] = "Authorization failed."
 		};
 
-		public static string GetErrorMessage(int code) => $"{{ \"ErrorCode\":{code}, \"Message\":\"{Errors[code]}\" }}";
+		public static string GetErrorMessage(int code) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[code]}\" }}";
 	}
 }
