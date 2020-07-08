@@ -54,6 +54,13 @@ namespace BLL.Authorization
 			await _authorizationRepository.UpdateUser(dalUser, cancellationToken).ConfigureAwait(false);
 		}
 
+		public async Task UpdateUser(string phoneNumber, string code, CancellationToken cancellationToken = default)
+		{
+			var dalUser = await _authorizationRepository.GetUser(phoneNumber, cancellationToken).ConfigureAwait(false);
+			dalUser.TemporaryCode = code;
+			await _authorizationRepository.UpdateUser(dalUser, cancellationToken).ConfigureAwait(false);
+		}
+
 		public (string AccessToken, string RefreshToken) GetTokens()
 		{
 			return (RandomString(30), RandomString(30));

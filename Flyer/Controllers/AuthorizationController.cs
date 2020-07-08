@@ -2,6 +2,7 @@
 using Constants;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.Swagger.Annotations;
+using System;
 using System.Threading.Tasks;
 using WebApi.Responses;
 
@@ -22,15 +23,20 @@ namespace WebApi.Controllers
         [SwaggerOperation("get-code")]
         public async Task<ActionResult<SignInResponse>> GetAuthorizationCode(string phoneNumber)
         {
+            Guid userUid;
             var user = await _authorizationLogic.GetUser(phoneNumber).ConfigureAwait(false);
-            if (user != null)
-            {
-                return BadRequest(ErrorDictionaty.GetErrorMessage(1));
-            }
             //TODO generate random code
             var code = "0000";
             await _authorizationLogic.SendCodeToPhone(code, phoneNumber).ConfigureAwait(false);
-            var userUid = await _authorizationLogic.AddUser(code, phoneNumber).ConfigureAwait(false);
+            if (user == null)
+            {
+                userUid = await _authorizationLogic.AddUser(code, phoneNumber).ConfigureAwait(false);
+            }
+            else
+            {
+                userUid = user.UserUid;
+                await _authorizationLogic.UpdateUser(phoneNumber, code).ConfigureAwait(false);
+            }
             return new SignInResponse { UserUid = userUid };
         }
 

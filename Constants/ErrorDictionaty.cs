@@ -11,6 +11,6 @@ namespace Constants
 			[3] = "SMS code is not correct."
 		};
 
-		public static string GetErrorMessage(int code) => $"{{ \"Error code\":{code}, \"Message\":\"{Errors[code]}\" }}";
+		public static string GetErrorMessage(int code) => $"{{ \"ErrorCode\":{code}, \"Message\":\"{Errors[code]}\" }}";
 	}
 }
