@@ -48,11 +48,11 @@ namespace WebApi.Controllers
             var user = await _authorizationLogic.GetUser(phoneNumber).ConfigureAwait(false);
             if (user == null)
             {
-                return BadRequest(ErrorDictionaty.GetErrorMessage(2));
+                return BadRequest(ErrorDictionary.GetErrorMessage(2));
             }
             else if (user.Code != code)
             {
-                return BadRequest(ErrorDictionaty.GetErrorMessage(3));
+                return BadRequest(ErrorDictionary.GetErrorMessage(3));
             }
             var tokens = _authorizationLogic.GetTokens();
             await _authorizationLogic.UpdateUser(phoneNumber, tokens.AccessToken, tokens.RefreshToken).ConfigureAwait(false);
@@ -62,19 +62,19 @@ namespace WebApi.Controllers
         [HttpPost]
         [Route("get-access-token")]
         [SwaggerOperation("get-access-token")]
-        public async Task<ActionResult<RefreshResponse>> GetAccessToken(string phoneNumber, string refreshToken)
+        public async Task<ActionResult<RefreshResponse>> GetAccessToken(Guid userUid, string refreshToken)
         {
-            var user = await _authorizationLogic.GetUser(phoneNumber).ConfigureAwait(false);
+            var user = await _authorizationLogic.GetUser(userUid).ConfigureAwait(false);
             if (user == null)
             {
-                return BadRequest(ErrorDictionaty.GetErrorMessage(2));
+                return BadRequest(ErrorDictionary.GetErrorMessage(2));
             }
             if (user.RefreshToken != refreshToken)
             {
-                return BadRequest(ErrorDictionaty.GetErrorMessage(4));
+                return BadRequest(ErrorDictionary.GetErrorMessage(4));
             }
             var tokens = _authorizationLogic.GetTokens();
-            await _authorizationLogic.UpdateUser(phoneNumber, tokens.AccessToken, user.RefreshToken).ConfigureAwait(false);
+            await _authorizationLogic.UpdateUser(userUid, tokens.AccessToken, user.RefreshToken).ConfigureAwait(false);
             return new RefreshResponse { AccessToken = tokens.AccessToken };
         }
     }
