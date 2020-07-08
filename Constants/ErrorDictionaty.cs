@@ -8,7 +8,8 @@ namespace Constants
 		{
 			[1] = "User already exists in the database.",
 			[2] = "User is not exist in the database.",
-			[3] = "SMS code is not correct."
+			[3] = "SMS code is not correct.",
+			[4] = "Refresh token is invalid"
 		};
 
 		public static string GetErrorMessage(int code) => $"{{ \"ErrorCode\":{code}, \"Message\":\"{Errors[code]}\" }}";

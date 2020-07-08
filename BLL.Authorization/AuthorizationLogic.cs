@@ -40,7 +40,8 @@ namespace BLL.Authorization
 			{
 				PhoneNumber = dalUser.PhoneNumber,
 				UserUid = dalUser.UserUid,
-				Code = dalUser.TemporaryCode
+				Code = dalUser.TemporaryCode,
+				RefreshToken = dalUser.RefreshKey
 			};
 		}
 

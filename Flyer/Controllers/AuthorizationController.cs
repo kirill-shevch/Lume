@@ -58,5 +58,24 @@ namespace WebApi.Controllers
             await _authorizationLogic.UpdateUser(phoneNumber, tokens.AccessToken, tokens.RefreshToken).ConfigureAwait(false);
             return new AuthorizationResponse { AccessToken = tokens.AccessToken, RefreshToken = tokens.RefreshToken };
         }
+
+        [HttpPost]
+        [Route("get-access-token")]
+        [SwaggerOperation("get-access-token")]
+        public async Task<ActionResult<RefreshResponse>> GetAccessToken(string phoneNumber, string refreshToken)
+        {
+            var user = await _authorizationLogic.GetUser(phoneNumber).ConfigureAwait(false);
+            if (user == null)
+            {
+                return BadRequest(ErrorDictionaty.GetErrorMessage(2));
+            }
+            if (user.RefreshToken != refreshToken)
+            {
+                return BadRequest(ErrorDictionaty.GetErrorMessage(4));
+            }
+            var tokens = _authorizationLogic.GetTokens();
+            await _authorizationLogic.UpdateUser(phoneNumber, tokens.AccessToken, user.RefreshToken).ConfigureAwait(false);
+            return new RefreshResponse { AccessToken = tokens.AccessToken };
+        }
     }
 }
