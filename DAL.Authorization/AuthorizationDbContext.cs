@@ -11,7 +11,7 @@ namespace DAL.Authorization
 
 		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		//{
-		//	optionsBuilder.UseSqlServer("server=localhost;database=FlyerDB;User Id=sa;Password=Passw0rd");
+		//	optionsBuilder.UseSqlServer("server=localhost;database=LumeDB;User Id=sa;Password=Passw0rd");
 		//	base.OnConfiguring(optionsBuilder);
 		//}
 

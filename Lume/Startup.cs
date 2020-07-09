@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using WebApi.Middleware;
 
-namespace Flyer
+namespace Lume
 {
 	public class Startup
 	{
