@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL.Authorization", "DAL.Au
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL.Authorization", "BLL.Authorization\BLL.Authorization.csproj", "{1329ADF1-6D9D-4199-80AD-9AD23C6D8421}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LumeWebApp", "LumeWebApp\LumeWebApp.csproj", "{4DB264FA-346D-4C7B-AF80-E30B71BC2B1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{1329ADF1-6D9D-4199-80AD-9AD23C6D8421}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1329ADF1-6D9D-4199-80AD-9AD23C6D8421}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1329ADF1-6D9D-4199-80AD-9AD23C6D8421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DB264FA-346D-4C7B-AF80-E30B71BC2B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DB264FA-346D-4C7B-AF80-E30B71BC2B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DB264FA-346D-4C7B-AF80-E30B71BC2B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DB264FA-346D-4C7B-AF80-E30B71BC2B1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
