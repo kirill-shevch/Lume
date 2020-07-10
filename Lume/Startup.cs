@@ -24,10 +24,10 @@ namespace Lume
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddSingleton(ConfigurationManager.ConfigurationManager.Configuration);
-			services.AddSingleton<AuthorizationContextFactory>();
-			services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
-			services.AddSingleton<IAuthorizationLogic, AuthorizationLogic>();
+			//services.AddSingleton(ConfigurationManager.ConfigurationManager.Configuration);
+			//services.AddSingleton<AuthorizationContextFactory>();
+			//services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
+			//services.AddSingleton<IAuthorizationLogic, AuthorizationLogic>();
 			services.AddControllers();
 			services.AddSwaggerGen(swagger =>
 			{

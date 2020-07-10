@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL.Authorization;
+using BLL.Authorization.Interfaces;
+using DAL.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,6 +28,10 @@ namespace LumeWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddSingleton(ConfigurationManager.ConfigurationManager.Configuration);
+            //services.AddSingleton<AuthorizationContextFactory>();
+            //services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
+            //services.AddSingleton<IAuthorizationLogic, AuthorizationLogic>();
             services.AddControllers();
         }
 
