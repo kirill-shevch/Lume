@@ -15,8 +15,12 @@ namespace DAL.Authorization
 
 		public AuthorizationDbContext CreateDbContext(string[] args)
 		{
+			var connectionString = string.IsNullOrWhiteSpace(_configuration.GetConnectionString(ConfigurationKeys.AzureConnectionString)) ?
+				_configuration[ConfigurationKeys.LocalConnectionString] :
+				_configuration.GetConnectionString(ConfigurationKeys.AzureConnectionString);
+
 			var optionsBuilder = new DbContextOptionsBuilder<AuthorizationDbContext>();
-			optionsBuilder.UseSqlServer(_configuration[ConfigurationKeys.ConnectionString]);
+			optionsBuilder.UseSqlServer(connectionString);
 
 			return new AuthorizationDbContext(optionsBuilder.Options);
 		}

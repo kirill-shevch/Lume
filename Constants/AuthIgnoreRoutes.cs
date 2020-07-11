@@ -6,6 +6,7 @@ namespace Constants
     {
         public static readonly List<string> IgnoredRoutes = new List<string>
         {
+            "/home",
             "/authorization/get-code",
             "/authorization/set-code",
             "/authorization/get-access-token",
