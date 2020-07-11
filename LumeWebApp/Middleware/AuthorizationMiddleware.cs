@@ -13,13 +13,13 @@ namespace LumeWebApp.Middleware
 	public class AuthorizationMiddleware
 	{
 		private readonly RequestDelegate _next;
-		//private readonly IAuthorizationLogic _authorizationLogic;
+		private readonly IAuthorizationLogic _authorizationLogic;
 
-		//public AuthorizationMiddleware(RequestDelegate next, IAuthorizationLogic authorizationLogic)
-		//{
-		//	_next = next;
-		//	_authorizationLogic = authorizationLogic;
-		//}
+		public AuthorizationMiddleware(RequestDelegate next, IAuthorizationLogic authorizationLogic)
+		{
+			_next = next;
+			_authorizationLogic = authorizationLogic;
+		}
 
 		public AuthorizationMiddleware(RequestDelegate next)
 		{
