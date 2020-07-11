@@ -24,7 +24,6 @@ namespace LumeWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-			//services.AddSingleton(ConfigurationManager.ConfigurationManager.Configuration);
 			services.AddSingleton<AuthorizationContextFactory>();
 			services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
 			services.AddSingleton<IAuthorizationLogic, AuthorizationLogic>();
@@ -33,6 +32,7 @@ namespace LumeWebApp
             {
                 swagger.SwaggerDoc("v2", new OpenApiInfo { Title = "Lume API" });
             });
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
