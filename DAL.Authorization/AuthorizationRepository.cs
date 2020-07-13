@@ -17,36 +17,36 @@ namespace DAL.Authorization
 			_dbContextFactory = dbContextFactory;
 		}
 
-		public async Task AddUser(UserAuthEntity userAuthEntity, CancellationToken cancellationToken)
+		public async Task AddPerson(PersonAuthEntity personAuthEntity, CancellationToken cancellationToken)
 		{
 			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
 			{
-				await context.AddAsync(userAuthEntity, cancellationToken).ConfigureAwait(false);
+				await context.AddAsync(personAuthEntity, cancellationToken).ConfigureAwait(false);
 				await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 			}
 		}
 
-		public async Task<UserAuthEntity> GetUser(string phoneNumber, CancellationToken cancellationToken = default)
+		public async Task<PersonAuthEntity> GetPerson(string phoneNumber, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
 			{
-				return await context.UserAuthEntities.SingleOrDefaultAsync(x => x.PhoneNumber == phoneNumber, cancellationToken).ConfigureAwait(false);
+				return await context.PersonAuthEntities.SingleOrDefaultAsync(x => x.PhoneNumber == phoneNumber, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
-		public async Task<UserAuthEntity> GetUser(Guid userUid, CancellationToken cancellationToken = default)
+		public async Task<PersonAuthEntity> GetPerson(Guid personUid, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
 			{
-				return await context.UserAuthEntities.SingleOrDefaultAsync(x => x.UserUid == userUid, cancellationToken).ConfigureAwait(false);
+				return await context.PersonAuthEntities.SingleOrDefaultAsync(x => x.PersonUid == personUid, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
-		public async Task UpdateUser(UserAuthEntity userAuthEntity, CancellationToken cancellationToken = default)
+		public async Task UpdatePerson(PersonAuthEntity personAuthEntity, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
 			{
-				context.Update(userAuthEntity);
+				context.Update(personAuthEntity);
 				await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 			}
 		}

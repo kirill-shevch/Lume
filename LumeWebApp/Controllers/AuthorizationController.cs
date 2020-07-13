@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LumeWebApp.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/authorization")]
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
@@ -21,56 +21,56 @@ namespace LumeWebApp.Controllers
         [Route("get-code")]
         public async Task<ActionResult<SignInResponse>> GetAuthorizationCode(string phoneNumber)
         {
-            Guid userUid;
-            var user = await _authorizationLogic.GetUser(phoneNumber).ConfigureAwait(false);
+            Guid personUid;
+            var person = await _authorizationLogic.GetPerson(phoneNumber).ConfigureAwait(false);
             //TODO generate random code
             var code = "0000";
             await _authorizationLogic.SendCodeToPhone(code, phoneNumber).ConfigureAwait(false);
-            if (user == null)
+            if (person == null)
             {
-                userUid = await _authorizationLogic.AddUser(code, phoneNumber).ConfigureAwait(false);
+                personUid = await _authorizationLogic.AddPerson(code, phoneNumber).ConfigureAwait(false);
             }
             else
             {
-                userUid = user.UserUid;
-                await _authorizationLogic.UpdateUser(phoneNumber, code).ConfigureAwait(false);
+                personUid = person.PersonUid;
+                await _authorizationLogic.UpdatePerson(phoneNumber, code).ConfigureAwait(false);
             }
-            return new SignInResponse { UserUid = userUid };
+            return new SignInResponse { PersonUid = personUid };
         }
 
         [HttpPost]
         [Route("set-code")]
         public async Task<ActionResult<AuthorizationResponse>> SetAuthorizationCode(string phoneNumber, string code)
         {
-            var user = await _authorizationLogic.GetUser(phoneNumber).ConfigureAwait(false);
-            if (user == null)
+            var person = await _authorizationLogic.GetPerson(phoneNumber).ConfigureAwait(false);
+            if (person == null)
             {
                 return BadRequest(ErrorDictionary.GetErrorMessage(2));
             }
-            else if (user.Code != code)
+            else if (person.Code != code)
             {
                 return BadRequest(ErrorDictionary.GetErrorMessage(3));
             }
             var tokens = _authorizationLogic.GetTokens();
-            await _authorizationLogic.UpdateUser(phoneNumber, tokens.AccessToken, tokens.RefreshToken).ConfigureAwait(false);
+            await _authorizationLogic.UpdatePerson(phoneNumber, tokens.AccessToken, tokens.RefreshToken).ConfigureAwait(false);
             return new AuthorizationResponse { AccessToken = tokens.AccessToken, RefreshToken = tokens.RefreshToken };
         }
 
         [HttpPost]
         [Route("get-access-token")]
-        public async Task<ActionResult<RefreshResponse>> GetAccessToken(Guid userUid, string refreshToken)
+        public async Task<ActionResult<RefreshResponse>> GetAccessToken(Guid personUid, string refreshToken)
         {
-            var user = await _authorizationLogic.GetUser(userUid).ConfigureAwait(false);
-            if (user == null)
+            var person = await _authorizationLogic.GetPerson(personUid).ConfigureAwait(false);
+            if (person == null)
             {
                 return BadRequest(ErrorDictionary.GetErrorMessage(2));
             }
-            if (user.RefreshToken != refreshToken)
+            if (person.RefreshToken != refreshToken)
             {
                 return BadRequest(ErrorDictionary.GetErrorMessage(4));
             }
             var tokens = _authorizationLogic.GetTokens();
-            await _authorizationLogic.UpdateUser(userUid, tokens.AccessToken, user.RefreshToken).ConfigureAwait(false);
+            await _authorizationLogic.UpdatePerson(personUid, tokens.AccessToken, person.RefreshToken).ConfigureAwait(false);
             return new RefreshResponse { AccessToken = tokens.AccessToken };
         }
     }

@@ -7,9 +7,9 @@ namespace DAL.Authorization
 {
 	public interface IAuthorizationRepository
 	{
-		Task AddUser(UserAuthEntity userAuthEntity, CancellationToken cancellationToken = default);
-		Task UpdateUser(UserAuthEntity userAuthEntity, CancellationToken cancellationToken = default);
-		Task<UserAuthEntity> GetUser(string phoneNumber, CancellationToken cancellationToken = default);
-		Task<UserAuthEntity> GetUser(Guid userUid, CancellationToken cancellationToken = default);
+		Task AddPerson(PersonAuthEntity personAuthEntity, CancellationToken cancellationToken = default);
+		Task UpdatePerson(PersonAuthEntity personAuthEntity, CancellationToken cancellationToken = default);
+		Task<PersonAuthEntity> GetPerson(string phoneNumber, CancellationToken cancellationToken = default);
+		Task<PersonAuthEntity> GetPerson(Guid personUid, CancellationToken cancellationToken = default);
 	}
 }

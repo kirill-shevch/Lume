@@ -1,13 +1,15 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Authorization.Entities
 {
-	public class UserAuthEntity
+	[Table("PersonAuth")]
+	public class PersonAuthEntity
 	{
 		[Key]
-		public int UserId { get; set; }
-		public Guid UserUid { get; set; }
+		public int PersonAuthId { get; set; }
+		public Guid PersonUid { get; set; }
 		public string PhoneNumber { get; set; }
 		public string AccessKey { get; set; }
 		public string RefreshKey { get; set; }

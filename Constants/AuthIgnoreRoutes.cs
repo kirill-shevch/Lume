@@ -7,9 +7,9 @@ namespace Constants
         public static readonly List<string> IgnoredRoutes = new List<string>
         {
             "/home",
-            "/authorization/get-code",
-            "/authorization/set-code",
-            "/authorization/get-access-token",
+            "/api/authorization/get-code",
+            "/api/authorization/set-code",
+            "/api/authorization/get-access-token",
             "/swagger/index.html",
             "/swagger/v2/swagger.json",
             "/swagger/favicon-32x32.png"
