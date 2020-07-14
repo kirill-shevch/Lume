@@ -8,7 +8,7 @@ namespace DAL.Authorization.Entities
 	public class PersonAuthEntity
 	{
 		[Key]
-		public int PersonAuthId { get; set; }
+		public long PersonAuthId { get; set; }
 		public Guid PersonUid { get; set; }
 		public string PhoneNumber { get; set; }
 		public string AccessKey { get; set; }
