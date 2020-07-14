@@ -45,7 +45,7 @@ namespace LumeWebApp
 
             app.UseHttpsRedirection();
 
-            app.UseWhen(context => !AuthIgnoreRoutes.IgnoredRoutes.Contains(context.Request.Path),
+            app.UseWhen(context => AuthProtectedRoutes.ProtectedRoutes.Contains(context.Request.Path),
                 builder =>
                 {
                     builder.UseMiddleware<AuthorizationMiddleware>();
