@@ -11,5 +11,12 @@ namespace LumeWebApp.Controllers
         {
             return "LumeApp";
         }
+
+        [HttpGet]
+        [Route("secure")]
+        public ActionResult<string> SecureGet()
+        {
+            return "LumeApp";
+        }
     }
 }
