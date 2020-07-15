@@ -4,6 +4,6 @@ namespace LumeWebApp.Responses
 {
 	public class SignInResponse
 	{
-		public Guid UserUid { get; set; }
+		public Guid PersonUid { get; set; }
 	}
 }

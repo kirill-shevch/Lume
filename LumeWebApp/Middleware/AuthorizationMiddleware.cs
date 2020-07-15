@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace LumeWebApp.Middleware
 {
-	// You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
 	public class AuthorizationMiddleware
 	{
 		private readonly RequestDelegate _next;
@@ -28,23 +27,23 @@ namespace LumeWebApp.Middleware
 
 		public Task Invoke(HttpContext httpContext)
 		{
-			//StringValues userUid, accessToken;
-			//if (httpContext.Request.Headers.TryGetValue(AuthorizationHeaders.UserUid, out userUid) &&
-			//	httpContext.Request.Headers.TryGetValue(AuthorizationHeaders.AccessToken, out accessToken))
-			//{
-			//	if (!_authorizationLogic.CheckAccessKey(new Guid(userUid.FirstOrDefault()), accessToken.FirstOrDefault()).Result)
-			//	{
-			//		httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-			//		httpContext.Response.ContentType = "application/json";
-			//		return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(5));
-			//	}
-			//}
-			//else
-			//{
-			//	httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-			//	httpContext.Response.ContentType = "application/json";
-			//	return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(5));
-			//}
+			StringValues personUid, accessToken;
+			if (httpContext.Request.Headers.TryGetValue(AuthorizationHeaders.PersonUid, out personUid) &&
+				httpContext.Request.Headers.TryGetValue(AuthorizationHeaders.AccessToken, out accessToken))
+			{
+				if (!_authorizationLogic.CheckAccessKey(new Guid(personUid.FirstOrDefault()), accessToken.FirstOrDefault()).Result)
+				{
+					httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+					httpContext.Response.ContentType = "application/json";
+					return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(5));
+				}
+			}
+			else
+			{
+				httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+				httpContext.Response.ContentType = "application/json";
+				return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(5));
+			}
 			return _next(httpContext);
 		}
 	}

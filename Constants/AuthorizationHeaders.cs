@@ -2,7 +2,7 @@
 {
 	public static class AuthorizationHeaders
 	{
-		public const string UserUid = "UserUid";
+		public const string PersonUid = "PersonUid";
 		public const string AccessToken = "AccessToken";
 	}
 }

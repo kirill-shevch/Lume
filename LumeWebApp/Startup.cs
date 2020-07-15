@@ -2,6 +2,9 @@ using BLL.Authorization;
 using BLL.Authorization.Interfaces;
 using Constants;
 using DAL.Authorization;
+using DAL.Core;
+using DAL.Core.Interfaces;
+using DAL.Core.Repositories;
 using LumeWebApp.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +30,9 @@ namespace LumeWebApp
 			services.AddSingleton<AuthorizationContextFactory>();
 			services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
 			services.AddSingleton<IAuthorizationLogic, AuthorizationLogic>();
+            services.AddSingleton<IAuthorizationValidation, AuthorizationValidation>();
+            services.AddSingleton<CoreContextFactory>();
+            services.AddSingleton<ICoreRepository, CoreRepository>();
 			services.AddControllers();
             services.AddSwaggerGen(swagger =>
             {
@@ -45,7 +51,7 @@ namespace LumeWebApp
 
             app.UseHttpsRedirection();
 
-            app.UseWhen(context => !AuthIgnoreRoutes.IgnoredRoutes.Contains(context.Request.Path),
+            app.UseWhen(context => AuthProtectedRoutes.ProtectedRoutes.Contains(context.Request.Path),
                 builder =>
                 {
                     builder.UseMiddleware<AuthorizationMiddleware>();
