@@ -25,46 +25,46 @@ namespace BLL.Authorization
 				PersonUid = uid,
 				TemporaryCode = code,
 				PhoneNumber = phoneNumber
-			}).ConfigureAwait(false);
+			});
 			return uid;
 		}
 
 		public async Task<AuthorizationPersonModel> GetPerson(string phoneNumber, CancellationToken cancellationToken = default)
 		{
-			var dalPerson = await _authorizationRepository.GetPerson(phoneNumber, cancellationToken).ConfigureAwait(false);
+			var dalPerson = await _authorizationRepository.GetPerson(phoneNumber, cancellationToken);
 
 			return ConvertPersonModel(dalPerson);
 		}
 
 		public async Task<AuthorizationPersonModel> GetPerson(Guid personUid, CancellationToken cancellationToken = default)
 		{
-			var dalPerson = await _authorizationRepository.GetPerson(personUid, cancellationToken).ConfigureAwait(false);
+			var dalPerson = await _authorizationRepository.GetPerson(personUid, cancellationToken);
 
 			return ConvertPersonModel(dalPerson);
 		}
 
 		public async Task UpdatePerson(string phoneNumber, string accessToken, string refreshToken, CancellationToken cancellationToken = default)
 		{
-			var dalPerson = await _authorizationRepository.GetPerson(phoneNumber, cancellationToken).ConfigureAwait(false);
+			var dalPerson = await _authorizationRepository.GetPerson(phoneNumber, cancellationToken);
 			await UpdateEntity(accessToken, refreshToken, dalPerson, cancellationToken);
 		}
 
 		public async Task UpdatePerson(Guid personUid, string accessToken, string refreshToken, CancellationToken cancellationToken = default)
 		{
-			var dalPerson = await _authorizationRepository.GetPerson(personUid, cancellationToken).ConfigureAwait(false);
+			var dalPerson = await _authorizationRepository.GetPerson(personUid, cancellationToken);
 			await UpdateEntity(accessToken, refreshToken, dalPerson, cancellationToken);
 		}
 
 		public async Task UpdatePerson(string phoneNumber, string code, CancellationToken cancellationToken = default)
 		{
-			var dalPerson = await _authorizationRepository.GetPerson(phoneNumber, cancellationToken).ConfigureAwait(false);
+			var dalPerson = await _authorizationRepository.GetPerson(phoneNumber, cancellationToken);
 			dalPerson.TemporaryCode = code;
-			await _authorizationRepository.UpdatePerson(dalPerson, cancellationToken).ConfigureAwait(false);
+			await _authorizationRepository.UpdatePerson(dalPerson, cancellationToken);
 		}
 
 		public async Task<bool> CheckAccessKey(Guid personUid, string accessKey, CancellationToken cancellationToken = default)
 		{
-			var dalPerson = await _authorizationRepository.GetPerson(personUid, cancellationToken).ConfigureAwait(false);
+			var dalPerson = await _authorizationRepository.GetPerson(personUid, cancellationToken);
 			if (dalPerson == null)
 			{
 				return false;
@@ -112,7 +112,7 @@ namespace BLL.Authorization
 			dalPerson.RefreshKey = refreshToken;
 			dalPerson.ExpirationTime = DateTime.UtcNow.AddDays(7);
 			dalPerson.TemporaryCode = string.Empty;
-			await _authorizationRepository.UpdatePerson(dalPerson, cancellationToken).ConfigureAwait(false);
+			await _authorizationRepository.UpdatePerson(dalPerson, cancellationToken);
 		}
 	}
 }

@@ -30,6 +30,7 @@ namespace LumeWebApp
 			services.AddSingleton<AuthorizationContextFactory>();
 			services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
 			services.AddSingleton<IAuthorizationLogic, AuthorizationLogic>();
+            services.AddSingleton<IAuthorizationValidation, AuthorizationValidation>();
             services.AddSingleton<CoreContextFactory>();
             services.AddSingleton<ICoreRepository, CoreRepository>();
 			services.AddControllers();

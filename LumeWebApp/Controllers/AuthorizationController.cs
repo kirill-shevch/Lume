@@ -12,28 +12,36 @@ namespace LumeWebApp.Controllers
     public class AuthorizationController : ControllerBase
     {
         private readonly IAuthorizationLogic _authorizationLogic;
-        public AuthorizationController(IAuthorizationLogic authorizationLogic)
+        private readonly IAuthorizationValidation _authorizationValidation;
+        public AuthorizationController(IAuthorizationLogic authorizationLogic,
+            IAuthorizationValidation authorizationValidation)
         {
             _authorizationLogic = authorizationLogic;
+            _authorizationValidation = authorizationValidation;
         }
 
         [HttpPost]
         [Route("get-code")]
         public async Task<ActionResult<SignInResponse>> GetAuthorizationCode(string phoneNumber)
         {
+            var validationResult = _authorizationValidation.ValidateGetCode(phoneNumber);
+			if (!validationResult.ValidationResult)
+			{
+                return BadRequest(validationResult.ValidationMessage);
+			}
             Guid personUid;
-            var person = await _authorizationLogic.GetPerson(phoneNumber).ConfigureAwait(false);
+            var person = await _authorizationLogic.GetPerson(phoneNumber);
             //TODO generate random code
             var code = "0000";
-            await _authorizationLogic.SendCodeToPhone(code, phoneNumber).ConfigureAwait(false);
+            await _authorizationLogic.SendCodeToPhone(code, phoneNumber);
             if (person == null)
             {
-                personUid = await _authorizationLogic.AddPerson(code, phoneNumber).ConfigureAwait(false);
+                personUid = await _authorizationLogic.AddPerson(code, phoneNumber);
             }
             else
             {
                 personUid = person.PersonUid;
-                await _authorizationLogic.UpdatePerson(phoneNumber, code).ConfigureAwait(false);
+                await _authorizationLogic.UpdatePerson(phoneNumber, code);
             }
             return new SignInResponse { PersonUid = personUid };
         }
@@ -42,17 +50,14 @@ namespace LumeWebApp.Controllers
         [Route("set-code")]
         public async Task<ActionResult<AuthorizationResponse>> SetAuthorizationCode(string phoneNumber, string code)
         {
-            var person = await _authorizationLogic.GetPerson(phoneNumber).ConfigureAwait(false);
-            if (person == null)
+            var person = await _authorizationLogic.GetPerson(phoneNumber);
+            var validationResult = _authorizationValidation.ValidateSetCode(person, code);
+            if (!validationResult.ValidationResult)
             {
-                return BadRequest(ErrorDictionary.GetErrorMessage(2));
-            }
-            else if (person.Code != code)
-            {
-                return BadRequest(ErrorDictionary.GetErrorMessage(3));
+                return BadRequest(validationResult.ValidationMessage);
             }
             var tokens = _authorizationLogic.GetTokens();
-            await _authorizationLogic.UpdatePerson(phoneNumber, tokens.AccessToken, tokens.RefreshToken).ConfigureAwait(false);
+            await _authorizationLogic.UpdatePerson(phoneNumber, tokens.AccessToken, tokens.RefreshToken);
             return new AuthorizationResponse { AccessToken = tokens.AccessToken, RefreshToken = tokens.RefreshToken };
         }
 
@@ -60,17 +65,14 @@ namespace LumeWebApp.Controllers
         [Route("get-access-token")]
         public async Task<ActionResult<RefreshResponse>> GetAccessToken(Guid personUid, string refreshToken)
         {
-            var person = await _authorizationLogic.GetPerson(personUid).ConfigureAwait(false);
-            if (person == null)
+            var person = await _authorizationLogic.GetPerson(personUid);
+            var validationResult = _authorizationValidation.ValidateGetAccessToken(person, refreshToken);
+            if (!validationResult.ValidationResult)
             {
-                return BadRequest(ErrorDictionary.GetErrorMessage(2));
-            }
-            if (person.RefreshToken != refreshToken)
-            {
-                return BadRequest(ErrorDictionary.GetErrorMessage(4));
+                return BadRequest(validationResult.ValidationMessage);
             }
             var tokens = _authorizationLogic.GetTokens();
-            await _authorizationLogic.UpdatePerson(personUid, tokens.AccessToken, person.RefreshToken).ConfigureAwait(false);
+            await _authorizationLogic.UpdatePerson(personUid, tokens.AccessToken, person.RefreshToken);
             return new RefreshResponse { AccessToken = tokens.AccessToken };
         }
     }

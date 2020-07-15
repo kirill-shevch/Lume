@@ -16,18 +16,18 @@ namespace DAL.Core.Repositories
 
 		public async Task<ChatEntity> GetChat(int id, CancellationToken cancellationToken = default)
 		{
-			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
+			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.ChatEntities
 					.Include(x => x.ChatMessageEntities)
 					.ThenInclude(x => x.ChatImageContentEntities)
-					.SingleOrDefaultAsync(x => x.ChatId == id, cancellationToken).ConfigureAwait(false);
+					.SingleOrDefaultAsync(x => x.ChatId == id, cancellationToken);
 			}
 		}
 
 		public async Task<EventEntity> GetEvent(int id, CancellationToken cancellationToken = default)
 		{
-			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
+			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.EventEntities
 					.Include(x => x.EventStatus)
@@ -36,13 +36,13 @@ namespace DAL.Core.Repositories
 					.Include(x => x.Administrator)
 					.Include(x => x.Participants)
 						.ThenInclude(x => x.Person)
-					.SingleOrDefaultAsync(x => x.EventId == id, cancellationToken).ConfigureAwait(false);
+					.SingleOrDefaultAsync(x => x.EventId == id, cancellationToken);
 			}
 		}
 
 		public async Task<PersonEntity> GetPerson(int id, CancellationToken cancellationToken = default)
 		{
-			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
+			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.PersonEntities
 					.Include(x => x.PersonImageContentEntity)
@@ -50,7 +50,7 @@ namespace DAL.Core.Repositories
 						.ThenInclude(x => x.Friend)
 					.Include(x => x.ChatList)
 					.ThenInclude(x => x.Chat)
-					.SingleOrDefaultAsync(x => x.PersonId == id, cancellationToken).ConfigureAwait(false);
+					.SingleOrDefaultAsync(x => x.PersonId == id, cancellationToken);
 			}
 		}
 	}

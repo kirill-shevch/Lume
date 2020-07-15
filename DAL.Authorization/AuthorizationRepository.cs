@@ -21,8 +21,8 @@ namespace DAL.Authorization
 		{
 			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
 			{
-				await context.AddAsync(personAuthEntity, cancellationToken).ConfigureAwait(false);
-				await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+				await context.AddAsync(personAuthEntity, cancellationToken);
+				await context.SaveChangesAsync(cancellationToken);
 			}
 		}
 
@@ -30,7 +30,7 @@ namespace DAL.Authorization
 		{
 			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
 			{
-				return await context.PersonAuthEntities.SingleOrDefaultAsync(x => x.PhoneNumber == phoneNumber, cancellationToken).ConfigureAwait(false);
+				return await context.PersonAuthEntities.SingleOrDefaultAsync(x => x.PhoneNumber == phoneNumber, cancellationToken);
 			}
 		}
 
@@ -38,7 +38,7 @@ namespace DAL.Authorization
 		{
 			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
 			{
-				return await context.PersonAuthEntities.SingleOrDefaultAsync(x => x.PersonUid == personUid, cancellationToken).ConfigureAwait(false);
+				return await context.PersonAuthEntities.SingleOrDefaultAsync(x => x.PersonUid == personUid, cancellationToken);
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace DAL.Authorization
 			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
 			{
 				context.Update(personAuthEntity);
-				await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+				await context.SaveChangesAsync(cancellationToken);
 			}
 		}
 	}

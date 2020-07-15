@@ -33,7 +33,7 @@ namespace LumeWebApp.Middleware
 			{
 				if (!_authorizationLogic.CheckAccessKey(new Guid(personUid.FirstOrDefault()), accessToken.FirstOrDefault()).Result)
 				{
-					httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+					httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
 					httpContext.Response.ContentType = "application/json";
 					return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(5));
 				}

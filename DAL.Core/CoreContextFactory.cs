@@ -1,11 +1,10 @@
 ﻿using Constants;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
 namespace DAL.Core
 {
-	public class CoreContextFactory : IDesignTimeDbContextFactory<CoreDbContext>
+	public class CoreContextFactory
 	{
 		private readonly IConfiguration _configuration;
 		public CoreContextFactory(IConfiguration configuration)
@@ -13,7 +12,7 @@ namespace DAL.Core
 			_configuration = configuration;
 		}
 
-		public CoreDbContext CreateDbContext(string[] args)
+		public CoreDbContext CreateDbContext()
 		{
 			var connectionString = string.IsNullOrWhiteSpace(_configuration.GetConnectionString(ConfigurationKeys.AzureConnectionString)) ?
 				_configuration[ConfigurationKeys.LocalConnectionString] :
