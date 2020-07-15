@@ -17,29 +17,29 @@ namespace DAL.Core
 			builder.ApplyConfiguration(new ChatEntityConfiguration());
 			builder.ApplyConfiguration(new ChatImageContentEntityConfiguration());
 			builder.ApplyConfiguration(new ChatMessageEntityConfiguration());
-			//builder.ApplyConfiguration(new EventEntityConfiguration());
-			//builder.ApplyConfiguration(new EventImageContentEntityConfiguration());
-			//builder.ApplyConfiguration(new EventStatusEntityConfiguration());
-			//builder.ApplyConfiguration(new EventTypeEntityConfiguration());
+			builder.ApplyConfiguration(new EventEntityConfiguration());
+			builder.ApplyConfiguration(new EventImageContentEntityConfiguration());
+			builder.ApplyConfiguration(new EventStatusEntityConfiguration());
+			builder.ApplyConfiguration(new EventTypeEntityConfiguration());
 			builder.ApplyConfiguration(new PersonEntityConfiguration());
 			builder.ApplyConfiguration(new PersonFriendListEntityConfiguration());
 			builder.ApplyConfiguration(new PersonImageContentEntityConfiguration());
 			builder.ApplyConfiguration(new PersonToChatEntityConfiguration());
-			//builder.ApplyConfiguration(new PersonToEventEntityConfiguration());
+			builder.ApplyConfiguration(new PersonToEventEntityConfiguration());
 
 		}
 
 		public DbSet<ChatEntity> ChatEntities { get; set; }
 		public DbSet<ChatImageContentEntity> ChatImageContentEntities { get; set; }
 		public DbSet<ChatMessageEntity> ChatMessageEntities { get; set; }
-		//public DbSet<EventEntity> EventEntities { get; set; }
-		//public DbSet<EventImageContentEntity> EventImageContentEntities { get; set; }
-		//public DbSet<EventStatusEntity> EventStatusEntities { get; set; }
-		//public DbSet<EventTypeEntity> EventTypeEntities { get; set; }
+		public DbSet<EventEntity> EventEntities { get; set; }
+		public DbSet<EventImageContentEntity> EventImageContentEntities { get; set; }
+		public DbSet<EventStatusEntity> EventStatusEntities { get; set; }
+		public DbSet<EventTypeEntity> EventTypeEntities { get; set; }
 		public DbSet<PersonEntity> PersonEntities { get; set; }
 		public DbSet<PersonFriendListEntity> PersonFriendListEntities { get; set; }
 		public DbSet<PersonImageContentEntity> PersonImageContentEntities { get; set; }
 		public DbSet<PersonToChatEntity> PersonToChatEntities { get; set; }
-		//public DbSet<PersonToEventEntity> PersonToEventEntities { get; set; }
+		public DbSet<PersonToEventEntity> PersonToEventEntities { get; set; }
 	}
 }

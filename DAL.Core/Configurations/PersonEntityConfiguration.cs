@@ -15,7 +15,7 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.Agenda);
 			builder.Property(t => t.Age); 
 			builder.Property(t => t.PersonImageContentId);
-			builder.HasOne(t => t.personImageContentEntity).WithMany().HasForeignKey(x => x.PersonImageContentId);
+			builder.HasOne(t => t.PersonImageContentEntity).WithMany().HasForeignKey(x => x.PersonImageContentId);
 			builder.HasMany(t => t.FriendList).WithOne().HasForeignKey(x => x.PersonId);
 			builder.HasMany(t => t.ChatList).WithOne().HasForeignKey(x => x.PersonId);
 		}

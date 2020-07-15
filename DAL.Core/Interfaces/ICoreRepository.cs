@@ -8,5 +8,6 @@ namespace DAL.Core.Interfaces
 	{
 		Task<ChatEntity> GetChat(int id, CancellationToken cancellationToken = default);
 		Task<PersonEntity> GetPerson(int id, CancellationToken cancellationToken = default);
+		Task<EventEntity> GetEvent(int id, CancellationToken cancellationToken = default);
 	}
 }

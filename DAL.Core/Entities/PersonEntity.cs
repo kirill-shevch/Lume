@@ -12,8 +12,9 @@ namespace DAL.Core.Entities
 		public string Agenda { get; set; }
 		public byte Age { get; set; }
 		public long PersonImageContentId { get; set; }
-		public PersonImageContentEntity personImageContentEntity { get; set; }
+		public PersonImageContentEntity PersonImageContentEntity { get; set; }
 		public IEnumerable<PersonFriendListEntity> FriendList { get; set; }
 		public IEnumerable<PersonToChatEntity> ChatList { get; set; }
+		public IEnumerable<PersonToEventEntity> Events { get; set; }
 	}
 }

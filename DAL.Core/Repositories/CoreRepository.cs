@@ -25,12 +25,27 @@ namespace DAL.Core.Repositories
 			}
 		}
 
+		public async Task<EventEntity> GetEvent(int id, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
+			{
+				return await context.EventEntities
+					.Include(x => x.EventStatus)
+					.Include(x => x.EventType)
+					.Include(x => x.EventImageContent)
+					.Include(x => x.Administrator)
+					.Include(x => x.Participants)
+						.ThenInclude(x => x.Person)
+					.SingleOrDefaultAsync(x => x.EventId == id, cancellationToken).ConfigureAwait(false);
+			}
+		}
+
 		public async Task<PersonEntity> GetPerson(int id, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
 			{
 				return await context.PersonEntities
-					.Include(x => x.personImageContentEntity)
+					.Include(x => x.PersonImageContentEntity)
 					.Include(x => x.FriendList)
 						.ThenInclude(x => x.Friend)
 					.Include(x => x.ChatList)
