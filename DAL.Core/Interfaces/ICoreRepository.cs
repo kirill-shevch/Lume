@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Core.Interfaces
 {
-	public interface IChatRepository
+	public interface ICoreRepository
 	{
 		Task<ChatEntity> GetChat(int id, CancellationToken cancellationToken = default);
+		Task<PersonEntity> GetPerson(int id, CancellationToken cancellationToken = default);
 	}
 }

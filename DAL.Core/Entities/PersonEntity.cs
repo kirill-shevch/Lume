@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace DAL.Core.Entities
+{
+	public class PersonEntity
+	{
+		public const string TableName = "Person";
+		public long PersonId { get; set; }
+		public Guid PersonUid { get; set; }
+		public string Name { get; set; }
+		public string Agenda { get; set; }
+		public byte Age { get; set; }
+		public long PersonImageContentId { get; set; }
+		public PersonImageContentEntity personImageContentEntity { get; set; }
+		public IEnumerable<PersonFriendListEntity> FriendList { get; set; }
+		public IEnumerable<PersonToChatEntity> ChatList { get; set; }
+	}
+}

@@ -21,10 +21,10 @@ namespace DAL.Core
 			//builder.ApplyConfiguration(new EventImageContentEntityConfiguration());
 			//builder.ApplyConfiguration(new EventStatusEntityConfiguration());
 			//builder.ApplyConfiguration(new EventTypeEntityConfiguration());
-			//builder.ApplyConfiguration(new PersonEntityConfiguration());
-			//builder.ApplyConfiguration(new PersonFriendListEntityConfiguration());
-			//builder.ApplyConfiguration(new PersonImageContentEntityConfiguration());
-			//builder.ApplyConfiguration(new PersonToChatEntityConfiguration());
+			builder.ApplyConfiguration(new PersonEntityConfiguration());
+			builder.ApplyConfiguration(new PersonFriendListEntityConfiguration());
+			builder.ApplyConfiguration(new PersonImageContentEntityConfiguration());
+			builder.ApplyConfiguration(new PersonToChatEntityConfiguration());
 			//builder.ApplyConfiguration(new PersonToEventEntityConfiguration());
 
 		}
@@ -36,10 +36,10 @@ namespace DAL.Core
 		//public DbSet<EventImageContentEntity> EventImageContentEntities { get; set; }
 		//public DbSet<EventStatusEntity> EventStatusEntities { get; set; }
 		//public DbSet<EventTypeEntity> EventTypeEntities { get; set; }
-		//public DbSet<PersonEntity> PersonEntities { get; set; }
-		//public DbSet<PersonFriendListEntity> PersonFriendListEntities { get; set; }
-		//public DbSet<PersonImageContentEntity> PersonImageContentEntities { get; set; }
-		//public DbSet<PersonToChatEntity> PersonToChatEntities { get; set; }
+		public DbSet<PersonEntity> PersonEntities { get; set; }
+		public DbSet<PersonFriendListEntity> PersonFriendListEntities { get; set; }
+		public DbSet<PersonImageContentEntity> PersonImageContentEntities { get; set; }
+		public DbSet<PersonToChatEntity> PersonToChatEntities { get; set; }
 		//public DbSet<PersonToEventEntity> PersonToEventEntities { get; set; }
 	}
 }

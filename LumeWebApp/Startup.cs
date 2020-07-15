@@ -31,7 +31,7 @@ namespace LumeWebApp
 			services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
 			services.AddSingleton<IAuthorizationLogic, AuthorizationLogic>();
             services.AddSingleton<CoreContextFactory>();
-            services.AddSingleton<IChatRepository, ChatRepository>();
+            services.AddSingleton<ICoreRepository, CoreRepository>();
 			services.AddControllers();
             services.AddSwaggerGen(swagger =>
             {
