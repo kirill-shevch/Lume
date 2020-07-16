@@ -1,6 +1,8 @@
 ﻿using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,6 +53,23 @@ namespace DAL.Core.Repositories
 					.Include(x => x.ChatList)
 					.ThenInclude(x => x.Chat)
 					.SingleOrDefaultAsync(x => x.PersonId == id, cancellationToken);
+			}
+		}
+
+		public async Task CreatePerson(Guid personUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.AddAsync(new PersonEntity { PersonUid = personUid }, cancellationToken);
+				await context.SaveChangesAsync(cancellationToken);
+			}
+		}
+
+		public async Task<bool> CheckPersonExistence(Guid personUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonEntities.AnyAsync(x => x.PersonUid == personUid, cancellationToken);
 			}
 		}
 	}
