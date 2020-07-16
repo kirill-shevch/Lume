@@ -6,6 +6,7 @@ using DAL.Core;
 using DAL.Core.Interfaces;
 using DAL.Core.Repositories;
 using LumeWebApp.Middleware;
+using LumeWebApp.SwaggerAttributes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +37,7 @@ namespace LumeWebApp
 			services.AddControllers();
             services.AddSwaggerGen(swagger =>
             {
+                swagger.OperationFilter<CustomHeaderSwaggerAttribute>();
                 swagger.SwaggerDoc("v2", new OpenApiInfo { Title = "Lume API" });
             });
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
