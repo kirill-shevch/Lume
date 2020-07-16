@@ -2,6 +2,7 @@
 using BLL.Core.Models;
 using Constants;
 using LumeWebApp.Requests.Person;
+using LumeWebApp.Responses.Person;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,6 +27,14 @@ namespace LumeWebApp.Controllers
 		{
 			var uid = personUid ?? new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			return await _coreLogic.GetPerson(uid);
+		}
+
+		[HttpGet]
+		[Route("is-person-filled-up")]
+		public async Task<ActionResult<IsPersonFilledUpResponse>> IsPersonFilledUp(Guid? personUid)
+		{
+			var uid = personUid ?? new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			return new IsPersonFilledUpResponse { IsPersonFilledUp = await _coreLogic.IsPersonFilledUp(uid) };
 		}
 
 		[HttpPost]

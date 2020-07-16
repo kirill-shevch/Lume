@@ -57,5 +57,13 @@ namespace BLL.Core
 				entity.Age = updatePersonModel.Age;
 			await _coreRepository.UpdatePerson(entity);
 		}
+
+		public async Task<bool> IsPersonFilledUp(Guid personUid)
+		{
+			var entity = await _coreRepository.GetPerson(personUid);
+			return entity != null && 
+				!string.IsNullOrEmpty(entity.Name) && 
+				entity.Age.HasValue;
+		}
 	}
 }
