@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL.Core.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace BLL.Core.Interfaces
@@ -6,5 +7,7 @@ namespace BLL.Core.Interfaces
 	public interface ICoreLogic
 	{
 		Task CreatePerson(Guid personUid);
+		Task<PersonModel> GetPerson(Guid personUid);
+		Task UpdatePerson(UpdatePersonModel updatePersonModel);
 	}
 }
