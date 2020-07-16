@@ -20,7 +20,7 @@ namespace LumeWebApp.Controllers
 			_coreLogic = coreLogic;
 		}
 
-		[HttpPost]
+		[HttpGet]
 		[Route("get-person")]
 		public async Task<ActionResult<PersonModel>> GetPerson(Guid? personUid)
 		{
