@@ -34,14 +34,14 @@ namespace BLL.Core
 				Name = entity.Name,
 				Agenda = entity.Agenda,
 				Age = entity.Age,
-				ImageContent = entity.PersonImageContentEntity.Content,
+				ImageContent = entity.PersonImageContentEntity?.Content,
 				Friends = entity.FriendList.Select(x => new PersonModel 
 				{ 
 					PersonUid = x.Friend.PersonUid,
 					Name = x.Friend.Name,
 					Agenda = x.Friend.Agenda,
 					Age = x.Friend.Age,
-					ImageContent = x.Friend.PersonImageContentEntity.Content,
+					ImageContent = x.Friend.PersonImageContentEntity?.Content,
 				}).ToList()
 			};
 		}
