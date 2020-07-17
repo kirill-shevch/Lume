@@ -15,7 +15,7 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateUpdatePerson(UpdatePersonModel model)
 		{
-			if (_coreRepository.CheckPersonExistence(model.PersonUid).Result)
+			if (!_coreRepository.CheckPersonExistence(model.PersonUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2));
 			}
