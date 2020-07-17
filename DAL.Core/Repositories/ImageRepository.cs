@@ -15,28 +15,12 @@ namespace DAL.Core.Repositories
 			_dbContextFactory = dbContextFactory;
 		}
 
-
+		#region person
 		public async Task<bool> CheckPersonImageExistence(Guid uid, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.PersonImageContentEntities.AnyAsync(x => x.PersonImageContentUid == uid, cancellationToken);
-			}
-		}
-
-		public async Task<bool> CheckEventImageExistence(Guid uid, CancellationToken cancellationToken = default)
-		{
-			using (var context = _dbContextFactory.CreateDbContext())
-			{
-				return await context.EventImageContentEntities.AnyAsync(x => x.EventImageContentUid == uid, cancellationToken);
-			}
-		}
-
-		public async Task<bool> CheckChatMessageImageExistence(Guid uid, CancellationToken cancellationToken = default)
-		{
-			using (var context = _dbContextFactory.CreateDbContext())
-			{
-				return await context.ChatImageContentEntities.AnyAsync(x => x.ChatImageContentUid == uid, cancellationToken);
 			}
 		}
 
@@ -65,7 +49,55 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				var entity = await context.PersonImageContentEntities.SingleAsync(x => x.PersonImageContentUid == uid);
-				return entity.Content; ;
+				return entity.Content;
+			}
+		}
+		#endregion person
+
+		#region event
+		public async Task<bool> CheckEventImageExistence(Guid uid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.EventImageContentEntities.AnyAsync(x => x.EventImageContentUid == uid, cancellationToken);
+			}
+		}
+
+		public async Task<Guid?> GetEventImageUidByHash(string hash)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var entity = await context.EventImageContentEntities.SingleOrDefaultAsync(x => x.ContentHash == hash);
+				return entity == null ? (Guid?)null : entity.EventImageContentUid;
+			}
+		}
+
+		public async Task SaveEventImage(Guid eventUid, EventImageContentEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var eventEntity = await context.EventEntities.SingleAsync(x => x.EventUid == eventUid);
+				eventEntity.EventImageContent = entity;
+				await context.EventImageContentEntities.AddAsync(entity);
+				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task<byte[]> GetEventImageContentByUid(Guid uid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var entity = await context.EventImageContentEntities.SingleAsync(x => x.EventImageContentUid == uid);
+				return entity.Content;
+			}
+		}
+		#endregion event
+
+		public async Task<bool> CheckChatMessageImageExistence(Guid uid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.ChatImageContentEntities.AnyAsync(x => x.ChatImageContentUid == uid, cancellationToken);
 			}
 		}
 	}

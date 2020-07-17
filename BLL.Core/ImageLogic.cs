@@ -43,5 +43,32 @@ namespace BLL.Core
 		{
 			return await _imageRepository.GetPersonImageContentByUid(imageUid);
 		}
+
+		public async Task<Guid> SaveEventImage(AddImageModel addEventImageModel)
+		{
+			using (var sha256Hash = SHA256.Create())
+			{
+				var hashInBytes = sha256Hash.ComputeHash(addEventImageModel.Content);
+				var hash = Encoding.UTF8.GetString(hashInBytes, 0, hashInBytes.Length);
+				var uid = await _imageRepository.GetEventImageUidByHash(hash);
+				if (!uid.HasValue)
+				{
+					uid = Guid.NewGuid();
+					await _imageRepository.SaveEventImage(addEventImageModel.Uid, new EventImageContentEntity
+					{
+						EventImageContentUid = uid.Value,
+						Content = addEventImageModel.Content,
+						ContentHash = hash
+					});
+					return uid.Value;
+				}
+				return uid.Value;
+			}
+		}
+
+		public async Task<byte[]> GetEventImage(Guid imageUid)
+		{
+			return await _imageRepository.GetEventImageContentByUid(imageUid);
+		}
 	}
 }

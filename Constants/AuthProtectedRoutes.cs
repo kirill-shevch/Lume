@@ -12,7 +12,8 @@ namespace Constants
              "/api/core/update-person",
              "/api/core/is-person-filled-up",
 
-             "/api/image/add-person-image"
+             "/api/image/add-person-image",
+             "/api/image/add-event-image"
         };
     }
 }
