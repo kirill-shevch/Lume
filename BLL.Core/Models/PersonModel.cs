@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BLL.Core.Models
 {
@@ -10,7 +9,7 @@ namespace BLL.Core.Models
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public byte? Age { get; set; }
-		public byte[] ImageContent { get; set; }
+		public Guid? ImageContentUid{ get; set; }
 		public List<PersonModel> Friends{ get; set; }
 	}
 }
