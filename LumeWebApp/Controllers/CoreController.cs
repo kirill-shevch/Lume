@@ -59,7 +59,7 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			await _coreLogic.UpdatePerson(model);
-			return Ok();
+			return Ok(Messages.PersonUpdateSuccess);
 		}
 	}
 }
