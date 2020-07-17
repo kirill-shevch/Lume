@@ -15,7 +15,7 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.MaxAge);
 			builder.Property(t => t.XCoordinate);
 			builder.Property(t => t.YCoordinate);
-			builder.Property(t => t.Agenda);
+			builder.Property(t => t.Description);
 			builder.Property(t => t.StartTime);
 			builder.Property(t => t.EndTime);
 			builder.Property(t => t.EventImageContentId);

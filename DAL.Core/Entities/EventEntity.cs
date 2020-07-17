@@ -12,7 +12,7 @@ namespace DAL.Core.Entities
 		public byte MaxAge { get; set; }
 		public double XCoordinate { get; set; }
 		public double YCoordinate { get; set; }
-		public string Agenda { get; set; }
+		public string Description { get; set; }
 		public DateTime? StartTime { get; set; }
 		public DateTime? EndTime { get; set; }
 		public long EventImageContentId { get; set; }

@@ -1,5 +1,6 @@
 ﻿using BLL.Authorization.Interfaces;
-using Constants;
+using BLL.Core;
+using BLL.Core.Interfaces;
 using LumeWebApp.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,11 +14,14 @@ namespace LumeWebApp.Controllers
     {
         private readonly IAuthorizationLogic _authorizationLogic;
         private readonly IAuthorizationValidation _authorizationValidation;
+        private readonly ICoreLogic _coreLogic;
         public AuthorizationController(IAuthorizationLogic authorizationLogic,
-            IAuthorizationValidation authorizationValidation)
+            IAuthorizationValidation authorizationValidation,
+            ICoreLogic coreLogic)
         {
             _authorizationLogic = authorizationLogic;
             _authorizationValidation = authorizationValidation;
+            _coreLogic = coreLogic;
         }
 
         [HttpPost]
@@ -56,6 +60,7 @@ namespace LumeWebApp.Controllers
             {
                 return BadRequest(validationResult.ValidationMessage);
             }
+            await _coreLogic.CreatePerson(person.PersonUid);
             var tokens = _authorizationLogic.GetTokens();
             await _authorizationLogic.UpdatePerson(phoneNumber, tokens.AccessToken, tokens.RefreshToken);
             return new AuthorizationResponse { AccessToken = tokens.AccessToken, RefreshToken = tokens.RefreshToken };

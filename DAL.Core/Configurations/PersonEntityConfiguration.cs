@@ -12,7 +12,7 @@ namespace DAL.Core.Configurations
 			builder.HasKey(t => t.PersonId);
 			builder.Property(t => t.PersonUid);
 			builder.Property(t => t.Name);
-			builder.Property(t => t.Agenda);
+			builder.Property(t => t.Description);
 			builder.Property(t => t.Age); 
 			builder.Property(t => t.PersonImageContentId);
 			builder.HasOne(t => t.PersonImageContentEntity).WithMany().HasForeignKey(x => x.PersonImageContentId);
