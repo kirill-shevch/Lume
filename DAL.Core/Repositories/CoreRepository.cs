@@ -80,5 +80,21 @@ namespace DAL.Core.Repositories
 				return await context.PersonEntities.AnyAsync(x => x.PersonUid == personUid, cancellationToken);
 			}
 		}
+
+		public async Task<bool> CheckEventExistence(Guid eventUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.EventEntities.AnyAsync(x => x.EventUid == eventUid, cancellationToken);
+			}
+		}
+
+		public async Task<bool> CheckChatMessageExistence(Guid chatMessageUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.ChatMessageEntities.AnyAsync(x => x.ChatMessageUid == chatMessageUid, cancellationToken);
+			}
+		}
 	}
 }

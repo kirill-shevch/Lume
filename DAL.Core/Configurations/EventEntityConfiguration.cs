@@ -10,6 +10,7 @@ namespace DAL.Core.Configurations
 		{
 			builder.ToTable(EventEntity.TableName);
 			builder.HasKey(t => t.EventId);
+			builder.Property(t => t.EventUid);
 			builder.Property(t => t.Name);
 			builder.Property(t => t.MinAge);
 			builder.Property(t => t.MaxAge);

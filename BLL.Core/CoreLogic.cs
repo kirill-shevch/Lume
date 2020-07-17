@@ -34,14 +34,14 @@ namespace BLL.Core
 				Name = entity.Name,
 				Description = entity.Description,
 				Age = entity.Age,
-				ImageContent = entity.PersonImageContentEntity?.Content,
+				ImageContentUid = entity.PersonImageContentEntity?.PersonImageContentUid,
 				Friends = entity.FriendList.Select(x => new PersonModel 
 				{ 
 					PersonUid = x.Friend.PersonUid,
 					Name = x.Friend.Name,
 					Description = x.Friend.Description,
 					Age = x.Friend.Age,
-					ImageContent = x.Friend.PersonImageContentEntity?.Content,
+					ImageContentUid = x.Friend.PersonImageContentEntity?.PersonImageContentUid,
 				}).ToList()
 			};
 		}

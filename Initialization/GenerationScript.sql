@@ -25,6 +25,7 @@ CREATE TABLE LumeDB.dbo.PersonAuth (
 
 CREATE TABLE LumeDB.dbo.PersonImageContent (
 	PersonImageContentId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	PersonImageContentUid uniqueidentifier NOT NULL UNIQUE,
 	ContentHash nvarchar(200) NOT NULL UNIQUE,
 	Content VARBINARY(MAX) NOT NULL,
 	CONSTRAINT PK_PersonImageContentId PRIMARY KEY CLUSTERED (PersonImageContentId)
@@ -32,6 +33,7 @@ CREATE TABLE LumeDB.dbo.PersonImageContent (
 
 CREATE TABLE LumeDB.dbo.EventImageContent (
 	EventImageContentId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	EventImageContentUid uniqueidentifier NOT NULL UNIQUE,
 	ContentHash nvarchar(200) NOT NULL UNIQUE,
 	Content VARBINARY(MAX) NOT NULL,
 	CONSTRAINT PK_EventImageContentId PRIMARY KEY CLUSTERED (EventImageContentId)
@@ -62,6 +64,7 @@ CREATE TABLE LumeDB.dbo.EventStatus (
 
 CREATE TABLE LumeDB.dbo.Event (
 	EventId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	EventUid uniqueidentifier NOT NULL UNIQUE,
 	Name nvarchar(200) NULL,
 	MinAge tinyint NULL,
 	MaxAge tinyint NULL,
@@ -89,6 +92,7 @@ CREATE TABLE LumeDB.dbo.Chat (
 
 CREATE TABLE LumeDB.dbo.ChatMessage (
 	ChatMessageId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	ChatMessageUid uniqueidentifier NOT NULL UNIQUE,
 	Content nvarchar(4000) NULL,
 	MessageTime datetime2(7) NULL,
 	ChatId bigint NULL,
@@ -98,6 +102,7 @@ CREATE TABLE LumeDB.dbo.ChatMessage (
 
 CREATE TABLE LumeDB.dbo.ChatImageContent (
 	ChatImageContentId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	ChatImageContentUid uniqueidentifier NOT NULL UNIQUE,
 	ContentHash nvarchar(200) NOT NULL UNIQUE,
 	Content VARBINARY(MAX) NOT NULL,
 	ChatMessageId bigint NULL,

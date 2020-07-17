@@ -7,6 +7,7 @@ namespace DAL.Core.Entities
 	{
 		public const string TableName = "Event";
 		public long EventId { get; set; }
+		public Guid EventUid { get; set; }
 		public string Name { get; set; }
 		public byte MinAge { get; set; }
 		public byte MaxAge { get; set; }

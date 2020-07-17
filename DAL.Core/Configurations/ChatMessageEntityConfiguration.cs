@@ -10,6 +10,7 @@ namespace DAL.Core.Configurations
 		{
 			builder.ToTable(ChatMessageEntity.TableName);
 			builder.HasKey(t => t.ChatMessageId);
+			builder.Property(t => t.ChatMessageUid);
 			builder.Property(t => t.MessageTime);
 			builder.Property(t => t.Content);
 
