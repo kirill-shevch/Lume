@@ -64,6 +64,7 @@ CREATE TABLE LumeDB.dbo.EventStatus (
 
 CREATE TABLE LumeDB.dbo.Event (
 	EventId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	EventUid uniqueidentifier NOT NULL UNIQUE,
 	Name nvarchar(200) NULL,
 	MinAge tinyint NULL,
 	MaxAge tinyint NULL,
@@ -91,6 +92,7 @@ CREATE TABLE LumeDB.dbo.Chat (
 
 CREATE TABLE LumeDB.dbo.ChatMessage (
 	ChatMessageId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	ChatMessageUid uniqueidentifier NOT NULL UNIQUE,
 	Content nvarchar(4000) NULL,
 	MessageTime datetime2(7) NULL,
 	ChatId bigint NULL,
