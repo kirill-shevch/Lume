@@ -9,7 +9,7 @@ namespace DAL.Core.Entities
 		public long PersonId { get; set; }
 		public Guid PersonUid { get; set; }
 		public string Name { get; set; }
-		public string Agenda { get; set; }
+		public string Description { get; set; }
 		public byte? Age { get; set; }
 		public long? PersonImageContentId { get; set; }
 		public PersonImageContentEntity PersonImageContentEntity { get; set; }

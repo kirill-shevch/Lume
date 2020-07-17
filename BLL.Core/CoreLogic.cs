@@ -32,14 +32,14 @@ namespace BLL.Core
 			{
 				PersonUid = entity.PersonUid,
 				Name = entity.Name,
-				Agenda = entity.Agenda,
+				Description = entity.Description,
 				Age = entity.Age,
 				ImageContent = entity.PersonImageContentEntity?.Content,
 				Friends = entity.FriendList.Select(x => new PersonModel 
 				{ 
 					PersonUid = x.Friend.PersonUid,
 					Name = x.Friend.Name,
-					Agenda = x.Friend.Agenda,
+					Description = x.Friend.Description,
 					Age = x.Friend.Age,
 					ImageContent = x.Friend.PersonImageContentEntity?.Content,
 				}).ToList()
@@ -51,8 +51,8 @@ namespace BLL.Core
 			var entity = await _coreRepository.GetPerson(updatePersonModel.PersonUid);
 			if (!string.IsNullOrEmpty(updatePersonModel.Name)) 
 				entity.Name = updatePersonModel.Name;
-			if (!string.IsNullOrEmpty(updatePersonModel.Agenda))
-				entity.Agenda = updatePersonModel.Agenda;
+			if (!string.IsNullOrEmpty(updatePersonModel.Description))
+				entity.Description = updatePersonModel.Description;
 			if (updatePersonModel.Age.HasValue)
 				entity.Age = updatePersonModel.Age;
 			await _coreRepository.UpdatePerson(entity);

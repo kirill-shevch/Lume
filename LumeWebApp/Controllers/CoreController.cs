@@ -46,7 +46,7 @@ namespace LumeWebApp.Controllers
 				PersonUid = uid, 
 				Age = request.Age, 
 				Name = request.Name, 
-				Agenda = request.Agenda 
+				Description = request.Description 
 			});
 			return Ok();
 		}
