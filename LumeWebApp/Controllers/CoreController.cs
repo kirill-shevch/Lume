@@ -16,9 +16,13 @@ namespace LumeWebApp.Controllers
 	public class CoreController : ControllerBase
 	{
 		private readonly ICoreLogic _coreLogic;
-		public CoreController(ICoreLogic coreLogic)
+		private readonly ICoreValidation _coreValidation;
+
+		public CoreController(ICoreLogic coreLogic,
+			ICoreValidation coreValidation)
 		{
 			_coreLogic = coreLogic;
+			_coreValidation = coreValidation;
 		}
 
 		[HttpGet]
@@ -42,12 +46,19 @@ namespace LumeWebApp.Controllers
 		public async Task<ActionResult> UpdatePerson(UpdatePersonRequest request)
 		{
 			var uid =  new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
-			await _coreLogic.UpdatePerson(new UpdatePersonModel { 
-				PersonUid = uid, 
-				Age = request.Age, 
-				Name = request.Name, 
-				Description = request.Description 
-			});
+			var model = new UpdatePersonModel
+			{
+				PersonUid = uid,
+				Age = request.Age,
+				Name = request.Name,
+				Description = request.Description
+			};
+			var validationResult = _coreValidation.ValidateUpdatePerson(model);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _coreLogic.UpdatePerson(model);
 			return Ok();
 		}
 	}

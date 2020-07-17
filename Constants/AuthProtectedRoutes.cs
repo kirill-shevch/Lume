@@ -8,7 +8,8 @@ namespace Constants
         {
              "/home/secure",
              "/api/core/get-person",
-             "/api/core/update-person"
+             "/api/core/update-person",
+             "/api/core/is-person-filled-up"
         };
     }
 }
