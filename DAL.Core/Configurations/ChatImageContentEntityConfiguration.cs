@@ -10,6 +10,7 @@ namespace DAL.Core.Configurations
 		{
 			builder.ToTable(ChatImageContentEntity.TableName);
 			builder.HasKey(t => t.ChatImageContentId);
+			builder.Property(t => t.ChatImageContentUid);
 			builder.Property(t => t.ContentHash);
 			builder.Property(t => t.Content);
 		}
