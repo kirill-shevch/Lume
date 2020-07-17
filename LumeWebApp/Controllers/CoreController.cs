@@ -2,6 +2,7 @@
 using BLL.Core.Models;
 using Constants;
 using LumeWebApp.Requests.Person;
+using LumeWebApp.Responses.Event;
 using LumeWebApp.Responses.Person;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace LumeWebApp.Controllers
 			_coreValidation = coreValidation;
 		}
 
+		#region person
 		[HttpGet]
 		[Route("get-person")]
 		public async Task<ActionResult<PersonModel>> GetPerson(Guid? personUid)
@@ -61,5 +63,22 @@ namespace LumeWebApp.Controllers
 			await _coreLogic.UpdatePerson(model);
 			return Ok(Messages.PersonUpdateSuccess);
 		}
+		#endregion person
+
+		#region event
+		[HttpPost]
+		[Route("add-event")]
+		public async Task<ActionResult<AddEventResponse>> AddEvent(AddEventModel request)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _coreValidation.ValidateAddEvent(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _coreLogic.AddEvent(request, uid);
+			return new AddEventResponse();
+		}
+		#endregion event
 	}
 }

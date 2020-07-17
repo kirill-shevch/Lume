@@ -10,5 +10,7 @@ namespace BLL.Core.Interfaces
 		Task<PersonModel> GetPerson(Guid personUid);
 		Task UpdatePerson(UpdatePersonModel updatePersonModel);
 		Task<bool> IsPersonFilledUp(Guid personUid);
+
+		Task AddEvent(AddEventModel addEventModel, Guid personUid);
 	}
 }
