@@ -16,6 +16,7 @@
     <ProjectReference Include="..\BLL.Authorization\BLL.Authorization.csproj" />
     <ProjectReference Include="..\BLL.Core\BLL.Core.csproj" />
     <ProjectReference Include="..\DAL.Core\DAL.Core.csproj" />
+    <ProjectReference Include="..\Lume.DI\Lume.DI.csproj" />
   </ItemGroup>
 
 

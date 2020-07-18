@@ -7,6 +7,7 @@ using DAL.Authorization;
 using DAL.Core;
 using DAL.Core.Interfaces;
 using DAL.Core.Repositories;
+using Lume.DI;
 using LumeWebApp.Middleware;
 using LumeWebApp.SwaggerAttributes;
 using Microsoft.AspNetCore.Builder;
@@ -30,18 +31,14 @@ namespace LumeWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-			services.AddSingleton<AuthorizationContextFactory>();
-			services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
-			services.AddSingleton<IAuthorizationLogic, AuthorizationLogic>();
-            services.AddSingleton<IAuthorizationValidation, AuthorizationValidation>();
+            services.RegisterLogics();
+            
+            services.RegisterRepositories();
 
-            services.AddSingleton<CoreContextFactory>();
-            services.AddSingleton<IImageRepository, ImageRepository>();
-            services.AddSingleton<ICoreRepository, CoreRepository>();
-            services.AddSingleton<IImageValidation, ImageValidation>();
-            services.AddSingleton<IImageLogic, ImageLogic>();
-            services.AddSingleton<ICoreValidation, CoreValidation>();
-            services.AddSingleton<ICoreLogic, CoreLogic>();
+            services.RegisterFactories();
+
+            services.RegisterValidations();
+
 			services.AddControllers();
             services.AddSwaggerGen(swagger =>
             {
