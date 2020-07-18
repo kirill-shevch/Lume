@@ -1,12 +1,4 @@
-using BLL.Authorization;
-using BLL.Authorization.Interfaces;
-using BLL.Core;
-using BLL.Core.Interfaces;
 using Constants;
-using DAL.Authorization;
-using DAL.Core;
-using DAL.Core.Interfaces;
-using DAL.Core.Repositories;
 using Lume.DI;
 using LumeWebApp.Middleware;
 using LumeWebApp.SwaggerAttributes;

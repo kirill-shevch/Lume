@@ -6,7 +6,6 @@ using DAL.Authorization;
 using DAL.Core;
 using DAL.Core.Interfaces;
 using DAL.Core.Repositories;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Lume.DI
