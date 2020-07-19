@@ -19,7 +19,7 @@ namespace DAL.Authorization
 
 		public async Task AddPerson(PersonAuthEntity personAuthEntity, CancellationToken cancellationToken)
 		{
-			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
+			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				await context.AddAsync(personAuthEntity, cancellationToken);
 				await context.SaveChangesAsync(cancellationToken);
@@ -28,7 +28,7 @@ namespace DAL.Authorization
 
 		public async Task<PersonAuthEntity> GetPerson(string phoneNumber, CancellationToken cancellationToken = default)
 		{
-			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
+			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.PersonAuthEntities.SingleOrDefaultAsync(x => x.PhoneNumber == phoneNumber, cancellationToken);
 			}
@@ -36,7 +36,7 @@ namespace DAL.Authorization
 
 		public async Task<PersonAuthEntity> GetPerson(Guid personUid, CancellationToken cancellationToken = default)
 		{
-			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
+			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.PersonAuthEntities.SingleOrDefaultAsync(x => x.PersonUid == personUid, cancellationToken);
 			}
@@ -44,7 +44,7 @@ namespace DAL.Authorization
 
 		public async Task UpdatePerson(PersonAuthEntity personAuthEntity, CancellationToken cancellationToken = default)
 		{
-			using (var context = _dbContextFactory.CreateDbContext(new string[] { }))
+			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				context.Update(personAuthEntity);
 				await context.SaveChangesAsync(cancellationToken);

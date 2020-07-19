@@ -1,11 +1,10 @@
 ﻿using Constants;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
 namespace DAL.Authorization
 {
-	public class AuthorizationContextFactory : IDesignTimeDbContextFactory<AuthorizationDbContext>
+	public class AuthorizationContextFactory
 	{
 		private readonly IConfiguration _configuration;
 		public AuthorizationContextFactory(IConfiguration configuration)
@@ -13,7 +12,7 @@ namespace DAL.Authorization
 			_configuration = configuration;
 		}
 
-		public AuthorizationDbContext CreateDbContext(string[] args)
+		public AuthorizationDbContext CreateDbContext()
 		{
 			var connectionString = string.IsNullOrWhiteSpace(_configuration.GetConnectionString(ConfigurationKeys.AzureConnectionString)) ?
 				_configuration[ConfigurationKeys.LocalConnectionString] :
