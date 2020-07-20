@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BLL.Core.Models
+namespace BLL.Core.Models.Person
 {
 	public class PersonModel
 	{

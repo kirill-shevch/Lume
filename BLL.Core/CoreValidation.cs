@@ -1,5 +1,6 @@
 ﻿using BLL.Core.Interfaces;
-using BLL.Core.Models;
+using BLL.Core.Models.Event;
+using BLL.Core.Models.Person;
 using Constants;
 using DAL.Core.Interfaces;
 using System;

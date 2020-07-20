@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BLL.Core.Models
+namespace BLL.Core.Models.Person
 {
 	public class UpdatePersonModel
 	{
