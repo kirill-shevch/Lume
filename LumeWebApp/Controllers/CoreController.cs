@@ -62,7 +62,7 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			await _coreLogic.UpdatePerson(model);
-			return Ok(Messages.PersonUpdateSuccess);
+			return Ok(Messages.UpdateSuccess);
 		}
 		#endregion person
 
@@ -99,6 +99,19 @@ namespace LumeWebApp.Controllers
 		{
 			var personUid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			return await _coreLogic.GetEventList(personUid);
+		}
+
+		[HttpPost]
+		[Route("update-event")]
+		public async Task<ActionResult> UpdateEvent(UpdateEventModel request)
+		{
+			var validationResult = _coreValidation.ValidateUpdateEvent(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _coreLogic.UpdateEvent(request);
+			return Ok(Messages.UpdateSuccess);
 		}
 		#endregion event
 	}

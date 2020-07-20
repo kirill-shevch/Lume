@@ -2,6 +2,6 @@
 {
 	public static class Messages
 	{
-		public const string PersonUpdateSuccess = @"{ ""data"":""Update completed!"" }";
+		public const string UpdateSuccess = @"{ ""data"":""Update completed!"" }";
 	}
 }

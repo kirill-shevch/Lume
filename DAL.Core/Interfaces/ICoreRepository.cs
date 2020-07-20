@@ -19,5 +19,7 @@ namespace DAL.Core.Interfaces
 		Task CreateEvent(EventEntity eventEntity, CancellationToken cancellationToken = default);
 		Task<EventEntity> GetEvent(Guid eventUid, CancellationToken cancellationToken = default);
 		Task<List<EventEntity>> GetEvents(Guid personUid, CancellationToken cancellationToken = default);
+		Task UpdateEvent(EventEntity eventEntity, CancellationToken cancellationToken = default);
+
 	}
 }

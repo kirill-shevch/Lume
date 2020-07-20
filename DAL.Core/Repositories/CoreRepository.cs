@@ -126,5 +126,14 @@ namespace DAL.Core.Repositories
 					.ToListAsync();
 			}
 		}
+
+		public async Task UpdateEvent(EventEntity eventEntity, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				context.Update(eventEntity);
+				await context.SaveChangesAsync(cancellationToken);
+			}
+		}
 	}
 }

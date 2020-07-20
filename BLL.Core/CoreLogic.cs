@@ -92,6 +92,38 @@ namespace BLL.Core
 			var eventEntities = await _coreRepository.GetEvents(personUid);
 			return eventEntities.Select(x => EventEntityToModel(x)).ToList();
 		}
+
+		public async Task UpdateEvent(UpdateEventModel updateEventModel)
+		{
+			var eventEntity = await _coreRepository.GetEvent(updateEventModel.EventUid);
+			if (!string.IsNullOrEmpty(updateEventModel.Name))
+				eventEntity.Name = updateEventModel.Name;
+			if (updateEventModel.MinAge.HasValue)
+				eventEntity.MinAge = updateEventModel.MinAge;
+			if (updateEventModel.MaxAge.HasValue)
+				eventEntity.MaxAge = updateEventModel.MaxAge;
+			if (updateEventModel.XCoordinate.HasValue)
+				eventEntity.XCoordinate = updateEventModel.XCoordinate.Value;
+			if (updateEventModel.YCoordinate.HasValue)
+				eventEntity.YCoordinate = updateEventModel.YCoordinate.Value;
+			if (!string.IsNullOrEmpty(updateEventModel.Description))
+				eventEntity.Description = updateEventModel.Description;
+			if (updateEventModel.StartTime.HasValue)
+				eventEntity.StartTime = updateEventModel.StartTime;
+			if (updateEventModel.EndTime.HasValue)
+				eventEntity.EndTime = updateEventModel.EndTime;
+			if (updateEventModel.Type.HasValue)
+			{
+				eventEntity.EventTypeId = (long)updateEventModel.Type;
+				eventEntity.EventType = null;
+			}
+			if (updateEventModel.Status.HasValue)
+			{
+				eventEntity.EventStatusId = (long)updateEventModel.Status;
+				eventEntity.EventStatus = null;
+			}
+			await _coreRepository.UpdateEvent(eventEntity);
+		}
 		#endregion event
 
 		private PersonModel PersonEntityToModel(PersonEntity entity)

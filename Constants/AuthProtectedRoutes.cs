@@ -14,6 +14,7 @@ namespace Constants
              "/api/core/add-event",
              "/api/core/get-event",
              "/api/core/get-event-list",
+             "/api/core/update-event",
 
              "/api/image/add-person-image",
              "/api/image/add-event-image"
