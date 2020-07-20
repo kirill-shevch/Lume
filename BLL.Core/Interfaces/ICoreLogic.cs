@@ -1,5 +1,6 @@
 ﻿using BLL.Core.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BLL.Core.Interfaces
@@ -10,5 +11,10 @@ namespace BLL.Core.Interfaces
 		Task<PersonModel> GetPerson(Guid personUid);
 		Task UpdatePerson(UpdatePersonModel updatePersonModel);
 		Task<bool> IsPersonFilledUp(Guid personUid);
+
+		Task<Guid> AddEvent(AddEventModel addEventModel, Guid personUid);
+		Task<GetEventModel> GetEvent(Guid eventUid);
+		Task<List<GetEventModel>> GetEventList(Guid personUid);
+		Task UpdateEvent(UpdateEventModel updateEventModel);
 	}
 }

@@ -2,10 +2,12 @@
 using BLL.Core.Models;
 using Constants;
 using LumeWebApp.Requests.Person;
+using LumeWebApp.Responses.Event;
 using LumeWebApp.Responses.Person;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,6 +27,7 @@ namespace LumeWebApp.Controllers
 			_coreValidation = coreValidation;
 		}
 
+		#region person
 		[HttpGet]
 		[Route("get-person")]
 		public async Task<ActionResult<PersonModel>> GetPerson(Guid? personUid)
@@ -59,7 +62,57 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			await _coreLogic.UpdatePerson(model);
-			return Ok(Messages.PersonUpdateSuccess);
+			return Ok(Messages.UpdateSuccess);
 		}
+		#endregion person
+
+		#region event
+		[HttpPost]
+		[Route("add-event")]
+		public async Task<ActionResult<AddEventResponse>> AddEvent(AddEventModel request)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _coreValidation.ValidateAddEvent(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			var eventUid = await _coreLogic.AddEvent(request, uid);
+			return new AddEventResponse { EventUid = eventUid };
+		}
+
+		[HttpGet]
+		[Route("get-event")]
+		public async Task<ActionResult<GetEventModel>> GetEvent(Guid eventUid)
+		{
+			var validationResult = _coreValidation.ValidateGetEvent(eventUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			return await _coreLogic.GetEvent(eventUid);
+		}
+
+		[HttpGet]
+		[Route("get-event-list")]
+		public async Task<ActionResult<List<GetEventModel>>> GetEventList()
+		{
+			var personUid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			return await _coreLogic.GetEventList(personUid);
+		}
+
+		[HttpPost]
+		[Route("update-event")]
+		public async Task<ActionResult> UpdateEvent(UpdateEventModel request)
+		{
+			var validationResult = _coreValidation.ValidateUpdateEvent(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _coreLogic.UpdateEvent(request);
+			return Ok(Messages.UpdateSuccess);
+		}
+		#endregion event
 	}
 }

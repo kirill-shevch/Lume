@@ -51,13 +51,13 @@ CREATE TABLE LumeDB.dbo.Person (
 );
 
 CREATE TABLE LumeDB.dbo.EventType (
-	EventTypeId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	EventTypeId bigint IDENTITY(0,1) NOT NULL UNIQUE,
 	EventTypeName nvarchar(100) NOT NULL UNIQUE,
 	CONSTRAINT PK_EventTypeId PRIMARY KEY CLUSTERED (EventTypeId)
 );
 
 CREATE TABLE LumeDB.dbo.EventStatus (
-	EventStatusId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	EventStatusId bigint IDENTITY(0,1) NOT NULL UNIQUE,
 	EventStatusName nvarchar(100) NOT NULL UNIQUE,
 	CONSTRAINT PK_EventStatusId PRIMARY KEY CLUSTERED (EventStatusId)
 );
@@ -133,3 +133,9 @@ CREATE TABLE LumeDB.dbo.PersonFriendList (
   	CONSTRAINT FK_Person_PersonFriendList FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
   	CONSTRAINT FK_Friend_PersonFriendList FOREIGN KEY (FriendId) REFERENCES LumeDB.dbo.Person (PersonId)
 );
+
+INSERT INTO LumeDB.dbo.EventType (EventTypeName)  
+VALUES ('Party'),('Booze');  
+
+INSERT INTO LumeDB.dbo.EventStatus (EventStatusName)  
+VALUES ('Preparing'),('InProgress'),('Ended'),('Canceled');  

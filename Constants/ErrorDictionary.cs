@@ -17,7 +17,11 @@ namespace Constants
 			[9] = "Image content should not be empty.",
 			[10] = "Event is not exist in the database.",
 			[11] = "Chat message is not exist in the database.",
-			[12] = "Image with such GUID is not exist."
+			[12] = "Image with such GUID is not exist.",
+			[13] = "Event status id is not correct.",
+			[14] = "Event type id is not correct.",
+			[15] = "Minimal age should be less or equals to the maximum age.",
+			[16] = "Event name is required.",
 		};
 
 		public static string GetErrorMessage(int code) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[code]}\" }}";
