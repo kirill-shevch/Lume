@@ -27,21 +27,6 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task<EventEntity> GetEvent(int id, CancellationToken cancellationToken = default)
-		{
-			using (var context = _dbContextFactory.CreateDbContext())
-			{
-				return await context.EventEntities
-					.Include(x => x.EventStatus)
-					.Include(x => x.EventType)
-					.Include(x => x.EventImageContent)
-					.Include(x => x.Administrator)
-					.Include(x => x.Participants)
-						.ThenInclude(x => x.Person)
-					.SingleOrDefaultAsync(x => x.EventId == id, cancellationToken);
-			}
-		}
-
 		public async Task<PersonEntity> GetPerson(Guid uid, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
@@ -103,6 +88,23 @@ namespace DAL.Core.Repositories
 			{
 				await context.AddAsync(eventEntity, cancellationToken);
 				await context.SaveChangesAsync(cancellationToken);
+			}
+		}
+
+		public async Task<EventEntity> GetEvent(Guid eventUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.EventEntities
+					.Include(x => x.EventStatus)
+					.Include(x => x.EventType)
+					.Include(x => x.EventImageContent)
+					.Include(x => x.Administrator)
+						.ThenInclude(x => x.PersonImageContentEntity)
+					.Include(x => x.Participants)
+						.ThenInclude(x => x.Person)
+							.ThenInclude(x => x.PersonImageContentEntity)
+					.SingleOrDefaultAsync(x => x.EventUid == eventUid, cancellationToken);
 			}
 		}
 	}

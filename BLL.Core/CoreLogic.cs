@@ -1,5 +1,6 @@
 ﻿using BLL.Core.Interfaces;
 using BLL.Core.Models;
+using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using System;
@@ -29,22 +30,9 @@ namespace BLL.Core
 		public async Task<PersonModel> GetPerson(Guid personUid)
 		{
 			var entity = await _coreRepository.GetPerson(personUid);
-			return new PersonModel
-			{
-				PersonUid = entity.PersonUid,
-				Name = entity.Name,
-				Description = entity.Description,
-				Age = entity.Age,
-				ImageContentUid = entity.PersonImageContentEntity?.PersonImageContentUid,
-				Friends = entity.FriendList.Select(x => new PersonModel 
-				{ 
-					PersonUid = x.Friend.PersonUid,
-					Name = x.Friend.Name,
-					Description = x.Friend.Description,
-					Age = x.Friend.Age,
-					ImageContentUid = x.Friend.PersonImageContentEntity?.PersonImageContentUid,
-				}).ToList()
-			};
+			var model = PersonEntityToModel(entity);
+			model.Friends = entity.FriendList.Select(x => PersonEntityToModel(x.Friend)).ToList();
+			return model;
 		}
 
 		public async Task UpdatePerson(UpdatePersonModel updatePersonModel)
@@ -90,6 +78,41 @@ namespace BLL.Core
 			});
 			return eventUid;
 		}
+
+		public async Task<GetEventModel> GetEvent(Guid eventUid)
+		{
+			var eventEntity = await _coreRepository.GetEvent(eventUid);
+			var eventModel = new GetEventModel
+			{
+				EventUid = eventUid,
+				Name = eventEntity.Name,
+				MinAge = eventEntity.MinAge,
+				MaxAge = eventEntity.MaxAge,
+				XCoordinate = eventEntity.XCoordinate,
+				YCoordinate = eventEntity.YCoordinate,
+				Description = eventEntity.Description,
+				StartTime = eventEntity.StartTime.Value,
+				EndTime = eventEntity.EndTime.Value,
+				Type = (EventType)eventEntity.EventTypeId,
+				Status = (EventStatus)eventEntity.EventStatusId,
+				EventImageContentUid = eventEntity.EventImageContent?.EventImageContentUid,
+				Administrator = PersonEntityToModel(eventEntity.Administrator),
+				Participants = eventEntity.Participants.Select(x => PersonEntityToModel(x.Person)).ToList()
+			};
+			return eventModel;
+		}
 		#endregion event
+
+		private PersonModel PersonEntityToModel(PersonEntity entity)
+		{
+			return new PersonModel
+			{
+				PersonUid = entity.PersonUid,
+				Name = entity.Name,
+				Age = entity.Age,
+				Description = entity.Description,
+				ImageContentUid = entity.PersonImageContentEntity?.PersonImageContentUid
+			};
+		}
 	}
 }

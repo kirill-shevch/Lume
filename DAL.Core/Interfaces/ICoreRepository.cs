@@ -9,7 +9,6 @@ namespace DAL.Core.Interfaces
 	{
 		Task<ChatEntity> GetChat(int id, CancellationToken cancellationToken = default);
 		Task<PersonEntity> GetPerson(Guid uid, CancellationToken cancellationToken = default);
-		Task<EventEntity> GetEvent(int id, CancellationToken cancellationToken = default);
 		Task CreatePerson(Guid personUid, CancellationToken cancellationToken = default);
 		Task UpdatePerson(PersonEntity person, CancellationToken cancellationToken = default);
 		Task<bool> CheckPersonExistence(Guid personUid, CancellationToken cancellationToken = default);
@@ -17,5 +16,6 @@ namespace DAL.Core.Interfaces
 		Task<bool> CheckChatMessageExistence(Guid chatMessageUid, CancellationToken cancellationToken = default);
 
 		Task CreateEvent(EventEntity eventEntity, CancellationToken cancellationToken = default);
+		Task<EventEntity> GetEvent(Guid uid, CancellationToken cancellationToken = default);
 	}
 }

@@ -44,5 +44,15 @@ namespace BLL.Core
 			}
 			return (true, string.Empty);
 		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateGetEvent(Guid eventUid)
+		{
+			if (!_coreRepository.CheckEventExistence(eventUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10));
+			}
+
+			return (true, string.Empty);
+		}
 	}
 }

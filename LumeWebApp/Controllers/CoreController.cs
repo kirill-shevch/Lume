@@ -79,6 +79,18 @@ namespace LumeWebApp.Controllers
 			var eventUid = await _coreLogic.AddEvent(request, uid);
 			return new AddEventResponse { EventUid = eventUid };
 		}
+
+		[HttpGet]
+		[Route("get-event")]
+		public async Task<ActionResult<GetEventModel>> GetEvent(Guid eventUid)
+		{
+			var validationResult = _coreValidation.ValidateGetEvent(eventUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			return await _coreLogic.GetEvent(eventUid);
+		}
 		#endregion event
 	}
 }
