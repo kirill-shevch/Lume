@@ -1,5 +1,6 @@
 ﻿using BLL.Core.Interfaces;
-using BLL.Core.Models;
+using BLL.Core.Models.Event;
+using BLL.Core.Models.Person;
 using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
@@ -87,10 +88,10 @@ namespace BLL.Core
 			return eventModel;
 		}
 
-		public async Task<List<GetEventModel>> GetEventList(Guid personUid)
+		public async Task<List<GetEventListModel>> GetEventList(Guid personUid)
 		{
 			var eventEntities = await _coreRepository.GetEvents(personUid);
-			return eventEntities.Select(x => EventEntityToModel(x)).ToList();
+			return eventEntities.Select(x => EventEntityToListModel(x, personUid)).ToList();
 		}
 
 		public async Task UpdateEvent(UpdateEventModel updateEventModel)
@@ -156,6 +157,24 @@ namespace BLL.Core
 				EventImageContentUid = eventEntity.EventImageContent?.EventImageContentUid,
 				Administrator = PersonEntityToModel(eventEntity.Administrator),
 				Participants = eventEntity.Participants.Select(x => PersonEntityToModel(x.Person)).ToList()
+			};
+		}
+
+		private GetEventListModel EventEntityToListModel(EventEntity eventEntity, Guid personUid)
+		{
+			return new GetEventListModel
+			{
+				EventUid = eventEntity.EventUid,
+				Name = eventEntity.Name,
+				XCoordinate = eventEntity.XCoordinate,
+				YCoordinate = eventEntity.YCoordinate,
+				Description = eventEntity.Description,
+				StartTime = eventEntity.StartTime.Value,
+				EndTime = eventEntity.EndTime.Value,
+				Type = (EventType)eventEntity.EventTypeId,
+				Status = (EventStatus)eventEntity.EventStatusId,
+				EventImageContentUid = eventEntity.EventImageContent?.EventImageContentUid,
+				IsAdministrator = eventEntity.Administrator.PersonUid == personUid,
 			};
 		}
 	}

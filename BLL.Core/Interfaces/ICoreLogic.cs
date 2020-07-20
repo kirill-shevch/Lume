@@ -1,4 +1,6 @@
 ﻿using BLL.Core.Models;
+using BLL.Core.Models.Event;
+using BLL.Core.Models.Person;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ namespace BLL.Core.Interfaces
 
 		Task<Guid> AddEvent(AddEventModel addEventModel, Guid personUid);
 		Task<GetEventModel> GetEvent(Guid eventUid);
-		Task<List<GetEventModel>> GetEventList(Guid personUid);
+		Task<List<GetEventListModel>> GetEventList(Guid personUid);
 		Task UpdateEvent(UpdateEventModel updateEventModel);
 	}
 }
