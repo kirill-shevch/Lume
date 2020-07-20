@@ -23,7 +23,9 @@ namespace Lume.DI
         {
             services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
             services.AddSingleton<IImageRepository, ImageRepository>();
-            services.AddSingleton<ICoreRepository, CoreRepository>();
+            services.AddSingleton<IPersonRepository, PersonRepository>();
+            services.AddSingleton<IChatRepository, ChatRepository>();
+            services.AddSingleton<IEventRepository, EventRepository>();
         }
 
         public static void RegisterFactories(this IServiceCollection services)
