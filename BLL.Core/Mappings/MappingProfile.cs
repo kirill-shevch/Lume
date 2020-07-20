@@ -4,6 +4,7 @@ using BLL.Core.Models.Person;
 using Constants;
 using DAL.Core.Entities;
 using System;
+using System.Linq;
 
 namespace BLL.Core.Mappings
 {
@@ -21,7 +22,8 @@ namespace BLL.Core.Mappings
 
 			CreateMap<EventEntity, GetEventModel>()
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
-				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId));
+				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId))
+				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants.Select(x => x.Person)));
 
 			CreateMap<EventEntity, GetEventListModel>()
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
