@@ -1,28 +1,17 @@
 ﻿using BLL.Core.Interfaces;
 using BLL.Core.Models.Event;
-using BLL.Core.Models.Person;
 using Constants;
 using DAL.Core.Interfaces;
 using System;
 
 namespace BLL.Core
 {
-	public class CoreValidation : ICoreValidation
+	public class EventValidation : IEventValidation
 	{
-		private readonly ICoreRepository _coreRepository;
-		public CoreValidation(ICoreRepository coreRepository)
+		private readonly IEventRepository _eventRepository;
+		public EventValidation(IEventRepository eventRepository)
 		{
-			_coreRepository = coreRepository;
-		}
-
-		public (bool ValidationResult, string ValidationMessage) ValidateUpdatePerson(UpdatePersonModel model)
-		{
-			if (!_coreRepository.CheckPersonExistence(model.PersonUid).Result)
-			{
-				return (false, ErrorDictionary.GetErrorMessage(2));
-			}
-
-			return (true, string.Empty);
+			_eventRepository = eventRepository;
 		}
 
 		public (bool ValidationResult, string ValidationMessage) ValidateAddEvent(AddEventModel model)
@@ -48,7 +37,7 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateGetEvent(Guid eventUid)
 		{
-			if (!_coreRepository.CheckEventExistence(eventUid).Result)
+			if (!_eventRepository.CheckEventExistence(eventUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(10));
 			}
@@ -58,7 +47,7 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateUpdateEvent(UpdateEventModel model)
 		{
-			if (!_coreRepository.CheckEventExistence(model.EventUid).Result)
+			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(10));
 			}

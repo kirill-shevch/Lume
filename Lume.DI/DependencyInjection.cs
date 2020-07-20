@@ -16,7 +16,8 @@ namespace Lume.DI
         {
             services.AddSingleton<IAuthorizationLogic, AuthorizationLogic>();
             services.AddSingleton<IImageLogic, ImageLogic>();
-            services.AddSingleton<ICoreLogic, CoreLogic>();
+            services.AddSingleton<IEventLogic, EventLogic>();
+            services.AddSingleton<IPersonLogic, PersonLogic>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
@@ -38,7 +39,8 @@ namespace Lume.DI
         {
             services.AddSingleton<IAuthorizationValidation, AuthorizationValidation>();
             services.AddSingleton<IImageValidation, ImageValidation>();
-            services.AddSingleton<ICoreValidation, CoreValidation>();
+            services.AddSingleton<IEventValidation, EventValidation>();
+            services.AddSingleton<IPersonValidation, PersonValidation>();
         }
     }
 }
