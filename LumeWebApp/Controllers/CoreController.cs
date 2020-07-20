@@ -7,6 +7,7 @@ using LumeWebApp.Responses.Person;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -90,6 +91,14 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			return await _coreLogic.GetEvent(eventUid);
+		}
+
+		[HttpGet]
+		[Route("get-event-list")]
+		public async Task<ActionResult<List<GetEventModel>>> GetEventList()
+		{
+			var personUid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			return await _coreLogic.GetEventList(personUid);
 		}
 		#endregion event
 	}

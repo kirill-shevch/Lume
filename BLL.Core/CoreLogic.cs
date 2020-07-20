@@ -4,6 +4,7 @@ using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -82,9 +83,34 @@ namespace BLL.Core
 		public async Task<GetEventModel> GetEvent(Guid eventUid)
 		{
 			var eventEntity = await _coreRepository.GetEvent(eventUid);
-			var eventModel = new GetEventModel
+			GetEventModel eventModel = EventEntityToModel(eventEntity);
+			return eventModel;
+		}
+
+		public async Task<List<GetEventModel>> GetEventList(Guid personUid)
+		{
+			var eventEntities = await _coreRepository.GetEvents(personUid);
+			return eventEntities.Select(x => EventEntityToModel(x)).ToList();
+		}
+		#endregion event
+
+		private PersonModel PersonEntityToModel(PersonEntity entity)
+		{
+			return new PersonModel
 			{
-				EventUid = eventUid,
+				PersonUid = entity.PersonUid,
+				Name = entity.Name,
+				Age = entity.Age,
+				Description = entity.Description,
+				ImageContentUid = entity.PersonImageContentEntity?.PersonImageContentUid
+			};
+		}
+
+		private GetEventModel EventEntityToModel(EventEntity eventEntity)
+		{
+			return new GetEventModel
+			{
+				EventUid = eventEntity.EventUid,
 				Name = eventEntity.Name,
 				MinAge = eventEntity.MinAge,
 				MaxAge = eventEntity.MaxAge,
@@ -98,20 +124,6 @@ namespace BLL.Core
 				EventImageContentUid = eventEntity.EventImageContent?.EventImageContentUid,
 				Administrator = PersonEntityToModel(eventEntity.Administrator),
 				Participants = eventEntity.Participants.Select(x => PersonEntityToModel(x.Person)).ToList()
-			};
-			return eventModel;
-		}
-		#endregion event
-
-		private PersonModel PersonEntityToModel(PersonEntity entity)
-		{
-			return new PersonModel
-			{
-				PersonUid = entity.PersonUid,
-				Name = entity.Name,
-				Age = entity.Age,
-				Description = entity.Description,
-				ImageContentUid = entity.PersonImageContentEntity?.PersonImageContentUid
 			};
 		}
 	}

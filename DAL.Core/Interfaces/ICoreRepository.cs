@@ -1,5 +1,6 @@
 ﻿using DAL.Core.Entities;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace DAL.Core.Interfaces
 		Task<bool> CheckChatMessageExistence(Guid chatMessageUid, CancellationToken cancellationToken = default);
 
 		Task CreateEvent(EventEntity eventEntity, CancellationToken cancellationToken = default);
-		Task<EventEntity> GetEvent(Guid uid, CancellationToken cancellationToken = default);
+		Task<EventEntity> GetEvent(Guid eventUid, CancellationToken cancellationToken = default);
+		Task<List<EventEntity>> GetEvents(Guid personUid, CancellationToken cancellationToken = default);
 	}
 }
