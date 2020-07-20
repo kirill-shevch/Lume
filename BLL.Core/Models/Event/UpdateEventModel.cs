@@ -1,7 +1,7 @@
 ﻿using Constants;
 using System;
 
-namespace BLL.Core.Models
+namespace BLL.Core.Models.Event
 {
 	public class UpdateEventModel
 	{
@@ -11,7 +11,7 @@ namespace BLL.Core.Models
 		public byte? MaxAge { get; set; }
 		public double? XCoordinate { get; set; }
 		public double? YCoordinate { get; set; }
-		public string? Description { get; set; }
+		public string Description { get; set; }
 		public DateTime? StartTime { get; set; }
 		public DateTime? EndTime { get; set; }
 		public EventStatus? Status { get; set; }

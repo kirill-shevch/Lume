@@ -1,8 +1,9 @@
-﻿using Constants;
+﻿using BLL.Core.Models.Person;
+using Constants;
 using System;
 using System.Collections.Generic;
 
-namespace BLL.Core.Models
+namespace BLL.Core.Models.Event
 {
 	public class GetEventModel
 	{

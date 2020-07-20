@@ -1,5 +1,6 @@
 ﻿using BLL.Core.Interfaces;
-using BLL.Core.Models;
+using BLL.Core.Models.Event;
+using BLL.Core.Models.Person;
 using Constants;
 using LumeWebApp.Requests.Person;
 using LumeWebApp.Responses.Event;
@@ -95,7 +96,7 @@ namespace LumeWebApp.Controllers
 
 		[HttpGet]
 		[Route("get-event-list")]
-		public async Task<ActionResult<List<GetEventModel>>> GetEventList()
+		public async Task<ActionResult<List<GetEventListModel>>> GetEventList()
 		{
 			var personUid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			return await _coreLogic.GetEventList(personUid);

@@ -1,7 +1,7 @@
 ﻿using Constants;
 using System;
 
-namespace BLL.Core.Models
+namespace BLL.Core.Models.Event
 {
 	public class AddEventModel
 	{
