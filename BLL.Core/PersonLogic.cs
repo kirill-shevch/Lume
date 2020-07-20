@@ -1,4 +1,5 @@
-﻿using BLL.Core.Interfaces;
+﻿using AutoMapper;
+using BLL.Core.Interfaces;
 using BLL.Core.Models.Person;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
@@ -11,9 +12,12 @@ namespace BLL.Core
 	public class PersonLogic : IPersonLogic
 	{
 		private readonly IPersonRepository _personRepository;
-		public PersonLogic(IPersonRepository personRepository)
+		private readonly IMapper _mapper;
+		public PersonLogic(IPersonRepository personRepository,
+			IMapper mapper)
 		{
 			_personRepository = personRepository;
+			_mapper = mapper;
 		}
 
 		public async Task CreatePerson(Guid personUid)
@@ -28,8 +32,8 @@ namespace BLL.Core
 		public async Task<PersonModel> GetPerson(Guid personUid)
 		{
 			var entity = await _personRepository.GetPerson(personUid);
-			var model = PersonEntityToModel(entity);
-			model.Friends = entity.FriendList.Select(x => PersonEntityToModel(x.Friend)).ToList();
+			var model = _mapper.Map<PersonModel>(entity);
+			model.Friends = entity.FriendList.Select(x => _mapper.Map<PersonModel>(entity)).ToList();
 			return model;
 		}
 
@@ -51,18 +55,6 @@ namespace BLL.Core
 			return entity != null &&
 				!string.IsNullOrEmpty(entity.Name) &&
 				entity.Age.HasValue;
-		}
-
-		private PersonModel PersonEntityToModel(PersonEntity entity)
-		{
-			return new PersonModel
-			{
-				PersonUid = entity.PersonUid,
-				Name = entity.Name,
-				Age = entity.Age,
-				Description = entity.Description,
-				ImageContentUid = entity.PersonImageContentEntity?.PersonImageContentUid
-			};
 		}
 	}
 }

@@ -1,5 +1,7 @@
-﻿using BLL.Core.Interfaces;
+﻿using AutoMapper;
+using BLL.Core.Interfaces;
 using BLL.Core.Models.Event;
+using BLL.Core.Models.Person;
 using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
@@ -14,44 +16,45 @@ namespace BLL.Core
 	public class EventLogic : IEventLogic
 	{
 		private readonly IEventRepository _eventRepository;
-		public EventLogic(IEventRepository eventRepository)
+		private readonly IPersonRepository _personRepository;
+		private readonly IMapper _mapper;
+
+		public EventLogic(IEventRepository eventRepository,
+			IPersonRepository personRepository,
+			IMapper mapper)
 		{
 			_eventRepository = eventRepository;
+			_personRepository = personRepository;
+			_mapper = mapper;
 		}
 
 		public async Task<Guid> AddEvent(AddEventModel addEventModel, Guid personUid)
 		{
 			var eventUid = Guid.NewGuid();
-			var person = await _eventRepository.GetPerson(personUid);
-			await _eventRepository.CreateEvent(new EventEntity
-			{
-				EventUid = eventUid,
-				Name = addEventModel.Name,
-				MinAge = addEventModel.MinAge,
-				MaxAge = addEventModel.MaxAge,
-				XCoordinate = addEventModel.XCoordinate,
-				YCoordinate = addEventModel.YCoordinate,
-				Description = addEventModel.Description,
-				StartTime = addEventModel.StartTime,
-				EndTime = addEventModel.EndTime,
-				EventTypeId = (long)addEventModel.Type,
-				EventStatusId = (long)addEventModel.Status,
-				AdministratorId = person.PersonId
-			});
+			var person = await _personRepository.GetPerson(personUid);
+			var entity = _mapper.Map<EventEntity>(addEventModel);
+			entity.EventUid = eventUid;
+			entity.AdministratorId = person.PersonId;
+			await _eventRepository.CreateEvent(entity);
 			return eventUid;
 		}
 
 		public async Task<GetEventModel> GetEvent(Guid eventUid)
 		{
 			var eventEntity = await _eventRepository.GetEvent(eventUid);
-			GetEventModel eventModel = EventEntityToModel(eventEntity);
+			var eventModel = _mapper.Map<GetEventModel>(eventEntity);
 			return eventModel;
 		}
 
 		public async Task<List<GetEventListModel>> GetEventList(Guid personUid)
 		{
 			var eventEntities = await _eventRepository.GetEvents(personUid);
-			return eventEntities.Select(x => EventEntityToListModel(x, personUid)).ToList();
+			return eventEntities.Select(entity => 
+			{
+				var model = _mapper.Map<GetEventListModel>(entity);
+				model.IsAdministrator = entity.Administrator.PersonUid == personUid;
+				return model;
+			}).ToList();
 		}
 
 		public async Task UpdateEvent(UpdateEventModel updateEventModel)
@@ -84,47 +87,6 @@ namespace BLL.Core
 				eventEntity.EventStatus = null;
 			}
 			await _eventRepository.UpdateEvent(eventEntity);
-		}
-
-
-		private GetEventModel EventEntityToModel(EventEntity eventEntity)
-		{
-			return new GetEventModel
-			{
-				EventUid = eventEntity.EventUid,
-				Name = eventEntity.Name,
-				MinAge = eventEntity.MinAge,
-				MaxAge = eventEntity.MaxAge,
-				XCoordinate = eventEntity.XCoordinate,
-				YCoordinate = eventEntity.YCoordinate,
-				Description = eventEntity.Description,
-				StartTime = eventEntity.StartTime.Value,
-				EndTime = eventEntity.EndTime.Value,
-				Type = (EventType)eventEntity.EventTypeId,
-				Status = (EventStatus)eventEntity.EventStatusId,
-				EventImageContentUid = eventEntity.EventImageContent?.EventImageContentUid,
-				Administrator = PersonEntityToModel(eventEntity.Administrator),
-				Participants = eventEntity.Participants.Select(x => PersonEntityToModel(x.Person)).ToList()
-			};
-		}
-
-		private GetEventListModel EventEntityToListModel(EventEntity eventEntity, Guid personUid)
-		{
-			return new GetEventListModel
-			{
-				EventUid = eventEntity.EventUid,
-				Name = eventEntity.Name,
-				XCoordinate = eventEntity.XCoordinate,
-				YCoordinate = eventEntity.YCoordinate,
-				Description = eventEntity.Description,
-				StartTime = eventEntity.StartTime.Value,
-				EndTime = eventEntity.EndTime.Value,
-				Type = (EventType)eventEntity.EventTypeId,
-				Status = (EventStatus)eventEntity.EventStatusId,
-				EventImageContentUid = eventEntity.EventImageContent?.EventImageContentUid,
-				IsAdministrator = eventEntity.Administrator.PersonUid == personUid,
-
-			};
 		}
 	}
 }
