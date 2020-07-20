@@ -10,13 +10,19 @@ namespace BLL.Core
 {
 	public class ImageValidation : IImageValidation
 	{
-		private readonly ICoreRepository _coreRepository;
+		private readonly IPersonRepository _personRepository;
+		private readonly IEventRepository _eventRepository;
+		private readonly IChatRepository _chatRepository;
 		private readonly IImageRepository _imageRepository;
 
-		public ImageValidation(ICoreRepository coreRepository,
+		public ImageValidation(IPersonRepository personRepository,
+			IEventRepository eventRepository,
+			IChatRepository chatRepository,
 			IImageRepository imageRepository)
 		{
-			_coreRepository = coreRepository;
+			_personRepository = personRepository;
+			_eventRepository = eventRepository;
+			_chatRepository = chatRepository;
 			_imageRepository = imageRepository;
 		}
 
@@ -26,7 +32,7 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(9));
 			}
-			if (!_coreRepository.CheckPersonExistence(personUid).Result)
+			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2));
 			}
@@ -50,7 +56,7 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(9));
 			}
-			if (!_coreRepository.CheckEventExistence(model.Uid).Result)
+			if (!_eventRepository.CheckEventExistence(model.Uid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(10));
 			}
@@ -74,7 +80,7 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(9));
 			}
-			if (!_coreRepository.CheckChatMessageExistence(model.Uid).Result)
+			if (!_chatRepository.CheckChatMessageExistence(model.Uid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(11));
 			}

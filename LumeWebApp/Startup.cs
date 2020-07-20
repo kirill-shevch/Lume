@@ -1,3 +1,5 @@
+using AutoMapper;
+using BLL.Core.Mappings;
 using Constants;
 using Lume.DI;
 using LumeWebApp.Middleware;
@@ -23,6 +25,8 @@ namespace LumeWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(MappingProfile));
+
             services.RegisterLogics();
             
             services.RegisterRepositories();

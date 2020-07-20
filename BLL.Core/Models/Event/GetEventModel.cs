@@ -20,6 +20,6 @@ namespace BLL.Core.Models.Event
 		public EventType Type { get; set; }
 		public Guid? EventImageContentUid { get; set; }
 		public PersonModel Administrator { get; set; }
-		public List<PersonModel> Participants { get; set; }
+		public IEnumerable<PersonModel> Participants { get; set; }
 	}
 }

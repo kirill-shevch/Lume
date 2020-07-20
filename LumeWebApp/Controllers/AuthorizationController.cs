@@ -13,14 +13,14 @@ namespace LumeWebApp.Controllers
     {
         private readonly IAuthorizationLogic _authorizationLogic;
         private readonly IAuthorizationValidation _authorizationValidation;
-        private readonly ICoreLogic _coreLogic;
+        private readonly IPersonLogic _personLogic;
         public AuthorizationController(IAuthorizationLogic authorizationLogic,
             IAuthorizationValidation authorizationValidation,
-            ICoreLogic coreLogic)
+            IPersonLogic personLogic)
         {
             _authorizationLogic = authorizationLogic;
             _authorizationValidation = authorizationValidation;
-            _coreLogic = coreLogic;
+            _personLogic = personLogic;
         }
 
         [HttpPost]
@@ -59,7 +59,7 @@ namespace LumeWebApp.Controllers
             {
                 return BadRequest(validationResult.ValidationMessage);
             }
-            await _coreLogic.CreatePerson(person.PersonUid);
+            await _personLogic.CreatePerson(person.PersonUid);
             var tokens = _authorizationLogic.GetTokens();
             await _authorizationLogic.UpdatePerson(phoneNumber, tokens.AccessToken, tokens.RefreshToken);
             return new AuthorizationResponse { AccessToken = tokens.AccessToken, RefreshToken = tokens.RefreshToken };
