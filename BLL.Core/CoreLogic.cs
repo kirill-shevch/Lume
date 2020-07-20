@@ -16,6 +16,7 @@ namespace BLL.Core
 			_coreRepository = coreRepository;
 		}
 
+		#region person
 		public async Task CreatePerson(Guid personUid)
 		{
 			var personExists = await _coreRepository.CheckPersonExistence(personUid);
@@ -65,5 +66,30 @@ namespace BLL.Core
 				!string.IsNullOrEmpty(entity.Name) && 
 				entity.Age.HasValue;
 		}
+		#endregion person
+
+		#region event
+		public async Task<Guid> AddEvent(AddEventModel addEventModel, Guid personUid)
+		{
+			var eventUid = Guid.NewGuid();
+			var person = await _coreRepository.GetPerson(personUid);
+			await _coreRepository.CreateEvent(new EventEntity 
+			{ 
+				EventUid = eventUid,
+				Name = addEventModel.Name,
+				MinAge = addEventModel.MinAge,
+				MaxAge = addEventModel.MaxAge,
+				XCoordinate = addEventModel.XCoordinate,
+				YCoordinate = addEventModel.YCoordinate,
+				Description = addEventModel.Description,
+				StartTime = addEventModel.StartTime,
+				EndTime = addEventModel.EndTime,
+				EventTypeId = (long)addEventModel.Type,
+				EventStatusId = (long)addEventModel.Status,
+				AdministratorId = person.PersonId
+			});
+			return eventUid;
+		}
+		#endregion event
 	}
 }

@@ -96,5 +96,14 @@ namespace DAL.Core.Repositories
 				return await context.ChatMessageEntities.AnyAsync(x => x.ChatMessageUid == chatMessageUid, cancellationToken);
 			}
 		}
+
+		public async Task CreateEvent(EventEntity eventEntity, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.AddAsync(eventEntity, cancellationToken);
+				await context.SaveChangesAsync(cancellationToken);
+			}
+		}
 	}
 }

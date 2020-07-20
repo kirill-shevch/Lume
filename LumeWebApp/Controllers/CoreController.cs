@@ -76,8 +76,8 @@ namespace LumeWebApp.Controllers
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			await _coreLogic.AddEvent(request, uid);
-			return new AddEventResponse();
+			var eventUid = await _coreLogic.AddEvent(request, uid);
+			return new AddEventResponse { EventUid = eventUid };
 		}
 		#endregion event
 	}

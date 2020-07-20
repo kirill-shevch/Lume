@@ -15,5 +15,7 @@ namespace DAL.Core.Interfaces
 		Task<bool> CheckPersonExistence(Guid personUid, CancellationToken cancellationToken = default);
 		Task<bool> CheckEventExistence(Guid eventUid, CancellationToken cancellationToken = default);
 		Task<bool> CheckChatMessageExistence(Guid chatMessageUid, CancellationToken cancellationToken = default);
+
+		Task CreateEvent(EventEntity eventEntity, CancellationToken cancellationToken = default);
 	}
 }
