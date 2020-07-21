@@ -56,5 +56,15 @@ namespace BLL.Core
 				!string.IsNullOrEmpty(entity.Name) &&
 				entity.Age.HasValue;
 		}
+
+		public async Task AddFriendToPerson(Guid personUid, Guid friendUid)
+		{
+			await _personRepository.AddFriendToPerson(personUid, friendUid);
+		}
+
+		public async Task RemoveFriendFromPerson(Guid personUid, Guid friendUid)
+		{
+			await _personRepository.RemoveFriendFromPerson(personUid, friendUid);
+		}
 	}
 }

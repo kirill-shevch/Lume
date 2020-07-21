@@ -2,6 +2,7 @@
 using DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,6 +52,58 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.PersonEntities.AnyAsync(x => x.PersonUid == personUid, cancellationToken);
+			}
+		}
+
+		public async Task<bool> CheckPersonFriendExistence(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonFriendListEntities
+					.Where(p => p.Person.PersonUid == personUid && p.Friend.PersonUid == friendUid)
+					.AnyAsync();
+			}
+		}
+
+		public async Task AddFriendToPerson(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var person = await context.PersonEntities
+					.Where(p => p.PersonUid == personUid)
+					.FirstOrDefaultAsync();
+
+				var friend = await context.PersonEntities
+					.Where(p => p.PersonUid == friendUid)
+					.FirstOrDefaultAsync();
+
+				var personToFriendEntity = new PersonFriendListEntity { PersonId = person.PersonId, FriendId = friend.PersonId };
+
+				context.Add(personToFriendEntity);
+
+				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task RemoveFriendFromPerson(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var person = await context.PersonEntities
+					.Where(p => p.PersonUid == personUid)
+					.FirstOrDefaultAsync();
+
+				var friend = await context.PersonEntities
+					.Where(p => p.PersonUid == friendUid)
+					.FirstOrDefaultAsync();
+
+				var personToFriendEntity = await context.PersonFriendListEntities
+					.Where(p => p.PersonId == person.PersonId)
+					.FirstOrDefaultAsync();
+
+				context.Remove(personToFriendEntity);
+
+				await context.SaveChangesAsync();
 			}
 		}
 	}
