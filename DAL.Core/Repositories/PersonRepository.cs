@@ -60,8 +60,7 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.PersonFriendListEntities
-					.Where(p => p.Person.PersonUid == personUid && p.Friend.PersonUid == friendUid)
-					.AnyAsync();
+					.AnyAsync(p => p.Person.PersonUid == personUid && p.Friend.PersonUid == friendUid);
 			}
 		}
 
@@ -70,16 +69,14 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				var person = await context.PersonEntities
-					.Where(p => p.PersonUid == personUid)
-					.FirstOrDefaultAsync();
+					.FirstOrDefaultAsync(p => p.PersonUid == personUid);
 
 				var friend = await context.PersonEntities
-					.Where(p => p.PersonUid == friendUid)
-					.FirstOrDefaultAsync();
+					.FirstOrDefaultAsync(p => p.PersonUid == friendUid);
 
 				var personToFriendEntity = new PersonFriendListEntity { PersonId = person.PersonId, FriendId = friend.PersonId };
 
-				context.Add(personToFriendEntity);
+				await context.AddAsync(personToFriendEntity);
 
 				await context.SaveChangesAsync();
 			}
@@ -90,16 +87,13 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				var person = await context.PersonEntities
-					.Where(p => p.PersonUid == personUid)
-					.FirstOrDefaultAsync();
+					.FirstOrDefaultAsync(p => p.PersonUid == personUid);
 
 				var friend = await context.PersonEntities
-					.Where(p => p.PersonUid == friendUid)
-					.FirstOrDefaultAsync();
+					.FirstOrDefaultAsync(p => p.PersonUid == friendUid);
 
 				var personToFriendEntity = await context.PersonFriendListEntities
-					.Where(p => p.PersonId == person.PersonId)
-					.FirstOrDefaultAsync();
+					.FirstOrDefaultAsync(p => p.PersonId == person.PersonId);
 
 				context.Remove(personToFriendEntity);
 
