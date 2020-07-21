@@ -22,7 +22,8 @@ namespace Constants
 			[14] = "Event type id is not correct.",
 			[15] = "Minimal age should be less or equals to the maximum age.",
 			[16] = "Event name is required.",
-			[17] = "Chat message is not exist in the database."
+			[17] = "This person don't have this friend in his friend list.",
+			[18] = "This person already have this friend in his friend list."			[19] = "Chat message is not exist in the database."
 		};
 
 		public static string GetErrorMessage(int code) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[code]}\" }}";
