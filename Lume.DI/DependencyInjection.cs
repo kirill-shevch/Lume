@@ -18,6 +18,7 @@ namespace Lume.DI
             services.AddSingleton<IImageLogic, ImageLogic>();
             services.AddSingleton<IEventLogic, EventLogic>();
             services.AddSingleton<IPersonLogic, PersonLogic>();
+            services.AddSingleton<IChatLogic, ChatLogic>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
@@ -41,6 +42,7 @@ namespace Lume.DI
             services.AddSingleton<IImageValidation, ImageValidation>();
             services.AddSingleton<IEventValidation, EventValidation>();
             services.AddSingleton<IPersonValidation, PersonValidation>();
+            services.AddSingleton<IChatValidation, ChatValidation>();
         }
     }
 }

@@ -15,14 +15,11 @@ namespace DAL.Core.Repositories
 			_dbContextFactory = dbContextFactory;
 		}
 
-		public async Task<ChatEntity> GetChat(int id, CancellationToken cancellationToken = default)
+		public async Task<ChatEntity> GetChat(Guid uid, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				return await context.ChatEntities
-					.Include(x => x.ChatMessageEntities)
-					.ThenInclude(x => x.ChatImageContentEntities)
-					.SingleOrDefaultAsync(x => x.ChatId == id, cancellationToken);
+				return await context.ChatEntities.SingleOrDefaultAsync(x => x.ChatUid == uid, cancellationToken);
 			}
 		}
 
@@ -31,6 +28,14 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.ChatMessageEntities.AnyAsync(x => x.ChatMessageUid == chatMessageUid, cancellationToken);
+			}
+		}
+
+		public async Task<bool> CheckChatExistence(Guid chatUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.ChatEntities.AnyAsync(x => x.ChatUid == chatUid, cancellationToken);
 			}
 		}
 	}

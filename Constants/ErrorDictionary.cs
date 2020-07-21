@@ -6,8 +6,8 @@ namespace Constants
 	{
 		public static Dictionary<int, string> Errors = new Dictionary<int, string>
 		{
-			[1] = "User already exists in the database.",
-			[2] = "User is not exist in the database.",
+			[1] = "Person already exists in the database.",
+			[2] = "Person is not exist in the database.",
 			[3] = "SMS code is not correct.",
 			[4] = "Refresh token is invalid.",
 			[5] = "Authorization failed.",
@@ -22,6 +22,7 @@ namespace Constants
 			[14] = "Event type id is not correct.",
 			[15] = "Minimal age should be less or equals to the maximum age.",
 			[16] = "Event name is required.",
+			[17] = "Chat message is not exist in the database."
 		};
 
 		public static string GetErrorMessage(int code) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[code]}\" }}";

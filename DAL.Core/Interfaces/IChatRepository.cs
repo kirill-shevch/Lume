@@ -7,7 +7,8 @@ namespace DAL.Core.Interfaces
 {
 	public interface IChatRepository
 	{
-		Task<ChatEntity> GetChat(int id, CancellationToken cancellationToken = default);
+		Task<ChatEntity> GetChat(Guid uid, CancellationToken cancellationToken = default);
 		Task<bool> CheckChatMessageExistence(Guid chatMessageUid, CancellationToken cancellationToken = default);
+		Task<bool> CheckChatExistence(Guid chatUid, CancellationToken cancellationToken = default);
 	}
 }
