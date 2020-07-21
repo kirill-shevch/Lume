@@ -37,5 +37,14 @@ namespace BLL.Core
 			}
 			return (true, string.Empty);
 		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateGetPersonChat(Guid personUid)
+		{
+			if (!_personRepository.CheckPersonExistence(personUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(2));
+			}
+			return (true, string.Empty);
+		}
 	}
 }

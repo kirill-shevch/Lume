@@ -123,10 +123,12 @@ CREATE TABLE LumeDB.dbo.PersonToEvent (
 );
 
 CREATE TABLE LumeDB.dbo.PersonToChat (
-	PersonId bigint,
+	FirstPersonId bigint,
+	SecondPersonId bigint,
   	ChatId bigint,
-  	CONSTRAINT PK_Person_Chat PRIMARY KEY (PersonId, ChatId),
-  	CONSTRAINT FK_Person_PersonToChat FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
+  	CONSTRAINT PK_Person_Chat PRIMARY KEY (FirstPersonId, SecondPersonId, ChatId),
+  	CONSTRAINT FK_FirstPerson_PersonToChat FOREIGN KEY (FirstPersonId) REFERENCES LumeDB.dbo.Person (FirstPersonId),
+  	CONSTRAINT FK_SecondPerson_PersonToChat FOREIGN KEY (SecondPersonId) REFERENCES LumeDB.dbo.Person (SecondPersonId),
   	CONSTRAINT FK_Chat_PersonToChat FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId)
 );
 

@@ -7,6 +7,6 @@ namespace BLL.Core.Interfaces
 	{
 		(bool ValidationResult, string ValidationMessage) ValidateAddChat(List<Guid> chatParticipants);
 		(bool ValidationResult, string ValidationMessage) ValidateGetChat(Guid chatUid);
-
+		(bool ValidationResult, string ValidationMessage) ValidateGetPersonChat(Guid personUid);
 	}
 }

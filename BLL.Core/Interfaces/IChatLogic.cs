@@ -7,5 +7,6 @@ namespace BLL.Core.Interfaces
 	public interface IChatLogic
 	{
 		Task<ChatModel> GetChat(Guid chatUid);
+		Task<ChatModel> GetPersonChat(Guid uid, Guid personUid);
 	}
 }
