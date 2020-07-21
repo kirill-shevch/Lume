@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BLL.Core.Models.Chat;
 using BLL.Core.Models.Event;
 using BLL.Core.Models.Person;
 using Constants;
@@ -23,11 +24,15 @@ namespace BLL.Core.Mappings
 			CreateMap<EventEntity, GetEventModel>()
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
 				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId))
-				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants.Select(x => x.Person)));
+				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants.Select(x => x.Person)))
+				.ForMember(dest => dest.EventImageContentUid, opt => opt.MapFrom(src => src.EventImageContent == null ? (Guid?)null : src.EventImageContent.EventImageContentUid))
+				.ForMember(dest => dest.ChatUid, opt => opt.MapFrom(src => src.Chat == null ? (Guid?)null : src.Chat.ChatUid));
 
 			CreateMap<EventEntity, GetEventListModel>()
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
 				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId));
+
+			CreateMap<ChatEntity, ChatModel>();
 		}
 	}
 }

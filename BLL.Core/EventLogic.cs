@@ -35,6 +35,7 @@ namespace BLL.Core
 			var entity = _mapper.Map<EventEntity>(addEventModel);
 			entity.EventUid = eventUid;
 			entity.AdministratorId = person.PersonId;
+			entity.Chat = new ChatEntity { ChatUid = Guid.NewGuid(), IsGroupChat = true };
 			await _eventRepository.CreateEvent(entity);
 			return eventUid;
 		}
