@@ -11,6 +11,8 @@ namespace DAL.Core.Configurations
 			builder.ToTable(ChatEntity.TableName);
 			builder.HasKey(t => t.ChatId);
 			builder.Property(t => t.Name);
+			builder.Property(t => t.ChatUid);
+			builder.Property(t => t.IsGroupChat);
 			builder.HasMany(t => t.ChatMessageEntities).WithOne().HasForeignKey(t => t.ChatId);
 		}
 	}

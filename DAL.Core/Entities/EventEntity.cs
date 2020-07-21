@@ -20,10 +20,12 @@ namespace DAL.Core.Entities
 		public long EventTypeId { get; set; }
 		public long EventStatusId { get; set; }
 		public long AdministratorId { get; set; }
+		public long ChatId { get; set; }
 		public EventImageContentEntity EventImageContent { get; set; }
 		public EventStatusEntity EventStatus { get; set; }
 		public EventTypeEntity EventType { get; set; }
 		public PersonEntity Administrator { get; set; }
+		public ChatEntity Chat { get; set; }
 		public IEnumerable<PersonToEventEntity> Participants { get; set; }
 	}
 }

@@ -62,6 +62,14 @@ CREATE TABLE LumeDB.dbo.EventStatus (
 	CONSTRAINT PK_EventStatusId PRIMARY KEY CLUSTERED (EventStatusId)
 );
 
+CREATE TABLE LumeDB.dbo.Chat (
+	ChatId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	ChatUid uniqueidentifier NOT NULL UNIQUE,
+	Name nvarchar(200) NULL,
+	IsGroupChat bit NOT NULL DEFAULT 0,
+	CONSTRAINT PK_ChatId PRIMARY KEY CLUSTERED (ChatId)
+);
+
 CREATE TABLE LumeDB.dbo.Event (
 	EventId bigint IDENTITY(1,1) NOT NULL UNIQUE,
 	EventUid uniqueidentifier NOT NULL UNIQUE,
@@ -77,17 +85,13 @@ CREATE TABLE LumeDB.dbo.Event (
 	EventTypeId bigint NULL,
 	EventStatusId bigint NULL,
 	AdministratorId bigint NULL,
+	ChatId bigint null,
 	CONSTRAINT FK_Event_EventImageContent FOREIGN KEY (EventImageContentId) REFERENCES LumeDB.dbo.EventImageContent (EventImageContentId),
 	CONSTRAINT FK_Event_EventType FOREIGN KEY (EventTypeId) REFERENCES LumeDB.dbo.EventType (EventTypeId),
 	CONSTRAINT FK_Event_EventStatus FOREIGN KEY (EventStatusId) REFERENCES LumeDB.dbo.EventStatus (EventStatusId),
 	CONSTRAINT FK_Event_Person FOREIGN KEY (AdministratorId) REFERENCES LumeDB.dbo.Person (PersonId),
+	CONSTRAINT FK_Event_Chat FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId),
 	CONSTRAINT PK_EventId PRIMARY KEY CLUSTERED (EventId)
-);
-
-CREATE TABLE LumeDB.dbo.Chat (
-	ChatId bigint IDENTITY(1,1) NOT NULL UNIQUE,
-	Name nvarchar(200) NULL,
-	CONSTRAINT PK_ChatId PRIMARY KEY CLUSTERED (ChatId)
 );
 
 CREATE TABLE LumeDB.dbo.ChatMessage (
