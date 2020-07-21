@@ -3,6 +3,7 @@ using BLL.Core.Models.Chat;
 using Constants;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,6 +47,14 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			return await _chatLogic.GetPersonChat(uid, personUid);
+		}
+
+		[HttpGet]
+		[Route("get-person-chat-list")]
+		public async Task<ActionResult<List<ChatListModel>>> GetPersonChatList()
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			return await _chatLogic.GetPersonChatList(uid);
 		}
 	}
 }

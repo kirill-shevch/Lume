@@ -1,5 +1,6 @@
 ﻿using BLL.Core.Models.Chat;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BLL.Core.Interfaces
@@ -8,5 +9,6 @@ namespace BLL.Core.Interfaces
 	{
 		Task<ChatModel> GetChat(Guid chatUid);
 		Task<ChatModel> GetPersonChat(Guid uid, Guid personUid);
+		Task<List<ChatListModel>> GetPersonChatList(Guid uid);
 	}
 }

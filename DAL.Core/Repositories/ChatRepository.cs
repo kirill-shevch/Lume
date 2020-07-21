@@ -2,6 +2,7 @@
 using DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,6 +68,21 @@ namespace DAL.Core.Repositories
 				await context.PersonToChatEntities.AddAsync(new PersonToChatEntity { FirstPerson = firstPerson, SecondPerson = secondPerson, Chat = chat });
 				await context.SaveChangesAsync();
 				return chatUid;
+			}
+		}
+
+		public async Task<List<ChatEntity>> GetPersonChats(Guid uid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var chats = await context.PersonToChatEntities
+					.Include(x => x.FirstPerson)
+					.Include(x => x.SecondPerson)
+					.Include(x => x.Chat)
+					.Where(x => x.FirstPerson.PersonUid == uid || x.SecondPerson.PersonUid == uid)
+					.ToListAsync();
+				return chats.Select(x => x.Chat).ToList();
+
 			}
 		}
 	}

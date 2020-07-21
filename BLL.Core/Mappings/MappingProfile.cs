@@ -33,6 +33,8 @@ namespace BLL.Core.Mappings
 				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId));
 
 			CreateMap<ChatEntity, ChatModel>();
+
+			CreateMap<ChatEntity, ChatListModel>();
 		}
 	}
 }
