@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Event;
+using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using System;
@@ -34,6 +35,7 @@ namespace BLL.Core
 			entity.AdministratorId = person.PersonId;
 			entity.Chat = new ChatEntity { ChatUid = Guid.NewGuid(), IsGroupChat = true };
 			await _eventRepository.CreateEvent(entity);
+			await AddParticipant(new EventParticipantModel { EventUid = eventUid, PersonUid = person.PersonUid, ParticipantStatus = ParticipantStatus.Active });
 			return eventUid;
 		}
 
