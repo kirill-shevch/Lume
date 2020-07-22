@@ -24,7 +24,7 @@ namespace Constants
 			[16] = "Event name is required.",
 			[17] = "This person don't have this friend in his friend list.",
 			[18] = "This person already have this friend in his friend list.",
-			[19] = "Chat message is not exist in the database.",
+			[19] = "Chat is not exist in the database.",
 			[20] = "Person is not a chat member."
 		};
 
