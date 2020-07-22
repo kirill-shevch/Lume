@@ -33,7 +33,7 @@ namespace BLL.Core
 		{
 			var entity = await _personRepository.GetPerson(personUid);
 			var model = _mapper.Map<PersonModel>(entity);
-			model.Friends = entity.FriendList.Select(x => _mapper.Map<PersonModel>(entity)).ToList();
+			model.Friends = entity.FriendList.Select(x => _mapper.Map<PersonModel>(x.Friend)).ToList();
 			return model;
 		}
 
