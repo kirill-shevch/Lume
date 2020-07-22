@@ -6,6 +6,7 @@ namespace BLL.Core.Models.Chat
 	{
 		public Guid ChatUid { get; set; }
 		public bool IsGroupChat { get; set; }
+		public string Name { get; set; }
 		public ChatMessageModel LastMessage { get; set; }
 	}
 }

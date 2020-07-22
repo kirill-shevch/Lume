@@ -60,35 +60,61 @@ namespace BLL.Core
 			};
 		}
 
-		public async Task<ChatModel> GetChat(Guid chatUid, int pageNumber, int pageSize)
+		public async Task<ChatModel> GetChat(Guid chatUid, int pageNumber, int pageSize, Guid personUid)
 		{
 			var chatEntity = await _chatRepository.GetChat(chatUid);
 			var chatModel = _mapper.Map<ChatModel>(chatEntity);
 			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, pageNumber, pageSize);
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
+			if (chatEntity.IsGroupChat.HasValue && chatEntity.IsGroupChat.Value)
+			{
+				chatModel.ChatName = await _eventRepository.GetEventNameByChatId(chatEntity.ChatId);
+			}
+			else if (chatEntity.IsGroupChat.HasValue && !chatEntity.IsGroupChat.Value)
+			{
+				var personEntity = await _personRepository.GetPerson(personUid);
+				chatModel.ChatName = await _chatRepository.GetPersonalChatName(chatEntity.ChatId, personEntity.PersonId);
+			}
 			return chatModel;
 		}
 
-		public async Task<ChatModel> GetPersonChat(Guid uid, Guid personUid)
+		public async Task<ChatModel> GetPersonChat(Guid uid, Guid personUid, int pageSize)
 		{
 			var chatEntity = await _chatRepository.GetPersonChat(uid, personUid);
+			var personEntity = await _personRepository.GetPerson(personUid);
 			if (chatEntity == null)
 			{
-				return new ChatModel { ChatUid = await _chatRepository.CreatePersonalChat(uid, personUid), IsGroupChat = false };
+				return new ChatModel { ChatUid = await _chatRepository.CreatePersonalChat(uid, personUid), IsGroupChat = false, ChatName = personEntity.Name };
 			}
 			var chatModel = _mapper.Map<ChatModel>(chatEntity);
-			chatModel.Messages = new List<ChatMessageModel>();
+			chatModel.ChatName = personEntity.Name;
+			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, 1, pageSize);
+			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
 			return chatModel;
 		}
 
 		public async Task<List<ChatListModel>> GetPersonChatList(Guid uid)
 		{
 			var events = await _eventRepository.GetEvents(uid);
-			var groupChats = events.Select(x => x.Chat).ToList();
-			var personalChats = await _chatRepository.GetPersonChats(uid);
-			var chats = groupChats.Union(personalChats);
-			var chatModels = _mapper.Map<IEnumerable<ChatListModel>>(chats);
-			return chatModels.ToList();
+			var chatModels = new List<ChatListModel>();
+			foreach (var eventEntity in events)
+			{
+				var groupChatModel = _mapper.Map<ChatListModel>(eventEntity.Chat);
+				groupChatModel.Name = eventEntity.Name;
+				var lastGroupChatMessageEntity = await _chatRepository.GetChatMessages(eventEntity.ChatId, 1, 1);
+				groupChatModel.LastMessage = _mapper.Map<ChatMessageModel>(lastGroupChatMessageEntity.SingleOrDefault());
+				chatModels.Add(groupChatModel);
+			}
+			var personToChatEntities = await _chatRepository.GetPersonChats(uid);
+			foreach (var entity in personToChatEntities)
+			{
+				var personalChatModel = _mapper.Map<ChatListModel>(entity.Chat);
+				personalChatModel.Name = entity.FirstPerson.PersonUid == uid ? entity.SecondPerson.Name : entity.FirstPerson.Name;
+				var lastPersonalChatMessageEntity = await _chatRepository.GetChatMessages(entity.ChatId, 1, 1);
+				personalChatModel.LastMessage = _mapper.Map<ChatMessageModel>(lastPersonalChatMessageEntity.SingleOrDefault());
+				chatModels.Add(personalChatModel);
+			}
+			return chatModels;
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace BLL.Core.Mappings
 				.ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ChatImageContentEntities.Select(x => x.ChatImageContentUid)))
 				.ForMember(dest => dest.MessageContent, opt => opt.MapFrom(src => src.Content))
 				.ForMember(dest => dest.MessageUid, opt => opt.MapFrom(src => src.ChatMessageUid))
-				.ForMember(dest => dest.PersonImageUid, opt => opt.MapFrom(src => src.Author.PersonUid))
+				.ForMember(dest => dest.PersonUid, opt => opt.MapFrom(src => src.Author.PersonUid))
 				.ForMember(dest => dest.PersonName, opt => opt.MapFrom(src => src.Author.Name))
 				.ForMember(dest => dest.PersonImageUid, opt => opt.MapFrom(src => src.Author.PersonImageContentEntity == null ? (Guid?)null : src.Author.PersonImageContentEntity.PersonImageContentUid));
 
