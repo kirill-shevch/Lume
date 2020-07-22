@@ -85,5 +85,14 @@ namespace DAL.Core.Repositories
 
 			}
 		}
+
+		public async Task AddChatMessage(ChatMessageEntity chatMessageEntity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.AddAsync(chatMessageEntity);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

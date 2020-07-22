@@ -9,6 +9,7 @@ namespace BLL.Core.Interfaces
 	{
 		Task<ChatModel> GetChat(Guid chatUid);
 		Task<ChatModel> GetPersonChat(Guid uid, Guid personUid);
-		Task<List<ChatListModel>> GetPersonChatList(Guid uid);
+		Task<List<ChatListModel>> GetPersonChatList(Guid personUid);
+		Task<ChatMessageModel> AddChatMessage(AddMessageModel request, Guid personUid);
 	}
 }

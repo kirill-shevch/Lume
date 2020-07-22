@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL.Core.Models.Chat;
+using System;
 using System.Collections.Generic;
 
 namespace BLL.Core.Interfaces
@@ -8,5 +9,6 @@ namespace BLL.Core.Interfaces
 		(bool ValidationResult, string ValidationMessage) ValidateAddChat(List<Guid> chatParticipants);
 		(bool ValidationResult, string ValidationMessage) ValidateGetChat(Guid chatUid);
 		(bool ValidationResult, string ValidationMessage) ValidateGetPersonChat(Guid personUid);
+		(bool ValidationResult, string ValidationMessage) ValidateAddChatMessage(AddMessageModel request, Guid personUid);
 	}
 }

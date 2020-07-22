@@ -56,5 +56,18 @@ namespace LumeWebApp.Controllers
 			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			return await _chatLogic.GetPersonChatList(uid);
 		}
+
+		[HttpPost]
+		[Route("add-chat-mesage")]
+		public async Task<ActionResult<ChatMessageModel>> AddChatMessage(AddMessageModel request)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _chatValidation.ValidateAddChatMessage(request, uid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			return await _chatLogic.AddChatMessage(request, uid);
+		}
 	}
 }

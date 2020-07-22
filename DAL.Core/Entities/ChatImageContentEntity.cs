@@ -8,7 +8,6 @@ namespace DAL.Core.Entities
 
 		public long ChatImageContentId { get; set; }
 		public Guid ChatImageContentUid { get; set; }
-		public string ContentHash { get; set; }
 		public byte[] Content { get; set; }
 		public long ChatMessageId { get; set; }
 	}
