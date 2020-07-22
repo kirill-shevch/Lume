@@ -71,5 +71,44 @@ namespace LumeWebApp.Controllers
 			await _eventLogic.UpdateEvent(request);
 			return Ok(Messages.UpdateSuccess);
 		}
+
+		[HttpPost]
+		[Route("add-event-participant")]
+		public async Task<ActionResult> AddEventParticipant(EventParticipantModel request)
+		{
+			var validationResult = _eventValidation.ValidateParticipantModel(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.AddParticipant(request);
+			return Ok(Messages.ParticipantCreated);
+		}
+
+		[HttpPost]
+		[Route("update-event-participant")]
+		public async Task<ActionResult> UpdateEventParticipant(EventParticipantModel request)
+		{
+			var validationResult = _eventValidation.ValidateParticipantModel(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.UpdateParticipant(request);
+			return Ok(Messages.ParticipantUpdated);
+		}
+
+		[HttpDelete]
+		[Route("remove-event-participant")]
+		public async Task<ActionResult> RemoveEventParticipant(Guid personUid, Guid eventUid)
+		{
+			var validationResult = _eventValidation.ValidateRemoveEventParticipant(personUid, eventUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.RemoveParticipant(personUid, eventUid);
+			return Ok(Messages.ParticipantRemoved);
+		}
 	}
 }

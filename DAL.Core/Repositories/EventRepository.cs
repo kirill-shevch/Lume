@@ -88,5 +88,43 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync(cancellationToken);
 			}
 		}
+
+		public async Task<PersonToEventEntity> GetParticipant(Guid personUid, Guid eventUid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonToEventEntities
+					.Include(x => x.Event)
+					.Include(x => x.Person)
+					.SingleAsync(x => x.Event.EventUid == eventUid && x.Person.PersonUid == personUid);
+			}
+		}
+
+		public async Task RemoveParticipant(PersonToEventEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				context.Remove(entity);
+				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task AddParticipant(PersonToEventEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.AddAsync(entity);
+				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task UpdateParticipant(PersonToEventEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				context.Update(entity);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

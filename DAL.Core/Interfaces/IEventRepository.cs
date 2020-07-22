@@ -14,5 +14,9 @@ namespace DAL.Core.Interfaces
 		Task UpdateEvent(EventEntity eventEntity, CancellationToken cancellationToken = default);
 		Task<bool> CheckEventExistence(Guid eventUid, CancellationToken cancellationToken = default);
 		Task<string> GetEventNameByChatId(long chatId, CancellationToken cancellationToken = default);
+		Task AddParticipant(PersonToEventEntity entity);
+		Task UpdateParticipant(PersonToEventEntity entity);
+		Task RemoveParticipant(PersonToEventEntity entity);
+		Task<PersonToEventEntity> GetParticipant(Guid personUid, Guid eventUid);
 	}
 }

@@ -25,7 +25,8 @@ namespace Constants
 			[17] = "This person don't have this friend in his friend list.",
 			[18] = "This person already have this friend in his friend list.",
 			[19] = "Chat is not exist in the database.",
-			[20] = "Person is not a chat member."
+			[20] = "Person is not a chat member.",
+			[21] = "Participant status is not correct."
 		};
 
 		public static string GetErrorMessage(int code) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[code]}\" }}";

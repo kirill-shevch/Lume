@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Event;
-using BLL.Core.Models.Person;
-using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BLL.Core
@@ -88,6 +85,36 @@ namespace BLL.Core
 				eventEntity.EventStatus = null;
 			}
 			await _eventRepository.UpdateEvent(eventEntity);
+		}
+
+		public async Task AddParticipant(EventParticipantModel eventParticipantModel)
+		{
+			var entity = await CreateParticipantEntity(eventParticipantModel);
+			await _eventRepository.AddParticipant(entity);
+		}
+
+		public async Task UpdateParticipant(EventParticipantModel eventParticipantModel)
+		{
+			var entity = await CreateParticipantEntity(eventParticipantModel);
+			await _eventRepository.UpdateParticipant(entity);
+		}
+
+		public async Task RemoveParticipant(Guid personUid, Guid eventUid)
+		{
+			var entity = await _eventRepository.GetParticipant(personUid, eventUid);
+			await _eventRepository.RemoveParticipant(entity);
+		}
+
+		private async Task<PersonToEventEntity> CreateParticipantEntity(EventParticipantModel eventParticipantModel)
+		{
+			var personEntity = await _personRepository.GetPerson(eventParticipantModel.PersonUid);
+			var eventEntity = await _eventRepository.GetEvent(eventParticipantModel.EventUid);
+			return new PersonToEventEntity
+			{
+				EventId = eventEntity.EventId,
+				PersonId = personEntity.PersonId,
+				ParticipantStatusId = (long)eventParticipantModel.ParticipantStatus
+			};
 		}
 	}
 }
