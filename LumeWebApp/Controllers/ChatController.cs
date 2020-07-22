@@ -39,7 +39,7 @@ namespace LumeWebApp.Controllers
 
 		[HttpGet]
 		[Route("get-person-chat")]
-		public async Task<ActionResult<ChatModel>> GetPersonChat(Guid personUid)
+		public async Task<ActionResult<ChatModel>> GetPersonChat(Guid personUid, uint pageSize)
 		{
 			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			var validationResult = _chatValidation.ValidateGetPersonChat(personUid);
@@ -47,7 +47,7 @@ namespace LumeWebApp.Controllers
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			return await _chatLogic.GetPersonChat(uid, personUid);
+			return await _chatLogic.GetPersonChat(uid, personUid, (int)pageSize);
 		}
 
 		[HttpGet]
