@@ -7,6 +7,6 @@ namespace BLL.Core.Models.Chat
 	{
 		public Guid ChatUid { get; set; }
 		public string Content { get; set; }
-		public List<byte[]> Images { get; set; }
+		public List<byte[]> Images { get; set; } = new List<byte[]>();
 	}
 }
