@@ -2,6 +2,7 @@
 using DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -98,6 +99,27 @@ namespace DAL.Core.Repositories
 				context.Remove(personToFriendEntity);
 
 				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task<IEnumerable<PersonEntity>> GetAllPersonsByPage(int pageNumber, int pageSize, string filter = null, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var query = context.PersonEntities
+					.Include(x => x.PersonImageContentEntity)
+					.Include(x => x.FriendList)
+						.ThenInclude(x => x.Friend)
+							.ThenInclude(x => x.PersonImageContentEntity);
+
+				if (!string.IsNullOrWhiteSpace(filter))
+				{
+					query.Where(p => p.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase));
+				}
+
+				return await query.Skip(pageSize * (pageNumber - 1))
+					.Take(pageSize)
+					.ToListAsync(cancellationToken);
 			}
 		}
 	}
