@@ -99,17 +99,17 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task<List<ChatEntity>> GetPersonChats(Guid uid)
+		public async Task<List<PersonToChatEntity>> GetPersonChats(Guid uid)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				var chats = await context.PersonToChatEntities
+				var entities = await context.PersonToChatEntities
 					.Include(x => x.FirstPerson)
 					.Include(x => x.SecondPerson)
 					.Include(x => x.Chat)
 					.Where(x => x.FirstPerson.PersonUid == uid || x.SecondPerson.PersonUid == uid)
 					.ToListAsync();
-				return chats.Select(x => x.Chat).ToList();
+				return entities;
 
 			}
 		}
