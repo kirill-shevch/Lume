@@ -24,6 +24,7 @@ namespace Constants
              "/api/chat/get-person-chat",
              "/api/chat/get-person-chat-list",
              "/api/chat/add-chat-message",
+             "/api/chat/get-new-chat-messages",
 
              "/api/image/add-person-image",
              "/api/image/add-event-image"
