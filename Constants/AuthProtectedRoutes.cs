@@ -8,13 +8,16 @@ namespace Constants
         {
              "/home/secure",
 
-             "/api/core/get-person",
-             "/api/core/update-person",
-             "/api/core/is-person-filled-up",
-             "/api/core/add-event",
-             "/api/core/get-event",
-             "/api/core/get-event-list",
-             "/api/core/update-event",
+             "/api/person/get-person",
+             "/api/person/update-person",
+             "/api/person/is-person-filled-up",
+
+             "/api/event/add-event",
+             "/api/event/get-event",
+             "/api/event/get-event-list",
+             "/api/event/update-event",
+
+             "/api/chat/get-chat",
 
              "/api/image/add-person-image",
              "/api/image/add-event-image"

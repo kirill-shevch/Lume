@@ -23,7 +23,9 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.EventTypeId);
 			builder.Property(t => t.EventStatusId);
 			builder.Property(t => t.AdministratorId);
+			builder.Property(t => t.ChatId);
 			builder.HasOne(t => t.EventImageContent).WithMany().HasForeignKey(x => x.EventImageContentId);
+			builder.HasOne(t => t.Chat).WithMany().HasForeignKey(x => x.ChatId);
 			builder.HasOne(t => t.EventType).WithMany().HasForeignKey(x => x.EventTypeId);
 			builder.HasOne(t => t.EventStatus).WithMany().HasForeignKey(x => x.EventStatusId);
 			builder.HasOne(t => t.Administrator).WithMany().HasForeignKey(x => x.AdministratorId);

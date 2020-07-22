@@ -100,5 +100,16 @@ namespace DAL.Core.Repositories
 				return await context.ChatImageContentEntities.AnyAsync(x => x.ChatImageContentUid == uid, cancellationToken);
 			}
 		}
+
+		public async Task SaveChatImage(Guid chatMessageUid, ChatImageContentEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var chatMessageEntity = await context.ChatMessageEntities.SingleAsync(x => x.ChatMessageUid == chatMessageUid);
+				entity.ChatMessageId = chatMessageEntity.ChatMessageId;
+				await context.AddAsync(entity);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

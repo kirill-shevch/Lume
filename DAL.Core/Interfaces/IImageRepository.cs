@@ -18,5 +18,6 @@ namespace DAL.Core.Interfaces
 		Task<byte[]> GetEventImageContentByUid(Guid uid);
 
 		Task<bool> CheckChatMessageImageExistence(Guid uid, CancellationToken cancellationToken = default);
+		Task SaveChatImage(Guid chatMessageUid, ChatImageContentEntity entity);
 	}
 }

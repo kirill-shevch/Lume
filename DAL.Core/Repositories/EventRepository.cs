@@ -47,6 +47,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.Participants)
 						.ThenInclude(x => x.Person)
 							.ThenInclude(x => x.PersonImageContentEntity)
+					.Include(x => x.Chat)
 					.SingleOrDefaultAsync(x => x.EventUid == eventUid, cancellationToken);
 			}
 		}
@@ -64,6 +65,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.Participants)
 						.ThenInclude(x => x.Person)
 							.ThenInclude(x => x.PersonImageContentEntity)
+					.Include(x => x.Chat)
 					.Where(x => x.Administrator.PersonUid == personUid || x.Participants.Any(x => x.Person.PersonUid == personUid))
 					.ToListAsync();
 			}

@@ -12,6 +12,8 @@ namespace DAL.Core.Entities
 		public string Content { get; set; }
 		public DateTime? MessageTime { get; set; }
 		public long ChatId { get; set; }
+		public long AuthorId { get; set; }
+		public PersonEntity Author { get; set; }
 		public IEnumerable<ChatImageContentEntity> ChatImageContentEntities { get; set; }
 	}
 }

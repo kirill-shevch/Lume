@@ -13,8 +13,10 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.ChatMessageUid);
 			builder.Property(t => t.MessageTime);
 			builder.Property(t => t.Content);
+			builder.Property(t => t.AuthorId);
 
 			builder.HasMany(t => t.ChatImageContentEntities).WithOne().HasForeignKey(t => t.ChatMessageId);
+			builder.HasOne(t => t.Author).WithMany().HasForeignKey(t => t.AuthorId);
 		}
 	}
 }

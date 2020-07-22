@@ -2,6 +2,8 @@
 using DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,14 +17,11 @@ namespace DAL.Core.Repositories
 			_dbContextFactory = dbContextFactory;
 		}
 
-		public async Task<ChatEntity> GetChat(int id, CancellationToken cancellationToken = default)
+		public async Task<ChatEntity> GetChat(Guid uid, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				return await context.ChatEntities
-					.Include(x => x.ChatMessageEntities)
-					.ThenInclude(x => x.ChatImageContentEntities)
-					.SingleOrDefaultAsync(x => x.ChatId == id, cancellationToken);
+				return await context.ChatEntities.SingleOrDefaultAsync(x => x.ChatUid == uid, cancellationToken);
 			}
 		}
 
@@ -31,6 +30,68 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.ChatMessageEntities.AnyAsync(x => x.ChatMessageUid == chatMessageUid, cancellationToken);
+			}
+		}
+
+		public async Task<bool> CheckChatExistence(Guid chatUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.ChatEntities.AnyAsync(x => x.ChatUid == chatUid, cancellationToken);
+			}
+		}
+
+		public async Task<ChatEntity> GetPersonChat(Guid userUid, Guid friendUid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var personToChat = await context.PersonToChatEntities
+					.Include(x => x.FirstPerson)
+					.Include(x => x.SecondPerson)
+					.Include(x => x.Chat)
+						.Where(x => (x.FirstPerson.PersonUid == userUid || x.FirstPerson.PersonUid == friendUid) &&
+						(x.SecondPerson.PersonUid == userUid || x.SecondPerson.PersonUid == friendUid))
+					.SingleOrDefaultAsync();
+				return personToChat?.Chat;
+			}
+		}
+
+		public async Task<Guid> CreatePersonalChat(Guid firstPersonUid, Guid secondPersonUid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var chatUid = Guid.NewGuid();
+				var firstPerson = await context.PersonEntities.SingleAsync(x => x.PersonUid == firstPersonUid);
+				var secondPerson = await context.PersonEntities.SingleAsync(x => x.PersonUid == secondPersonUid);
+				var chat = new ChatEntity { ChatUid = chatUid, IsGroupChat = false };
+				await context.ChatEntities.AddAsync(chat);
+				await context.PersonToChatEntities.AddAsync(new PersonToChatEntity { FirstPerson = firstPerson, SecondPerson = secondPerson, Chat = chat });
+				await context.SaveChangesAsync();
+				return chatUid;
+			}
+		}
+
+		public async Task<List<ChatEntity>> GetPersonChats(Guid uid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var chats = await context.PersonToChatEntities
+					.Include(x => x.FirstPerson)
+					.Include(x => x.SecondPerson)
+					.Include(x => x.Chat)
+					.Where(x => x.FirstPerson.PersonUid == uid || x.SecondPerson.PersonUid == uid)
+					.ToListAsync();
+				return chats.Select(x => x.Chat).ToList();
+
+			}
+		}
+
+		public async Task AddChatMessage(ChatMessageEntity chatMessageEntity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.AddAsync(chatMessageEntity);
+				await context.SaveChangesAsync();
 			}
 		}
 	}
