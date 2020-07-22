@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Person;
-using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +33,7 @@ namespace BLL.Core
 		{
 			var entity = await _personRepository.GetPerson(personUid);
 			var model = _mapper.Map<PersonModel>(entity);
-			model.Friends = entity.FriendList.Select(x => _mapper.Map<PersonModel>(x.Friend)).ToList();
+			model.Friends = entity.FriendList.Select(x => _mapper.Map<PersonModel>(entity)).ToList();
 			return model;
 		}
 
@@ -65,6 +65,12 @@ namespace BLL.Core
 		public async Task RemoveFriendFromPerson(Guid personUid, Guid friendUid)
 		{
 			await _personRepository.RemoveFriendFromPerson(personUid, friendUid);
+		}
+
+		public async Task<IEnumerable<PersonModel>> GetPersonListByPage(int pageNumber, int pageSize, string filter = null)
+		{
+			var persons = await _personRepository.GetPersonListByPage(pageNumber, pageSize, filter);
+			return _mapper.Map<IEnumerable<PersonModel>>(persons);
 		}
 	}
 }

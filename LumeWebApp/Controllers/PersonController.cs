@@ -5,6 +5,7 @@ using LumeWebApp.Requests.Person;
 using LumeWebApp.Responses.Person;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -58,6 +59,13 @@ namespace LumeWebApp.Controllers
 			}
 			await _personLogic.UpdatePerson(model);
 			return Ok(Messages.UpdateSuccess);
+		}
+
+		[HttpGet]
+		[Route("get-person-list")]
+		public async Task<ActionResult<List<PersonModel>>> GetPersonListByPage(int pageNumber, int pageSize, string filter)
+		{
+			return (await _personLogic.GetPersonListByPage(pageNumber, pageSize, filter)).ToList();
 		}
 	}
 }
