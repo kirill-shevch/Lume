@@ -12,6 +12,7 @@ namespace DAL.Core.Configurations
 			builder.HasKey(t => new { t.PersonId, t.EventId });
 			builder.Property(t => t.PersonId);
 			builder.Property(t => t.EventId);
+			builder.Property(t => t.ParticipantStatusId);
 
 			builder.HasOne(ptc => ptc.Event)
 				.WithMany(c => c.Participants)
@@ -20,6 +21,10 @@ namespace DAL.Core.Configurations
 			builder.HasOne(ptc => ptc.Person)
 				.WithMany(p => p.Events)
 				.HasForeignKey(ptc => ptc.PersonId);
+
+			builder.HasOne(ptc => ptc.ParticipantStatus)
+				.WithMany()
+				.HasForeignKey(ptc => ptc.ParticipantStatusId);
 		}
 	}
 }

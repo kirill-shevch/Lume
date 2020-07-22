@@ -62,6 +62,12 @@ CREATE TABLE LumeDB.dbo.EventStatus (
 	CONSTRAINT PK_EventStatusId PRIMARY KEY CLUSTERED (EventStatusId)
 );
 
+CREATE TABLE LumeDB.dbo.ParticipantStatus (
+	ParticipantStatusId bigint IDENTITY(0,1) NOT NULL UNIQUE,
+	ParticipantStatusName nvarchar(100) NOT NULL UNIQUE,
+	CONSTRAINT PK_ParticipantStatusId PRIMARY KEY CLUSTERED (ParticipantStatusId)
+);
+
 CREATE TABLE LumeDB.dbo.Chat (
 	ChatId bigint IDENTITY(1,1) NOT NULL UNIQUE,
 	ChatUid uniqueidentifier NOT NULL UNIQUE,
@@ -117,9 +123,11 @@ CREATE TABLE LumeDB.dbo.ChatImageContent (
 CREATE TABLE LumeDB.dbo.PersonToEvent (
 	PersonId bigint,
   	EventId bigint,
+	ParticipantStatusId bigint NULL,
   	CONSTRAINT PK_Person_Event PRIMARY KEY (PersonId, EventId),
   	CONSTRAINT FK_Person_PersonToEvent FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
-  	CONSTRAINT FK_Event_PersonToEvent FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId)
+  	CONSTRAINT FK_Event_PersonToEvent FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId),
+  	CONSTRAINT FK_ParticipantStatus_PersonToEvent FOREIGN KEY (ParticipantStatusId) REFERENCES LumeDB.dbo.ParticipantStatus (ParticipantStatusId)
 );
 
 CREATE TABLE LumeDB.dbo.PersonToChat (
@@ -145,3 +153,6 @@ VALUES ('Party'),('Booze');
 
 INSERT INTO LumeDB.dbo.EventStatus (EventStatusName)  
 VALUES ('Preparing'),('InProgress'),('Ended'),('Canceled');  
+
+INSERT INTO LumeDB.dbo.ParticipantStatus (ParticipantStatusName)
+VALUES ('WaitingForApproveFromUser'),('WaitingForApproveFromEvent'),('Active');  
