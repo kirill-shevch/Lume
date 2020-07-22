@@ -16,5 +16,6 @@ namespace DAL.Core.Interfaces
 		Task<Guid> CreatePersonalChat(Guid firstPersonUid, Guid secondPersonUid);
 		Task<List<ChatEntity>> GetPersonChats(Guid uid);
 		Task AddChatMessage(ChatMessageEntity chatMessageEntity);
+		Task<string> GetPersonalChatName(long chatId, long personId);
 	}
 }

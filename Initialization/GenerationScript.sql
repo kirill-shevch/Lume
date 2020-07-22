@@ -65,7 +65,6 @@ CREATE TABLE LumeDB.dbo.EventStatus (
 CREATE TABLE LumeDB.dbo.Chat (
 	ChatId bigint IDENTITY(1,1) NOT NULL UNIQUE,
 	ChatUid uniqueidentifier NOT NULL UNIQUE,
-	Name nvarchar(200) NULL,
 	IsGroupChat bit NOT NULL DEFAULT 0,
 	CONSTRAINT PK_ChatId PRIMARY KEY CLUSTERED (ChatId)
 );

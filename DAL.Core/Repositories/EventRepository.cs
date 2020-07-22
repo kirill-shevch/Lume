@@ -52,6 +52,15 @@ namespace DAL.Core.Repositories
 			}
 		}
 
+		public async Task<string> GetEventNameByChatId(long chatId, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var eventEntity = await context.EventEntities.SingleOrDefaultAsync(x => x.ChatId == chatId);
+				return eventEntity.Name;
+			}
+		}
+
 		public async Task<List<EventEntity>> GetEvents(Guid personUid, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())

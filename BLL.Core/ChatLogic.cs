@@ -60,12 +60,21 @@ namespace BLL.Core
 			};
 		}
 
-		public async Task<ChatModel> GetChat(Guid chatUid, int pageNumber, int pageSize)
+		public async Task<ChatModel> GetChat(Guid chatUid, int pageNumber, int pageSize, Guid personUid)
 		{
 			var chatEntity = await _chatRepository.GetChat(chatUid);
 			var chatModel = _mapper.Map<ChatModel>(chatEntity);
 			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, pageNumber, pageSize);
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
+			if (chatEntity.IsGroupChat.HasValue && chatEntity.IsGroupChat.Value)
+			{
+				chatModel.ChatName = await _eventRepository.GetEventNameByChatId(chatEntity.ChatId);
+			}
+			else if (chatEntity.IsGroupChat.HasValue && !chatEntity.IsGroupChat.Value)
+			{
+				var personEntity = await _personRepository.GetPerson(personUid);
+				chatModel.ChatName = await _chatRepository.GetPersonalChatName(chatEntity.ChatId, personEntity.PersonId);
+			}
 			return chatModel;
 		}
 
