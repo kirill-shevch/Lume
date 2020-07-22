@@ -17,7 +17,13 @@ namespace Constants
              "/api/event/get-event-list",
              "/api/event/update-event",
 
+             "/api/friends/add",
+             "/api/friends/remove",
+
              "/api/chat/get-chat",
+             "/api/chat/get-person-chat",
+             "/api/chat/get-person-chat-list",
+             "/api/chat/add-chat-mesage",
 
              "/api/image/add-person-image",
              "/api/image/add-event-image"

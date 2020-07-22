@@ -7,7 +7,7 @@ namespace BLL.Core.Interfaces
 {
 	public interface IChatLogic
 	{
-		Task<ChatModel> GetChat(Guid chatUid);
+		Task<ChatModel> GetChat(Guid chatUid, int pageNumber, int pageSize);
 		Task<ChatModel> GetPersonChat(Guid uid, Guid personUid);
 		Task<List<ChatListModel>> GetPersonChatList(Guid personUid);
 		Task<ChatMessageModel> AddChatMessage(AddMessageModel request, Guid personUid);

@@ -11,5 +11,6 @@ namespace BLL.Core.Models.Chat
 		public string PersonName { get; set; }
 		public Guid PersonUid { get; set; }
 		public Guid? PersonImageUid { get; set; }
+		public DateTime? MessageTime { get; set; }
 	}
 }

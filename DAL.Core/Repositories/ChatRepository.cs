@@ -25,6 +25,22 @@ namespace DAL.Core.Repositories
 			}
 		}
 
+		public async Task<List<ChatMessageEntity>> GetChatMessages(long chatId, int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.ChatMessageEntities
+					.Include(x => x.ChatImageContentEntities)
+					.Include(x => x.Author)
+						.ThenInclude(x => x.PersonImageContentEntity)
+					.Where(x => x.ChatId == chatId)
+					.OrderByDescending(x => x.ChatMessageId)
+					.Skip(pageSize * (pageNumber - 1))
+					.Take(pageSize)
+					.ToListAsync(cancellationToken);
+			}
+		}
+
 		public async Task<bool> CheckChatMessageExistence(Guid chatMessageUid, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())

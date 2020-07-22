@@ -32,6 +32,14 @@ namespace BLL.Core.Mappings
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
 				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId));
 
+			CreateMap<ChatMessageEntity, ChatMessageModel>()
+				.ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ChatImageContentEntities.Select(x => x.ChatImageContentUid)))
+				.ForMember(dest => dest.MessageContent, opt => opt.MapFrom(src => src.Content))
+				.ForMember(dest => dest.MessageUid, opt => opt.MapFrom(src => src.ChatMessageUid))
+				.ForMember(dest => dest.PersonImageUid, opt => opt.MapFrom(src => src.Author.PersonUid))
+				.ForMember(dest => dest.PersonName, opt => opt.MapFrom(src => src.Author.Name))
+				.ForMember(dest => dest.PersonImageUid, opt => opt.MapFrom(src => src.Author.PersonImageContentEntity == null ? (Guid?)null : src.Author.PersonImageContentEntity.PersonImageContentUid));
+
 			CreateMap<ChatEntity, ChatModel>();
 
 			CreateMap<ChatEntity, ChatListModel>();

@@ -60,11 +60,12 @@ namespace BLL.Core
 			};
 		}
 
-		public async Task<ChatModel> GetChat(Guid chatUid)
+		public async Task<ChatModel> GetChat(Guid chatUid, int pageNumber, int pageSize)
 		{
 			var chatEntity = await _chatRepository.GetChat(chatUid);
 			var chatModel = _mapper.Map<ChatModel>(chatEntity);
-			chatModel.Messages = new List<ChatMessageModel>();
+			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, pageNumber, pageSize);
+			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
 			return chatModel;
 		}
 
