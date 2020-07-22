@@ -59,7 +59,7 @@ namespace LumeWebApp.Controllers
 		}
 
 		[HttpPost]
-		[Route("add-chat-mesage")]
+		[Route("add-chat-message")]
 		public async Task<ActionResult<ChatMessageModel>> AddChatMessage(AddMessageModel request)
 		{
 			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
@@ -69,6 +69,18 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			return await _chatLogic.AddChatMessage(request, uid);
+		}
+
+		[HttpGet]
+		[Route("get-new-chat-messages")]
+		public async Task<ActionResult<List<ChatMessageModel>>> GetNewChatMessages(Guid chatUid, Guid messageUid)
+		{
+			var validationResult = _chatValidation.ValidateGetNewChatMessages(chatUid, messageUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			return await _chatLogic.GetNewChatMessages(chatUid, messageUid);
 		}
 	}
 }

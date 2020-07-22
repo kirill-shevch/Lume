@@ -122,5 +122,25 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task<ChatMessageEntity> GetChatMessage(Guid uid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.ChatMessageEntities.SingleAsync(x => x.ChatMessageUid == uid);
+			}
+		}
+
+		public async Task<List<ChatMessageEntity>> GetNewChatMessages(long chatId, long lastMessageId)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.ChatMessageEntities.Where(x => x.ChatId == chatId && x.ChatMessageId > lastMessageId)
+					.Include(x => x.Author)
+					.Include(x => x.ChatImageContentEntities)
+					.OrderByDescending(x => x.ChatMessageId)
+					.ToListAsync();
+			}
+		}
 	}
 }

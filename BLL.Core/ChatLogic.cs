@@ -6,6 +6,7 @@ using DAL.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BLL.Core
@@ -76,6 +77,24 @@ namespace BLL.Core
 				chatModel.ChatName = await _chatRepository.GetPersonalChatName(chatEntity.ChatId, personEntity.PersonId);
 			}
 			return chatModel;
+		}
+
+		public async Task<List<ChatMessageModel>> GetNewChatMessages(Guid chatUid, Guid messageUid)
+		{
+			var numberOfAttempts = 30;
+			var waitingInterval = 3000;
+			var chatEntity = await _chatRepository.GetChat(chatUid);
+			var chatMessageEntity = await _chatRepository.GetChatMessage(messageUid);
+			for (int i = 0; i < numberOfAttempts; i++)
+			{
+				var messageEntities = await _chatRepository.GetNewChatMessages(chatEntity.ChatId, chatMessageEntity.ChatMessageId);
+				if (messageEntities != null && messageEntities.Any())
+				{
+					return _mapper.Map<List<ChatMessageModel>>(messageEntities);
+				}
+				Thread.Sleep(waitingInterval);
+			}
+			return new List<ChatMessageModel>();
 		}
 
 		public async Task<ChatModel> GetPersonChat(Guid uid, Guid personUid, int pageSize)

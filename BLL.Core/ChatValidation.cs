@@ -39,7 +39,7 @@ namespace BLL.Core
 			var personChatList = _chatLogic.GetPersonChatList(personUid).Result;
 			if (!personChatList.Any(x => x.ChatUid == request.ChatUid))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(2));
+				return (false, ErrorDictionary.GetErrorMessage(20));
 			}
 			return (true, string.Empty);
 		}
@@ -49,6 +49,19 @@ namespace BLL.Core
 			if (!_chatRepository.CheckChatExistence(chatUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(19));
+			}
+			return (true, string.Empty);
+		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateGetNewChatMessages(Guid chatUid, Guid messageUid)
+		{
+			if (!_chatRepository.CheckChatExistence(chatUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(19));
+			}
+			if (!_chatRepository.CheckChatMessageExistence(messageUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(11));
 			}
 			return (true, string.Empty);
 		}
