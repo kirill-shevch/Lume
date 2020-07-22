@@ -9,6 +9,8 @@ namespace BLL.Core.Interfaces
 		Task CreatePerson(Guid personUid);
 		Task<PersonModel> GetPerson(Guid personUid);
 		Task UpdatePerson(UpdatePersonModel updatePersonModel);
+		Task AddFriendToPerson(Guid personUid, Guid friendUid);
+		Task RemoveFriendFromPerson(Guid personUid, Guid friendUid);
 		Task<bool> IsPersonFilledUp(Guid personUid);
 	}
 }

@@ -41,6 +41,7 @@ namespace Lume.DI
             services.AddSingleton<IImageValidation, ImageValidation>();
             services.AddSingleton<IEventValidation, EventValidation>();
             services.AddSingleton<IPersonValidation, PersonValidation>();
+            services.AddSingleton<IFriendValidation, FriendValidation>();
         }
     }
 }

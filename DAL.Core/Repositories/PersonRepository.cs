@@ -2,6 +2,7 @@
 using DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,6 +52,52 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.PersonEntities.AnyAsync(x => x.PersonUid == personUid, cancellationToken);
+			}
+		}
+
+		public async Task<bool> CheckPersonFriendExistence(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonFriendListEntities
+					.AnyAsync(p => p.Person.PersonUid == personUid && p.Friend.PersonUid == friendUid);
+			}
+		}
+
+		public async Task AddFriendToPerson(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var person = await context.PersonEntities
+					.FirstOrDefaultAsync(p => p.PersonUid == personUid);
+
+				var friend = await context.PersonEntities
+					.FirstOrDefaultAsync(p => p.PersonUid == friendUid);
+
+				var personToFriendEntity = new PersonFriendListEntity { PersonId = person.PersonId, FriendId = friend.PersonId };
+
+				await context.AddAsync(personToFriendEntity);
+
+				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task RemoveFriendFromPerson(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var person = await context.PersonEntities
+					.FirstOrDefaultAsync(p => p.PersonUid == personUid);
+
+				var friend = await context.PersonEntities
+					.FirstOrDefaultAsync(p => p.PersonUid == friendUid);
+
+				var personToFriendEntity = await context.PersonFriendListEntities
+					.FirstOrDefaultAsync(p => p.PersonId == person.PersonId);
+
+				context.Remove(personToFriendEntity);
+
+				await context.SaveChangesAsync();
 			}
 		}
 	}
