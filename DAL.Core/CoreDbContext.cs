@@ -26,7 +26,7 @@ namespace DAL.Core
 			builder.ApplyConfiguration(new PersonImageContentEntityConfiguration());
 			builder.ApplyConfiguration(new PersonToChatEntityConfiguration());
 			builder.ApplyConfiguration(new PersonToEventEntityConfiguration());
-
+			builder.ApplyConfiguration(new ParticipantStatusEntityConfiguration());
 		}
 
 		public DbSet<ChatEntity> ChatEntities { get; set; }
@@ -41,5 +41,6 @@ namespace DAL.Core
 		public DbSet<PersonImageContentEntity> PersonImageContentEntities { get; set; }
 		public DbSet<PersonToChatEntity> PersonToChatEntities { get; set; }
 		public DbSet<PersonToEventEntity> PersonToEventEntities { get; set; }
+		public DbSet<ParticipantStatusEntity> ParticipantStatusEntities { get; set; }
 	}
 }

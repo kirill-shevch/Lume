@@ -9,9 +9,12 @@ namespace BLL.Core
 	public class EventValidation : IEventValidation
 	{
 		private readonly IEventRepository _eventRepository;
-		public EventValidation(IEventRepository eventRepository)
+		private readonly IPersonRepository _personRepository;
+		public EventValidation(IEventRepository eventRepository,
+			IPersonRepository personRepository)
 		{
 			_eventRepository = eventRepository;
+			_personRepository = personRepository;
 		}
 
 		public (bool ValidationResult, string ValidationMessage) ValidateAddEvent(AddEventModel model)
@@ -42,6 +45,36 @@ namespace BLL.Core
 				return (false, ErrorDictionary.GetErrorMessage(10));
 			}
 
+			return (true, string.Empty);
+		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateParticipantModel(EventParticipantModel model)
+		{
+			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(2));
+			}
+			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10));
+			}
+			if (!Enum.IsDefined(typeof(ParticipantStatus), model.ParticipantStatus))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(21));
+			}
+			return (true, string.Empty);
+		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateRemoveEventParticipant(Guid personUid, Guid eventUid)
+		{
+			if (!_personRepository.CheckPersonExistence(personUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(2));
+			}
+			if (!_eventRepository.CheckEventExistence(eventUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10));
+			}
 			return (true, string.Empty);
 		}
 

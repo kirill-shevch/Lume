@@ -11,11 +11,15 @@ namespace Constants
              "/api/person/get-person",
              "/api/person/update-person",
              "/api/person/is-person-filled-up",
+             "/api/person/get-person-list",
 
              "/api/event/add-event",
              "/api/event/get-event",
              "/api/event/get-event-list",
              "/api/event/update-event",
+             "/api/event/add-event-participant",
+             "/api/event/update-event-participant",
+             "/api/event/remove-event-participant",
 
              "/api/friends/add",
              "/api/friends/remove",
