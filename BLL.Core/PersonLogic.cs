@@ -67,9 +67,9 @@ namespace BLL.Core
 			await _personRepository.RemoveFriendFromPerson(personUid, friendUid);
 		}
 
-		public async Task<IEnumerable<PersonModel>> GetAllPersonsByPage(int pageNumber, int pageSize, string filter = null)
+		public async Task<IEnumerable<PersonModel>> GetPersonListByPage(int pageNumber, int pageSize, string filter = null)
 		{
-			var persons = await _personRepository.GetAllPersonsByPage(pageNumber, pageSize, filter);
+			var persons = await _personRepository.GetPersonListByPage(pageNumber, pageSize, filter);
 			return _mapper.Map<IEnumerable<PersonModel>>(persons);
 		}
 	}

@@ -102,7 +102,7 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task<IEnumerable<PersonEntity>> GetAllPersonsByPage(int pageNumber, int pageSize, string filter = null, CancellationToken cancellationToken = default)
+		public async Task<IEnumerable<PersonEntity>> GetPersonListByPage(int pageNumber, int pageSize, string filter = null, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{

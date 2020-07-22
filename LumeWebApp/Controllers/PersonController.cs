@@ -62,10 +62,10 @@ namespace LumeWebApp.Controllers
 		}
 
 		[HttpGet]
-		[Route("get-all-persons")]
-		public async Task<ActionResult<List<PersonModel>>> GetAllPersons(int pageNumber, int pageSize, string filter)
+		[Route("get-person-list")]
+		public async Task<ActionResult<List<PersonModel>>> GetPersonListByPage(int pageNumber, int pageSize, string filter)
 		{
-			return (await _personLogic.GetAllPersonsByPage(pageNumber, pageSize, filter)).ToList();
+			return (await _personLogic.GetPersonListByPage(pageNumber, pageSize, filter)).ToList();
 		}
 	}
 }
