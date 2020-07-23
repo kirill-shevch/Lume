@@ -110,11 +110,12 @@ namespace DAL.Core.Repositories
 					.Include(x => x.PersonImageContentEntity)
 					.Include(x => x.FriendList)
 						.ThenInclude(x => x.Friend)
-							.ThenInclude(x => x.PersonImageContentEntity);
+							.ThenInclude(x => x.PersonImageContentEntity)
+					.AsNoTracking();
 
 				if (!string.IsNullOrWhiteSpace(filter))
 				{
-					query.Where(p => p.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase));
+					query = query.Where(p => p.Name != null && p.Name.Contains(filter));
 				}
 
 				return await query.Skip(pageSize * (pageNumber - 1))
