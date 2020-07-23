@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS LumeDB.dbo.PersonAuth;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonFriendList;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToEvent;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToChat;
+DROP TABLE IF EXISTS LumeDB.dbo.EventImageContent;
 DROP TABLE IF EXISTS LumeDB.dbo.Event;
 DROP TABLE IF EXISTS LumeDB.dbo.EventType;
 DROP TABLE IF EXISTS LumeDB.dbo.EventStatus;
@@ -10,7 +11,7 @@ DROP TABLE IF EXISTS LumeDB.dbo.ChatMessage;
 DROP TABLE IF EXISTS LumeDB.dbo.Person;
 DROP TABLE IF EXISTS LumeDB.dbo.Chat;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonImageContent;
-DROP TABLE IF EXISTS LumeDB.dbo.EventImageContent;
+DROP TABLE IF EXISTS LumeDB.dbo.ParticipantStatus;
 
 CREATE TABLE LumeDB.dbo.PersonAuth (
 	PersonAuthId bigint IDENTITY(1,1) NOT NULL UNIQUE,
@@ -29,14 +30,6 @@ CREATE TABLE LumeDB.dbo.PersonImageContent (
 	ContentHash nvarchar(200) NOT NULL UNIQUE,
 	Content VARBINARY(MAX) NOT NULL,
 	CONSTRAINT PK_PersonImageContentId PRIMARY KEY CLUSTERED (PersonImageContentId)
-);
-
-CREATE TABLE LumeDB.dbo.EventImageContent (
-	EventImageContentId bigint IDENTITY(1,1) NOT NULL UNIQUE,
-	EventImageContentUid uniqueidentifier NOT NULL UNIQUE,
-	ContentHash nvarchar(200) NOT NULL UNIQUE,
-	Content VARBINARY(MAX) NOT NULL,
-	CONSTRAINT PK_EventImageContentId PRIMARY KEY CLUSTERED (EventImageContentId)
 );
 
 CREATE TABLE LumeDB.dbo.Person (
@@ -86,17 +79,25 @@ CREATE TABLE LumeDB.dbo.Event (
 	Description nvarchar(800) NULL,
 	StartTime datetime2(7) NULL,
 	EndTime datetime2(7) NULL,
-	EventImageContentId bigint NULL,
 	EventTypeId bigint NULL,
 	EventStatusId bigint NULL,
 	AdministratorId bigint NULL,
 	ChatId bigint null,
-	CONSTRAINT FK_Event_EventImageContent FOREIGN KEY (EventImageContentId) REFERENCES LumeDB.dbo.EventImageContent (EventImageContentId),
 	CONSTRAINT FK_Event_EventType FOREIGN KEY (EventTypeId) REFERENCES LumeDB.dbo.EventType (EventTypeId),
 	CONSTRAINT FK_Event_EventStatus FOREIGN KEY (EventStatusId) REFERENCES LumeDB.dbo.EventStatus (EventStatusId),
 	CONSTRAINT FK_Event_Person FOREIGN KEY (AdministratorId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT FK_Event_Chat FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId),
 	CONSTRAINT PK_EventId PRIMARY KEY CLUSTERED (EventId)
+);
+
+CREATE TABLE LumeDB.dbo.EventImageContent (
+	EventImageContentId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	EventImageContentUid uniqueidentifier NOT NULL UNIQUE,
+	Content VARBINARY(MAX) NOT NULL,
+	IsPrimary bit NOT NULL DEFAULT 0,
+	EventId bigint null,
+	CONSTRAINT PK_EventImageContentId PRIMARY KEY CLUSTERED (EventImageContentId),
+	CONSTRAINT FK_EventImageContent_Event FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId),
 );
 
 CREATE TABLE LumeDB.dbo.ChatMessage (
