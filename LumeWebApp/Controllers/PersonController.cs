@@ -25,11 +25,26 @@ namespace LumeWebApp.Controllers
 		}
 
 		[HttpGet]
-		[Route("get-person")]
-		public async Task<ActionResult<PersonModel>> GetPerson(Guid? personUid)
+		[Route("get-profile")]
+		public async Task<ActionResult<PersonModel>> GetProfile()
 		{
-			var uid = personUid ?? new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			return await _personLogic.GetPerson(uid);
+		}
+
+		[HttpGet]
+		[Route("get-person")]
+		public async Task<ActionResult<PersonModel>> GetPerson(Guid personUid)
+		{
+			var currentPersonUid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _personValidation.ValidateGetPerson(personUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			var model = await _personLogic.GetPerson(personUid);
+			model.IsFriend = await _personLogic.CheckFriendship(currentPersonUid, personUid);
+			return model;
 		}
 
 		[HttpGet]
@@ -65,7 +80,14 @@ namespace LumeWebApp.Controllers
 		[Route("get-person-list")]
 		public async Task<ActionResult<List<PersonModel>>> GetPersonListByPage(int pageNumber, int pageSize, string filter)
 		{
-			return (await _personLogic.GetPersonListByPage(pageNumber, pageSize, filter)).ToList();
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var models = await _personLogic.GetPersonListByPage(new GetPersonListModel
+			{ 
+				PersonUid = uid, 
+				PageNumber = pageNumber, 
+				PageSize = pageSize, 
+				Filter = filter });
+			return models.ToList();
 		}
 	}
 }
