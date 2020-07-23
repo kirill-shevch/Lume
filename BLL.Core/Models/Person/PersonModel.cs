@@ -10,6 +10,7 @@ namespace BLL.Core.Models.Person
 		public string Description { get; set; }
 		public byte? Age { get; set; }
 		public Guid? ImageContentUid{ get; set; }
+		public bool? IsFriend { get; set; }
 		public List<PersonModel> Friends{ get; set; }
 	}
 }

@@ -8,6 +8,7 @@ namespace Constants
         {
              "/home/secure",
 
+             "/api/person/get-profile",
              "/api/person/get-person",
              "/api/person/update-person",
              "/api/person/is-person-filled-up",
