@@ -4,6 +4,7 @@ using BLL.Core.Models.Event;
 using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
+using DAL.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,6 +118,14 @@ namespace BLL.Core
 				PersonId = personEntity.PersonId,
 				ParticipantStatusId = (long)eventParticipantModel.ParticipantStatus
 			};
+		}
+
+		public async Task<GetEventModel> GetRandomEvent(RandomEventFilter filter, Guid personUid)
+		{
+			var repositoryFilter = _mapper.Map<RepositoryRandomEventFilter>(filter);
+			repositoryFilter.PersonUid = personUid;
+			var entity = await _eventRepository.GetRandomEvent(repositoryFilter);
+			return _mapper.Map<GetEventModel>(entity);
 		}
 	}
 }

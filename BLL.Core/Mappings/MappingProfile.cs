@@ -4,6 +4,7 @@ using BLL.Core.Models.Event;
 using BLL.Core.Models.Person;
 using Constants;
 using DAL.Core.Entities;
+using DAL.Core.Models;
 using System;
 using System.Linq;
 
@@ -13,6 +14,8 @@ namespace BLL.Core.Mappings
 	{
 		public MappingProfile()
 		{
+			CreateMap<RandomEventFilter, RepositoryRandomEventFilter>();
+
 			CreateMap<PersonEntity, PersonModel>()
 				.ForMember(dest => dest.ImageContentUid, 
 				opt => opt.MapFrom(src => src.PersonImageContentEntity == null ? (Guid?)null : src.PersonImageContentEntity.PersonImageContentUid));

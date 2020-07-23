@@ -21,6 +21,7 @@ namespace Constants
              "/api/event/add-event-participant",
              "/api/event/update-event-participant",
              "/api/event/remove-event-participant",
+             "/api/event/get-random-event",
 
              "/api/friends/add",
              "/api/friends/remove",

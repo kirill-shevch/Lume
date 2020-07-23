@@ -110,5 +110,18 @@ namespace LumeWebApp.Controllers
 			await _eventLogic.RemoveParticipant(personUid, eventUid);
 			return Ok(Messages.ParticipantRemoved);
 		}
+
+		[HttpPost]
+		[Route("get-random-event")]
+		public async Task<ActionResult<GetEventModel>> GetRandomEvent(RandomEventFilter randomEventFilter)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _eventValidation.ValidateGetRandomEvent(randomEventFilter);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			return await _eventLogic.GetRandomEvent(randomEventFilter, uid);
+		}
 	}
 }

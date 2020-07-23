@@ -10,5 +10,6 @@ namespace BLL.Core.Interfaces
 		(bool ValidationResult, string ValidationMessage) ValidateUpdateEvent(UpdateEventModel model);
 		(bool ValidationResult, string ValidationMessage) ValidateParticipantModel(EventParticipantModel model);
 		(bool ValidationResult, string ValidationMessage) ValidateRemoveEventParticipant(Guid personUid, Guid eventUid);
+		(bool ValidationResult, string ValidationMessage) ValidateGetRandomEvent(RandomEventFilter filter);
 	}
 }
