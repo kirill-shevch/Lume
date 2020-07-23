@@ -123,5 +123,18 @@ namespace DAL.Core.Repositories
 					.ToListAsync(cancellationToken);
 			}
 		}
+
+		public async Task<List<PersonEntity>> GetAllPersonFriends(Guid personUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonFriendListEntities
+					.Include(p => p.Friend)
+					.ThenInclude(f => f.PersonImageContentEntity)
+					.Where(p => p.Person.PersonUid == personUid)
+					.Select(p => p.Friend)
+					.ToListAsync(cancellationToken);
+			}
+		}
 	}
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL.Core.Interfaces;
+using BLL.Core.Models.Person;
 using Constants;
 using Microsoft.AspNetCore.Mvc;
 
@@ -55,6 +57,13 @@ namespace LumeWebApp.Controllers
             await _personLogic.RemoveFriendFromPerson(uid, friendGuid);
 
             return Ok(Messages.FriendRemoved);
+        }
+
+        [HttpGet]
+        [Route("get-friends")]
+        public async Task<ActionResult<List<PersonModel>>> GetFriends(Guid personUid)
+        {
+            return await _personLogic.GetAllPersonFriends(personUid);
         }
     }
 }
