@@ -48,6 +48,23 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
+		public (bool ValidationResult, string ValidationMessage) ValidateGetRandomEvent(RandomEventFilter filter)
+		{
+			if (filter.Age < 1 || filter.Age > 150)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(22));
+			}
+			if (filter.PersonXCoordinate < 0)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(23));
+			}
+			if (filter.PersonYCoordinate < 0)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(23));
+			}
+			return (true, string.Empty);
+		}
+
 		public (bool ValidationResult, string ValidationMessage) ValidateParticipantModel(EventParticipantModel model)
 		{
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)

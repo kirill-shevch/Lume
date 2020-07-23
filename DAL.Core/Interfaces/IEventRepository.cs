@@ -1,4 +1,5 @@
 ﻿using DAL.Core.Entities;
+using DAL.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -18,5 +19,6 @@ namespace DAL.Core.Interfaces
 		Task UpdateParticipant(PersonToEventEntity entity);
 		Task RemoveParticipant(PersonToEventEntity entity);
 		Task<PersonToEventEntity> GetParticipant(Guid personUid, Guid eventUid);
+		Task<EventEntity> GetRandomEvent(RepositoryRandomEventFilter filter);
 	}
 }

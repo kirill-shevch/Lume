@@ -1,5 +1,6 @@
 ﻿using DAL.Core.Entities;
 using DAL.Core.Interfaces;
+using DAL.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -124,6 +125,50 @@ namespace DAL.Core.Repositories
 			{
 				context.Update(entity);
 				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task<EventEntity> GetRandomEvent(RepositoryRandomEventFilter filter)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var query = context.EventEntities
+					.Include(x => x.Administrator)
+					.Include(x => x.Participants)
+						.ThenInclude(x => x.Person)
+					.AsNoTracking();
+
+				query = query.Where(x => x.Administrator.PersonUid != filter.PersonUid &&
+					!x.Participants.Any(x => x.Person.PersonUid == filter.PersonUid) &&
+					x.MinAge < filter.Age &&
+					x.MaxAge > filter.Age &&
+					!filter.IgnoredEventUids.Contains(x.EventUid));
+
+				if (filter.PersonXCoordinate.HasValue && filter.PersonYCoordinate.HasValue && filter.Distance.HasValue)
+				{
+					query = query.Where(x => 
+					filter.Distance >= Math.Sqrt(Math.Pow(Math.Abs(x.XCoordinate - filter.PersonXCoordinate.Value), 2) + Math.Pow(Math.Abs(x.YCoordinate - filter.PersonYCoordinate.Value), 2)));
+				}
+
+				var random = new Random();
+
+				var events = await query.Select(x => x.EventId).ToListAsync();
+				if (!events.Any())
+				{
+					return null;
+				}
+				var randomEventId = events.ElementAt(random.Next(0, events.Count()));
+				return await context.EventEntities
+					.Include(x => x.EventStatus)
+					.Include(x => x.EventType)
+					.Include(x => x.EventImageContent)
+					.Include(x => x.Administrator)
+						.ThenInclude(x => x.PersonImageContentEntity)
+					.Include(x => x.Participants)
+						.ThenInclude(x => x.Person)
+							.ThenInclude(x => x.PersonImageContentEntity)
+					.Include(x => x.Chat)
+					.SingleOrDefaultAsync(x => x.EventId == randomEventId);
 			}
 		}
 	}
