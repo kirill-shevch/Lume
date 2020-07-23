@@ -13,6 +13,9 @@ namespace BLL.Core
 	{
 		private readonly IPersonRepository _personRepository;
 		private readonly IMapper _mapper;
+
+		private const int countOfFriends = 5;
+
 		public PersonLogic(IPersonRepository personRepository,
 			IMapper mapper)
 		{
@@ -33,7 +36,7 @@ namespace BLL.Core
 		{
 			var entity = await _personRepository.GetPerson(personUid);
 			var model = _mapper.Map<PersonModel>(entity);
-			model.Friends = entity.FriendList.Select(x => _mapper.Map<PersonModel>(entity)).ToList();
+			model.Friends = entity.FriendList.Select(x => _mapper.Map<PersonModel>(entity)).Take(countOfFriends).ToList();
 			return model;
 		}
 
@@ -81,6 +84,11 @@ namespace BLL.Core
 		public async Task<bool> CheckFriendship(Guid personUid, Guid friendUid)
 		{
 			return await _personRepository.CheckPersonFriendExistence(personUid, friendUid);
+		}
+
+		public async Task<List<PersonModel>> GetAllPersonFriends(Guid personUid)
+		{
+			return _mapper.Map<List<PersonModel>>(await _personRepository.GetAllPersonFriends(personUid));
 		}
 	}
 }

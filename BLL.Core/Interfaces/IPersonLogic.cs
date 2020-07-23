@@ -15,5 +15,6 @@ namespace BLL.Core.Interfaces
 		Task<bool> IsPersonFilledUp(Guid personUid);
 		Task<IEnumerable<PersonModel>> GetPersonListByPage(GetPersonListModel model);
 		Task<bool> CheckFriendship(Guid personUid, Guid friendUid);
+		Task<List<PersonModel>> GetAllPersonFriends(Guid personUid);
 	}
 }
