@@ -171,5 +171,50 @@ namespace DAL.Core.Repositories
 					.SingleOrDefaultAsync(x => x.EventId == randomEventId);
 			}
 		}
+
+		public async Task<List<EventEntity>> SearchForEvent(RepositoryEventSearchFilter repositoryFilter)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var query = context.EventEntities.AsNoTracking();
+				if (!string.IsNullOrEmpty(repositoryFilter.Name))
+				{
+					query = query.Where(x => x.Name.Contains(repositoryFilter.Name));
+				}
+				if (!string.IsNullOrEmpty(repositoryFilter.Description))
+				{
+					query = query.Where(x => x.Description.Contains(repositoryFilter.Description));
+				}
+				if (repositoryFilter.MinAge.HasValue)
+				{
+					query = query.Where(x => x.MinAge >= repositoryFilter.MinAge);
+				}
+				if (repositoryFilter.MaxAge.HasValue)
+				{
+					query = query.Where(x => x.MaxAge <= repositoryFilter.MaxAge);
+				}
+				if (repositoryFilter.StartTime.HasValue)
+				{
+					query = query.Where(x => x.StartTime.HasValue && x.StartTime == repositoryFilter.StartTime);
+				}
+				if (repositoryFilter.EndTime.HasValue)
+				{
+					query = query.Where(x => x.EndTime.HasValue && x.EndTime == repositoryFilter.EndTime);
+				}
+				if (repositoryFilter.Type.HasValue)
+				{
+					query = query.Where(x => x.EventTypeId == (long)repositoryFilter.Type);
+				}
+				if (repositoryFilter.Status.HasValue)
+				{
+					query = query.Where(x => x.EventStatusId == (long)repositoryFilter.Status);
+				}
+				if (repositoryFilter.IsOpenForInvitations.HasValue)
+				{
+					query = query.Where(x => x.IsOpenForInvitations == repositoryFilter.IsOpenForInvitations);
+				}
+				return await query.ToListAsync();
+			}
+		}
 	}
 }
