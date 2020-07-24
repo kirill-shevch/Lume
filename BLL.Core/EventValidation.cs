@@ -61,7 +61,7 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateParticipantModel(EventParticipantModel model)
+		public (bool ValidationResult, string ValidationMessage) ValidateUpdateParticipantModel(EventParticipantModel model)
 		{
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
 			{
@@ -72,9 +72,9 @@ namespace BLL.Core
 				return (false, ErrorDictionary.GetErrorMessage(10));
 			}
 			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
-			if (participant != null)
+			if (participant == null)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(24));
+				return (false, ErrorDictionary.GetErrorMessage(26));
 			}
 			if (!Enum.IsDefined(typeof(ParticipantStatus), model.ParticipantStatus))
 			{
@@ -130,6 +130,28 @@ namespace BLL.Core
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(15));
+			}
+			return (true, string.Empty);
+		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateAddParticipantModel(EventParticipantModel model)
+		{
+			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(2));
+			}
+			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10));
+			}
+			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
+			if (participant != null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(24));
+			}
+			if (!Enum.IsDefined(typeof(ParticipantStatus), model.ParticipantStatus))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(21));
 			}
 			return (true, string.Empty);
 		}

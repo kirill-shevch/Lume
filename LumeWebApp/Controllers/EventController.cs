@@ -76,7 +76,7 @@ namespace LumeWebApp.Controllers
 		[Route("add-event-participant")]
 		public async Task<ActionResult> AddEventParticipant(EventParticipantModel request)
 		{
-			var validationResult = _eventValidation.ValidateParticipantModel(request);
+			var validationResult = _eventValidation.ValidateAddParticipantModel(request);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
@@ -89,7 +89,7 @@ namespace LumeWebApp.Controllers
 		[Route("update-event-participant")]
 		public async Task<ActionResult> UpdateEventParticipant(EventParticipantModel request)
 		{
-			var validationResult = _eventValidation.ValidateParticipantModel(request);
+			var validationResult = _eventValidation.ValidateUpdateParticipantModel(request);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
