@@ -59,6 +59,8 @@ namespace BLL.Core
 			{
 				var model = _mapper.Map<GetEventListModel>(entity);
 				model.IsAdministrator = entity.Administrator.PersonUid == personUid;
+				var status = entity.Participants.Single(s => s.Person.PersonUid == personUid).ParticipantStatusId;
+				model.ParticipantStatus = (ParticipantStatus)status;
 				return model;
 			}).ToList();
 		}
