@@ -131,9 +131,19 @@ namespace LumeWebApp.Controllers
 
 		[HttpPost]
 		[Route("search-for-event")]
-		public async Task<ActionResult<GetEventListModel>> SearchForEvent(EventSearchFilter eventSearchFilter)
+		public async Task<ActionResult<List<GetEventListModel>>> SearchForEvent(EventSearchFilter eventSearchFilter)
 		{
-
+			var validationResult = _eventValidation.ValidateSearchForEvent(eventSearchFilter);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			var events = await _eventLogic.SearchForEvent(eventSearchFilter);
+			if (events == null || !events.Any())
+			{
+				return BadRequest(ErrorDictionary.GetErrorMessage(25));
+			}
+			return events;
 		}
 	}
 }
