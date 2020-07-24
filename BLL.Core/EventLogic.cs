@@ -85,6 +85,8 @@ namespace BLL.Core
 				eventEntity.StartTime = updateEventModel.StartTime;
 			if (updateEventModel.EndTime.HasValue)
 				eventEntity.EndTime = updateEventModel.EndTime;
+			if (updateEventModel.IsOpenForInvitations.HasValue)
+				eventEntity.IsOpenForInvitations = updateEventModel.IsOpenForInvitations;
 			if (updateEventModel.Type.HasValue)
 			{
 				eventEntity.EventTypeId = (long)updateEventModel.Type;
