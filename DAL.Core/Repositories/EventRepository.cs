@@ -140,8 +140,8 @@ namespace DAL.Core.Repositories
 
 				query = query.Where(x => x.Administrator.PersonUid != filter.PersonUid &&
 					!x.Participants.Any(x => x.Person.PersonUid == filter.PersonUid) &&
-					x.MinAge < filter.Age &&
-					x.MaxAge > filter.Age &&
+					(!x.MinAge.HasValue || x.MinAge < filter.Age) &&
+					(!x.MaxAge.HasValue || x.MaxAge > filter.Age) &&
 					!filter.IgnoredEventUids.Contains(x.EventUid));
 
 				if (filter.PersonXCoordinate.HasValue && filter.PersonYCoordinate.HasValue && filter.Distance.HasValue)
