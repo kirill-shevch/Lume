@@ -61,6 +61,7 @@ namespace BLL.Core
 				model.IsAdministrator = entity.Administrator.PersonUid == personUid;
 				var status = entity.Participants.Single(s => s.Person.PersonUid == personUid).ParticipantStatusId;
 				model.ParticipantStatus = (ParticipantStatus)status;
+				model.AnyPersonWaitingForApprove = model.IsAdministrator && entity.Participants.Any(x => x.ParticipantStatusId == (long)ParticipantStatus.WaitingForApproveFromEvent);
 				return model;
 			}).ToList();
 		}
