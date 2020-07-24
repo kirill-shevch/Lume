@@ -23,8 +23,9 @@ namespace Constants
              "/api/event/remove-event-participant",
              "/api/event/get-random-event",
 
-             "/api/friends/add",
-             "/api/friends/remove",
+             "/api/friends/add-friend",
+             "/api/friends/remove-friend",
+             "​/api​/friends​/get-friends",
 
              "/api/chat/get-chat",
              "/api/chat/get-person-chat",
