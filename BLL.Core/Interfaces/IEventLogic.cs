@@ -15,5 +15,6 @@ namespace BLL.Core.Interfaces
 		Task UpdateParticipant(EventParticipantModel eventParticipantModel);
 		Task RemoveParticipant(Guid personUid, Guid eventUid);
 		Task<GetEventModel> GetRandomEvent(RandomEventFilter filter, Guid personUid);
+		Task<List<GetEventListModel>> SearchForEvent(EventSearchFilter filter);
 	}
 }

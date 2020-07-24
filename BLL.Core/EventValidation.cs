@@ -96,6 +96,23 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
+		public (bool ValidationResult, string ValidationMessage) ValidateSearchForEvent(EventSearchFilter eventSearchFilter)
+		{
+			if (eventSearchFilter.MinAge.HasValue && eventSearchFilter.MaxAge.HasValue && eventSearchFilter.MinAge > eventSearchFilter.MaxAge)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(15));
+			}
+			if (eventSearchFilter.Status.HasValue && !Enum.IsDefined(typeof(EventStatus), eventSearchFilter.Status))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(13));
+			}
+			if (eventSearchFilter.Type.HasValue && !Enum.IsDefined(typeof(EventType), eventSearchFilter.Type))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(14));
+			}
+			return (true, string.Empty);
+		}
+
 		public (bool ValidationResult, string ValidationMessage) ValidateUpdateEvent(UpdateEventModel model)
 		{
 			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)

@@ -20,5 +20,6 @@ namespace DAL.Core.Interfaces
 		Task RemoveParticipant(PersonToEventEntity entity);
 		Task<PersonToEventEntity> GetParticipant(Guid personUid, Guid eventUid);
 		Task<EventEntity> GetRandomEvent(RepositoryRandomEventFilter filter);
+		Task<List<EventEntity>> SearchForEvent(RepositoryEventSearchFilter repositoryFilter);
 	}
 }
