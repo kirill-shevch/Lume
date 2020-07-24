@@ -44,6 +44,11 @@ namespace BLL.Core
 		{
 			var eventEntity = await _eventRepository.GetEvent(eventUid);
 			var eventModel = _mapper.Map<GetEventModel>(eventEntity);
+			foreach (var participant in eventModel.Participants)
+			{
+				var status = eventEntity.Participants.Single(x => x.Person.PersonUid == participant.PersonUid).ParticipantStatusId;
+				participant.ParticipantStatus = (ParticipantStatus)status;
+			}
 			return eventModel;
 		}
 

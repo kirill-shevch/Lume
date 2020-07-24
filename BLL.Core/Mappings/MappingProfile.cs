@@ -20,6 +20,10 @@ namespace BLL.Core.Mappings
 				.ForMember(dest => dest.ImageContentUid, 
 				opt => opt.MapFrom(src => src.PersonImageContentEntity == null ? (Guid?)null : src.PersonImageContentEntity.PersonImageContentUid));
 
+			CreateMap<PersonEntity, PersonEventModel>()
+				.ForMember(dest => dest.ImageContentUid,
+				opt => opt.MapFrom(src => src.PersonImageContentEntity == null ? (Guid?)null : src.PersonImageContentEntity.PersonImageContentUid));
+
 			CreateMap<AddEventModel, EventEntity>()
 				.ForMember(dest => dest.EventStatusId, opt => opt.MapFrom(src => (long)src.Status))
 				.ForMember(dest => dest.EventTypeId, opt => opt.MapFrom(src => (long)src.Type));
