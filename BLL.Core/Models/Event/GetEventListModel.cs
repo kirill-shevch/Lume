@@ -17,5 +17,6 @@ namespace BLL.Core.Models.Event
 		public Guid? EventImageContentUid { get; set; }
 		public bool IsAdministrator { get; set; }
 		public ParticipantStatus ParticipantStatus { get; set; }
+		public bool AnyPersonWaitingForApprove { get; set; }
 	}
 }
