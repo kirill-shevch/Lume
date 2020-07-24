@@ -22,5 +22,6 @@ namespace BLL.Core.Models.Event
 		public Guid? ChatUid { get; set; }
 		public PersonModel Administrator { get; set; }
 		public IEnumerable<PersonEventModel> Participants { get; set; }
+		public bool IsOpenForInvitations { get; set; }
 	}
 }

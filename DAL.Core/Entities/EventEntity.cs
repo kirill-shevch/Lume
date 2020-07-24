@@ -16,6 +16,7 @@ namespace DAL.Core.Entities
 		public string Description { get; set; }
 		public DateTime? StartTime { get; set; }
 		public DateTime? EndTime { get; set; }
+		public bool? IsOpenForInvitations { get; set; }
 		public long? EventImageContentId { get; set; }
 		public long EventTypeId { get; set; }
 		public long EventStatusId { get; set; }
