@@ -97,7 +97,7 @@ namespace DAL.Core.Repositories
 				return await context.PersonToEventEntities
 					.Include(x => x.Event)
 					.Include(x => x.Person)
-					.SingleAsync(x => x.Event.EventUid == eventUid && x.Person.PersonUid == personUid);
+					.SingleOrDefaultAsync(x => x.Event.EventUid == eventUid && x.Person.PersonUid == personUid);
 			}
 		}
 

@@ -75,6 +75,11 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(10));
 			}
+			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
+			if (participant != null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(24));
+			}
 			if (!Enum.IsDefined(typeof(ParticipantStatus), model.ParticipantStatus))
 			{
 				return (false, ErrorDictionary.GetErrorMessage(21));
