@@ -123,6 +123,8 @@ namespace BLL.Core
 		public async Task<GetEventModel> GetRandomEvent(RandomEventFilter filter, Guid personUid)
 		{
 			var repositoryFilter = _mapper.Map<RepositoryRandomEventFilter>(filter);
+			var personEntity = await _personRepository.GetPerson(personUid);
+			repositoryFilter.Age = personEntity.Age.Value;
 			repositoryFilter.PersonUid = personUid;
 			var entity = await _eventRepository.GetRandomEvent(repositoryFilter);
 			return _mapper.Map<GetEventModel>(entity);

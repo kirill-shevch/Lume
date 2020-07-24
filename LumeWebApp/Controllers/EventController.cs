@@ -121,7 +121,12 @@ namespace LumeWebApp.Controllers
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			return await _eventLogic.GetRandomEvent(randomEventFilter, uid);
+			var randomEvent = await _eventLogic.GetRandomEvent(randomEventFilter, uid);
+			if (randomEvent == null)
+			{
+				return BadRequest(ErrorDictionary.GetErrorMessage(25));
+			}
+			return randomEvent;
 		}
 	}
 }

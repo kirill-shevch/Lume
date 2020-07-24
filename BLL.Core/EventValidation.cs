@@ -50,10 +50,6 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateGetRandomEvent(RandomEventFilter filter)
 		{
-			if (filter.Age < 1 || filter.Age > 150)
-			{
-				return (false, ErrorDictionary.GetErrorMessage(22));
-			}
 			if (filter.PersonXCoordinate < 0)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(23));
@@ -74,6 +70,11 @@ namespace BLL.Core
 			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(10));
+			}
+			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
+			if (participant != null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(24));
 			}
 			if (!Enum.IsDefined(typeof(ParticipantStatus), model.ParticipantStatus))
 			{

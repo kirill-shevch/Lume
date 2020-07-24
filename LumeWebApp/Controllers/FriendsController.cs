@@ -24,7 +24,7 @@ namespace LumeWebApp.Controllers
         }
         
         [HttpPost]
-        [Route("add")]
+        [Route("add-friend")]
         public async Task<ActionResult> AddFriend(Guid friendGuid)
         {
             var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
@@ -42,7 +42,7 @@ namespace LumeWebApp.Controllers
         }
 
         [HttpDelete]
-        [Route("remove")]
+        [Route("remove-friend")]
         public async Task<ActionResult> RemoveFriend(Guid friendGuid)
         {
             var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
