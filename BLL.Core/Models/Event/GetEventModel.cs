@@ -21,6 +21,6 @@ namespace BLL.Core.Models.Event
 		public Guid? EventImageContentUid { get; set; }
 		public Guid? ChatUid { get; set; }
 		public PersonModel Administrator { get; set; }
-		public IEnumerable<PersonModel> Participants { get; set; }
+		public IEnumerable<PersonEventModel> Participants { get; set; }
 	}
 }
