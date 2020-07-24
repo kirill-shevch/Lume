@@ -128,5 +128,12 @@ namespace LumeWebApp.Controllers
 			}
 			return randomEvent;
 		}
+
+		[HttpPost]
+		[Route("search-for-event")]
+		public async Task<ActionResult<GetEventListModel>> SearchForEvent(EventSearchFilter eventSearchFilter)
+		{
+
+		}
 	}
 }
