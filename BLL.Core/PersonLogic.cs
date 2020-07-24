@@ -36,7 +36,11 @@ namespace BLL.Core
 		{
 			var entity = await _personRepository.GetPerson(personUid);
 			var model = _mapper.Map<PersonModel>(entity);
-			model.Friends = entity.FriendList.Select(x => _mapper.Map<PersonModel>(entity)).Take(countOfFriends).ToList();
+			model.Friends = entity.FriendList.Select(x => _mapper.Map<PersonModel>(x.Friend)).Take(countOfFriends).ToList();
+			foreach (var friend in model.Friends)
+			{
+				friend.IsFriend = true;
+			}
 			return model;
 		}
 
@@ -88,7 +92,13 @@ namespace BLL.Core
 
 		public async Task<List<PersonModel>> GetAllPersonFriends(Guid personUid)
 		{
-			return _mapper.Map<List<PersonModel>>(await _personRepository.GetAllPersonFriends(personUid));
+			var entities = await _personRepository.GetAllPersonFriends(personUid);
+			var models = _mapper.Map<List<PersonModel>>(entities);
+			foreach (var model in models)
+			{
+				model.IsFriend = true;
+			}
+			return models;
 		}
 	}
 }
