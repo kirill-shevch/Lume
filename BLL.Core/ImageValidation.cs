@@ -50,41 +50,12 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateAddEventImage(AddImageModel model)
-		{
-			if (model.Content == null || !model.Content.Any())
-			{
-				return (false, ErrorDictionary.GetErrorMessage(9));
-			}
-			if (!_eventRepository.CheckEventExistence(model.Uid).Result)
-			{
-				return (false, ErrorDictionary.GetErrorMessage(10));
-			}
-
-			return (true, string.Empty);
-		}
-
 		public (bool ValidationResult, string ValidationMessage) ValidateGetEventImage(Guid uid)
 		{
 			if (!_imageRepository.CheckEventImageExistence(uid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(12));
 			}
-
-			return (true, string.Empty);
-		}
-
-		public (bool ValidationResult, string ValidationMessage) ValidateAddChatMessageImage(AddImageModel model)
-		{
-			if (model.Content == null || !model.Content.Any())
-			{
-				return (false, ErrorDictionary.GetErrorMessage(9));
-			}
-			if (!_chatRepository.CheckChatMessageExistence(model.Uid).Result)
-			{
-				return (false, ErrorDictionary.GetErrorMessage(11));
-			}
-
 			return (true, string.Empty);
 		}
 

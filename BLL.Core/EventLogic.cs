@@ -35,6 +35,26 @@ namespace BLL.Core
 			entity.EventUid = eventUid;
 			entity.AdministratorId = person.PersonId;
 			entity.Chat = new ChatEntity { ChatUid = Guid.NewGuid(), IsGroupChat = true };
+			var imageList = new List<EventImageContentEntity>();
+			if (addEventModel.PrimaryImage != null && addEventModel.PrimaryImage.Any())
+			{
+				imageList.Add(new EventImageContentEntity 
+				{ 
+					Content = addEventModel.PrimaryImage, 
+					EventImageContentUid = Guid.NewGuid(), 
+					IsPrimary = true 
+				});
+			}
+			foreach (var image in addEventModel.Images)
+			{
+				imageList.Add(new EventImageContentEntity
+				{
+					Content = image,
+					EventImageContentUid = Guid.NewGuid(),
+					IsPrimary = false
+				});
+			}
+			entity.EventImageContentEntities = imageList;
 			await _eventRepository.CreateEvent(entity);
 			await AddParticipant(new EventParticipantModel { EventUid = eventUid, PersonUid = person.PersonUid, ParticipantStatus = ParticipantStatus.Active });
 			return eventUid;
