@@ -76,7 +76,7 @@ namespace LumeWebApp.Controllers
 		[Route("add-event-participant")]
 		public async Task<ActionResult> AddEventParticipant(EventParticipantModel request)
 		{
-			var validationResult = _eventValidation.ValidateParticipantModel(request);
+			var validationResult = _eventValidation.ValidateAddParticipantModel(request);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
@@ -89,7 +89,7 @@ namespace LumeWebApp.Controllers
 		[Route("update-event-participant")]
 		public async Task<ActionResult> UpdateEventParticipant(EventParticipantModel request)
 		{
-			var validationResult = _eventValidation.ValidateParticipantModel(request);
+			var validationResult = _eventValidation.ValidateUpdateParticipantModel(request);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
@@ -121,7 +121,29 @@ namespace LumeWebApp.Controllers
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			return await _eventLogic.GetRandomEvent(randomEventFilter, uid);
+			var randomEvent = await _eventLogic.GetRandomEvent(randomEventFilter, uid);
+			if (randomEvent == null)
+			{
+				return BadRequest(ErrorDictionary.GetErrorMessage(25));
+			}
+			return randomEvent;
+		}
+
+		[HttpPost]
+		[Route("search-for-event")]
+		public async Task<ActionResult<List<GetEventListModel>>> SearchForEvent(EventSearchFilter eventSearchFilter)
+		{
+			var validationResult = _eventValidation.ValidateSearchForEvent(eventSearchFilter);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			var events = await _eventLogic.SearchForEvent(eventSearchFilter);
+			if (events == null || !events.Any())
+			{
+				return BadRequest(ErrorDictionary.GetErrorMessage(25));
+			}
+			return events;
 		}
 	}
 }

@@ -44,6 +44,11 @@ namespace BLL.Core
 		{
 			var eventEntity = await _eventRepository.GetEvent(eventUid);
 			var eventModel = _mapper.Map<GetEventModel>(eventEntity);
+			foreach (var participant in eventModel.Participants)
+			{
+				var status = eventEntity.Participants.Single(x => x.Person.PersonUid == participant.PersonUid).ParticipantStatusId;
+				participant.ParticipantStatus = (ParticipantStatus)status;
+			}
 			return eventModel;
 		}
 
@@ -54,10 +59,12 @@ namespace BLL.Core
 			{
 				var model = _mapper.Map<GetEventListModel>(entity);
 				model.IsAdministrator = entity.Administrator.PersonUid == personUid;
+				var status = entity.Participants.Single(s => s.Person.PersonUid == personUid).ParticipantStatusId;
+				model.ParticipantStatus = (ParticipantStatus)status;
+				model.AnyPersonWaitingForApprove = model.IsAdministrator.Value && entity.Participants.Any(x => x.ParticipantStatusId == (long)ParticipantStatus.WaitingForApproveFromEvent);
 				return model;
 			}).ToList();
 		}
-
 		public async Task UpdateEvent(UpdateEventModel updateEventModel)
 		{
 			var eventEntity = await _eventRepository.GetEvent(updateEventModel.EventUid);
@@ -77,6 +84,8 @@ namespace BLL.Core
 				eventEntity.StartTime = updateEventModel.StartTime;
 			if (updateEventModel.EndTime.HasValue)
 				eventEntity.EndTime = updateEventModel.EndTime;
+			if (updateEventModel.IsOpenForInvitations.HasValue)
+				eventEntity.IsOpenForInvitations = updateEventModel.IsOpenForInvitations;
 			if (updateEventModel.Type.HasValue)
 			{
 				eventEntity.EventTypeId = (long)updateEventModel.Type;
@@ -123,9 +132,18 @@ namespace BLL.Core
 		public async Task<GetEventModel> GetRandomEvent(RandomEventFilter filter, Guid personUid)
 		{
 			var repositoryFilter = _mapper.Map<RepositoryRandomEventFilter>(filter);
+			var personEntity = await _personRepository.GetPerson(personUid);
+			repositoryFilter.Age = personEntity.Age.Value;
 			repositoryFilter.PersonUid = personUid;
 			var entity = await _eventRepository.GetRandomEvent(repositoryFilter);
 			return _mapper.Map<GetEventModel>(entity);
+		}
+
+		public async Task<List<GetEventListModel>> SearchForEvent(EventSearchFilter filter)
+		{
+			var repositoryFilter = _mapper.Map<RepositoryEventSearchFilter>(filter);
+			var entities = await _eventRepository.SearchForEvent(repositoryFilter);
+			return _mapper.Map<List<GetEventListModel>>(entities);
 		}
 	}
 }

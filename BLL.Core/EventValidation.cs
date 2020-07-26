@@ -50,10 +50,6 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateGetRandomEvent(RandomEventFilter filter)
 		{
-			if (filter.Age < 1 || filter.Age > 150)
-			{
-				return (false, ErrorDictionary.GetErrorMessage(22));
-			}
 			if (filter.PersonXCoordinate < 0)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(23));
@@ -65,7 +61,7 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateParticipantModel(EventParticipantModel model)
+		public (bool ValidationResult, string ValidationMessage) ValidateUpdateParticipantModel(EventParticipantModel model)
 		{
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
 			{
@@ -74,6 +70,11 @@ namespace BLL.Core
 			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(10));
+			}
+			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
+			if (participant == null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(26));
 			}
 			if (!Enum.IsDefined(typeof(ParticipantStatus), model.ParticipantStatus))
 			{
@@ -95,6 +96,23 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
+		public (bool ValidationResult, string ValidationMessage) ValidateSearchForEvent(EventSearchFilter eventSearchFilter)
+		{
+			if (eventSearchFilter.MinAge.HasValue && eventSearchFilter.MaxAge.HasValue && eventSearchFilter.MinAge > eventSearchFilter.MaxAge)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(15));
+			}
+			if (eventSearchFilter.Status.HasValue && !Enum.IsDefined(typeof(EventStatus), eventSearchFilter.Status))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(13));
+			}
+			if (eventSearchFilter.Type.HasValue && !Enum.IsDefined(typeof(EventType), eventSearchFilter.Type))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(14));
+			}
+			return (true, string.Empty);
+		}
+
 		public (bool ValidationResult, string ValidationMessage) ValidateUpdateEvent(UpdateEventModel model)
 		{
 			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
@@ -112,6 +130,28 @@ namespace BLL.Core
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(15));
+			}
+			return (true, string.Empty);
+		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateAddParticipantModel(EventParticipantModel model)
+		{
+			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(2));
+			}
+			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10));
+			}
+			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
+			if (participant != null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(24));
+			}
+			if (!Enum.IsDefined(typeof(ParticipantStatus), model.ParticipantStatus))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(21));
 			}
 			return (true, string.Empty);
 		}

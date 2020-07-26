@@ -79,6 +79,7 @@ CREATE TABLE LumeDB.dbo.Event (
 	Description nvarchar(800) NULL,
 	StartTime datetime2(7) NULL,
 	EndTime datetime2(7) NULL,
+	IsOpenForInvitations bit NOT NULL DEFAULT 0,
 	EventTypeId bigint NULL,
 	EventStatusId bigint NULL,
 	AdministratorId bigint NULL,

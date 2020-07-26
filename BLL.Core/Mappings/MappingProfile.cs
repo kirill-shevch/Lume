@@ -16,8 +16,14 @@ namespace BLL.Core.Mappings
 		{
 			CreateMap<RandomEventFilter, RepositoryRandomEventFilter>();
 
+			CreateMap<EventSearchFilter, RepositoryEventSearchFilter>();
+
 			CreateMap<PersonEntity, PersonModel>()
 				.ForMember(dest => dest.ImageContentUid, 
+				opt => opt.MapFrom(src => src.PersonImageContentEntity == null ? (Guid?)null : src.PersonImageContentEntity.PersonImageContentUid));
+
+			CreateMap<PersonEntity, PersonEventModel>()
+				.ForMember(dest => dest.ImageContentUid,
 				opt => opt.MapFrom(src => src.PersonImageContentEntity == null ? (Guid?)null : src.PersonImageContentEntity.PersonImageContentUid));
 
 			CreateMap<AddEventModel, EventEntity>()

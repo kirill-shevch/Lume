@@ -97,7 +97,7 @@ namespace DAL.Core.Repositories
 				return await context.PersonToEventEntities
 					.Include(x => x.Event)
 					.Include(x => x.Person)
-					.SingleAsync(x => x.Event.EventUid == eventUid && x.Person.PersonUid == personUid);
+					.SingleOrDefaultAsync(x => x.Event.EventUid == eventUid && x.Person.PersonUid == personUid);
 			}
 		}
 
@@ -140,8 +140,8 @@ namespace DAL.Core.Repositories
 
 				query = query.Where(x => x.Administrator.PersonUid != filter.PersonUid &&
 					!x.Participants.Any(x => x.Person.PersonUid == filter.PersonUid) &&
-					x.MinAge < filter.Age &&
-					x.MaxAge > filter.Age &&
+					(!x.MinAge.HasValue || x.MinAge < filter.Age) &&
+					(!x.MaxAge.HasValue || x.MaxAge > filter.Age) &&
 					!filter.IgnoredEventUids.Contains(x.EventUid));
 
 				if (filter.PersonXCoordinate.HasValue && filter.PersonYCoordinate.HasValue && filter.Distance.HasValue)
@@ -169,6 +169,51 @@ namespace DAL.Core.Repositories
 							.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Chat)
 					.SingleOrDefaultAsync(x => x.EventId == randomEventId);
+			}
+		}
+
+		public async Task<List<EventEntity>> SearchForEvent(RepositoryEventSearchFilter repositoryFilter)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var query = context.EventEntities.AsNoTracking();
+				if (!string.IsNullOrEmpty(repositoryFilter.Name))
+				{
+					query = query.Where(x => x.Name.Contains(repositoryFilter.Name));
+				}
+				if (!string.IsNullOrEmpty(repositoryFilter.Description))
+				{
+					query = query.Where(x => x.Description.Contains(repositoryFilter.Description));
+				}
+				if (repositoryFilter.MinAge.HasValue)
+				{
+					query = query.Where(x => x.MinAge >= repositoryFilter.MinAge);
+				}
+				if (repositoryFilter.MaxAge.HasValue)
+				{
+					query = query.Where(x => x.MaxAge <= repositoryFilter.MaxAge);
+				}
+				if (repositoryFilter.StartTime.HasValue)
+				{
+					query = query.Where(x => x.StartTime.HasValue && x.StartTime == repositoryFilter.StartTime);
+				}
+				if (repositoryFilter.EndTime.HasValue)
+				{
+					query = query.Where(x => x.EndTime.HasValue && x.EndTime == repositoryFilter.EndTime);
+				}
+				if (repositoryFilter.Type.HasValue)
+				{
+					query = query.Where(x => x.EventTypeId == (long)repositoryFilter.Type);
+				}
+				if (repositoryFilter.Status.HasValue)
+				{
+					query = query.Where(x => x.EventStatusId == (long)repositoryFilter.Status);
+				}
+				if (repositoryFilter.IsOpenForInvitations.HasValue)
+				{
+					query = query.Where(x => x.IsOpenForInvitations == repositoryFilter.IsOpenForInvitations);
+				}
+				return await query.ToListAsync();
 			}
 		}
 	}
