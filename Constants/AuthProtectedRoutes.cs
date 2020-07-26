@@ -34,8 +34,7 @@ namespace Constants
              "/api/chat/add-chat-message",
              "/api/chat/get-new-chat-messages",
 
-             "/api/image/add-person-image",
-             "/api/image/add-event-image"
+             "/api/image/add-person-image"
         };
     }
 }

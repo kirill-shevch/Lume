@@ -5,8 +5,6 @@ namespace BLL.Core.Interfaces
 {
 	public interface IImageValidation
 	{
-		(bool ValidationResult, string ValidationMessage) ValidateAddChatMessageImage(AddImageModel model);
-		(bool ValidationResult, string ValidationMessage) ValidateAddEventImage(AddImageModel model);
 		(bool ValidationResult, string ValidationMessage) ValidateAddPersonImage(AddPersonImageModel model, Guid personUid);
 		(bool ValidationResult, string ValidationMessage) ValidateGetChatMessageImage(Guid uid);
 		(bool ValidationResult, string ValidationMessage) ValidateGetEventImage(Guid uid);

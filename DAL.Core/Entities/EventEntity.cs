@@ -17,12 +17,11 @@ namespace DAL.Core.Entities
 		public DateTime? StartTime { get; set; }
 		public DateTime? EndTime { get; set; }
 		public bool? IsOpenForInvitations { get; set; }
-		public long? EventImageContentId { get; set; }
 		public long EventTypeId { get; set; }
 		public long EventStatusId { get; set; }
 		public long AdministratorId { get; set; }
 		public long ChatId { get; set; }
-		public EventImageContentEntity EventImageContent { get; set; }
+		public IEnumerable<EventImageContentEntity> EventImageContentEntities { get; set; }
 		public EventStatusEntity EventStatus { get; set; }
 		public EventTypeEntity EventType { get; set; }
 		public PersonEntity Administrator { get; set; }

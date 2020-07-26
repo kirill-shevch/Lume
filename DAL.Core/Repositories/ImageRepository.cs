@@ -63,26 +63,6 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task<Guid?> GetEventImageUidByHash(string hash)
-		{
-			using (var context = _dbContextFactory.CreateDbContext())
-			{
-				var entity = await context.EventImageContentEntities.SingleOrDefaultAsync(x => x.ContentHash == hash);
-				return entity == null ? (Guid?)null : entity.EventImageContentUid;
-			}
-		}
-
-		public async Task SaveEventImage(Guid eventUid, EventImageContentEntity entity)
-		{
-			using (var context = _dbContextFactory.CreateDbContext())
-			{
-				var eventEntity = await context.EventEntities.SingleAsync(x => x.EventUid == eventUid);
-				eventEntity.EventImageContent = entity;
-				await context.EventImageContentEntities.AddAsync(entity);
-				await context.SaveChangesAsync();
-			}
-		}
-
 		public async Task<byte[]> GetEventImageContentByUid(Guid uid)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())

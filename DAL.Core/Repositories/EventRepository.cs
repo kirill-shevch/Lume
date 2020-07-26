@@ -42,7 +42,7 @@ namespace DAL.Core.Repositories
 				return await context.EventEntities
 					.Include(x => x.EventStatus)
 					.Include(x => x.EventType)
-					.Include(x => x.EventImageContent)
+					.Include(x => x.EventImageContentEntities)
 					.Include(x => x.Administrator)
 						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Participants)
@@ -69,7 +69,7 @@ namespace DAL.Core.Repositories
 				return await context.EventEntities
 					.Include(x => x.EventStatus)
 					.Include(x => x.EventType)
-					.Include(x => x.EventImageContent)
+					.Include(x => x.EventImageContentEntities)
 					.Include(x => x.Administrator)
 						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Participants)
@@ -161,7 +161,7 @@ namespace DAL.Core.Repositories
 				return await context.EventEntities
 					.Include(x => x.EventStatus)
 					.Include(x => x.EventType)
-					.Include(x => x.EventImageContent)
+					.Include(x => x.EventImageContentEntities)
 					.Include(x => x.Administrator)
 						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Participants)

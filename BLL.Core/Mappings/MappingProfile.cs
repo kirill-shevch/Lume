@@ -6,6 +6,7 @@ using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BLL.Core.Mappings
@@ -34,12 +35,18 @@ namespace BLL.Core.Mappings
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
 				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId))
 				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants.Select(x => x.Person)))
-				.ForMember(dest => dest.EventImageContentUid, opt => opt.MapFrom(src => src.EventImageContent == null ? (Guid?)null : src.EventImageContent.EventImageContentUid))
+				.ForMember(dest => dest.EventPrimaryImageContentUid, 
+				opt => opt.MapFrom(src => src.EventImageContentEntities == null ? (Guid?)null : src.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value).EventImageContentUid))
+				.ForMember(dest => dest.Images, 
+				opt => opt.MapFrom(
+					src => src.EventImageContentEntities == null ? new List<Guid>() : src.EventImageContentEntities.Where(x => x.IsPrimary.HasValue && !x.IsPrimary.Value).Select(x => x.EventImageContentUid).ToList()))
 				.ForMember(dest => dest.ChatUid, opt => opt.MapFrom(src => src.Chat == null ? (Guid?)null : src.Chat.ChatUid));
 
 			CreateMap<EventEntity, GetEventListModel>()
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
-				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId));
+				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId))
+				.ForMember(dest => dest.EventPrimaryImageContentUid,
+				opt => opt.MapFrom(src => src.EventImageContentEntities == null ? (Guid?)null : src.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value).EventImageContentUid));
 
 			CreateMap<ChatMessageEntity, ChatMessageModel>()
 				.ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ChatImageContentEntities.Select(x => x.ChatImageContentUid)))

@@ -50,19 +50,6 @@ namespace LumeWebApp.Controllers
 			return File(content, "image/jpeg");
 		}
 
-		[HttpPost]
-		[Route("add-event-image")]
-		public async Task<ActionResult<AddImageResponse>> AddEventImage(AddImageModel addImageModel)
-		{
-			var validationResult = _imageValidation.ValidateAddEventImage(addImageModel);
-			if (!validationResult.ValidationResult)
-			{
-				return BadRequest(validationResult.ValidationMessage);
-			}
-			var uid = await _imageLogic.SaveEventImage(addImageModel);
-			return new AddImageResponse { ImageUid = uid };
-		}
-
 		[HttpGet]
 		[Route("get-event-image")]
 		public async Task<ActionResult> GetEventImage(Guid imageUid)

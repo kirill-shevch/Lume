@@ -19,13 +19,11 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.Description);
 			builder.Property(t => t.StartTime);
 			builder.Property(t => t.EndTime);
-			builder.Property(t => t.IsOpenForInvitations);
-			builder.Property(t => t.EventImageContentId);
-			builder.Property(t => t.EventTypeId);
+			builder.Property(t => t.IsOpenForInvitations);			builder.Property(t => t.EventTypeId);
 			builder.Property(t => t.EventStatusId);
 			builder.Property(t => t.AdministratorId);
 			builder.Property(t => t.ChatId);
-			builder.HasOne(t => t.EventImageContent).WithMany().HasForeignKey(x => x.EventImageContentId);
+			builder.HasMany(t => t.EventImageContentEntities).WithOne().HasForeignKey(x => x.EventId);
 			builder.HasOne(t => t.Chat).WithMany().HasForeignKey(x => x.ChatId);
 			builder.HasOne(t => t.EventType).WithMany().HasForeignKey(x => x.EventTypeId);
 			builder.HasOne(t => t.EventStatus).WithMany().HasForeignKey(x => x.EventStatusId);

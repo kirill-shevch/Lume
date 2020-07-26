@@ -11,7 +11,8 @@ namespace DAL.Core.Configurations
 			builder.ToTable(EventImageContentEntity.TableName);
 			builder.HasKey(t => t.EventImageContentId);
 			builder.Property(t => t.EventImageContentUid);
-			builder.Property(t => t.ContentHash);
+			builder.Property(t => t.IsPrimary);
+			builder.Property(t => t.EventId);
 			builder.Property(t => t.Content);
 		}
 	}
