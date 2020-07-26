@@ -11,6 +11,6 @@ namespace BLL.Core.Interfaces
 		Task<ChatModel> GetPersonChat(Guid uid, Guid personUid, int pageSize);
 		Task<List<ChatListModel>> GetPersonChatList(Guid personUid);
 		Task<ChatMessageModel> AddChatMessage(AddMessageModel request, Guid personUid);
-		Task<List<ChatMessageModel>> GetNewChatMessages(Guid chatUid, Guid messageUid);
+		Task<List<ChatMessageModel>> GetNewChatMessages(Guid chatUid, Guid? messageUid);
 	}
 }

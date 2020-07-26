@@ -53,13 +53,13 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateGetNewChatMessages(Guid chatUid, Guid messageUid)
+		public (bool ValidationResult, string ValidationMessage) ValidateGetNewChatMessages(Guid chatUid, Guid? messageUid)
 		{
 			if (!_chatRepository.CheckChatExistence(chatUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(19));
 			}
-			if (!_chatRepository.CheckChatMessageExistence(messageUid).Result)
+			if (messageUid.HasValue && !_chatRepository.CheckChatMessageExistence(messageUid.Value).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(11));
 			}
