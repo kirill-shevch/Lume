@@ -17,7 +17,7 @@ namespace DAL.Core.Interfaces
 		Task RemoveFriendFromPerson(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default);
 		Task<bool> CheckPersonExistence(Guid personUid, CancellationToken cancellationToken = default);
 		Task<bool> CheckPersonFriendExistence(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default);
-		Task<IEnumerable<PersonEntity>> GetPersonListByPage(int pageNumber, int pageSize, string filter = null, CancellationToken cancellationToken = default);
+		Task<IEnumerable<PersonEntity>> GetPersonListByPage(int pageNumber, int pageSize, string query = null, CancellationToken cancellationToken = default);
 		Task<List<PersonEntity>> GetAllPersonFriends(Guid personUid, CancellationToken cancellationToken = default);
 		Task<PersonEntity> GetRandomPerson(RepositoryRandomPersonFilter filter, long personId);
 	}

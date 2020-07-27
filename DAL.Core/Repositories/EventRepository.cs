@@ -177,13 +177,9 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				var query = context.EventEntities.AsNoTracking();
-				if (!string.IsNullOrEmpty(repositoryFilter.Name))
+				if (!string.IsNullOrEmpty(repositoryFilter.Query))
 				{
-					query = query.Where(x => x.Name.Contains(repositoryFilter.Name));
-				}
-				if (!string.IsNullOrEmpty(repositoryFilter.Description))
-				{
-					query = query.Where(x => x.Description.Contains(repositoryFilter.Description));
+					query = query.Where(x => x.Name.Contains(repositoryFilter.Query) || x.Description.Contains(repositoryFilter.Query));
 				}
 				if (repositoryFilter.MinAge.HasValue)
 				{

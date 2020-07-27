@@ -7,6 +7,6 @@ namespace BLL.Core.Models.Person
 		public Guid PersonUid { get; set; }
 		public int PageNumber { get; set; }
 		public int PageSize { get; set; }
-		public string Filter { get; set; }
+		public string Query { get; set; }
 	}
 }
