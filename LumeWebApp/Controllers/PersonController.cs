@@ -78,7 +78,7 @@ namespace LumeWebApp.Controllers
 
 		[HttpGet]
 		[Route("get-person-list")]
-		public async Task<ActionResult<List<PersonModel>>> GetPersonListByPage(int pageNumber, int pageSize, string filter)
+		public async Task<ActionResult<List<PersonModel>>> GetPersonListByPage(int pageNumber, int pageSize, string query)
 		{
 			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			var models = await _personLogic.GetPersonListByPage(new GetPersonListModel
@@ -86,7 +86,7 @@ namespace LumeWebApp.Controllers
 				PersonUid = uid, 
 				PageNumber = pageNumber, 
 				PageSize = pageSize, 
-				Filter = filter });
+				Query = query });
 			return models.ToList();
 		}
 
