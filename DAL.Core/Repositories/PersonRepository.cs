@@ -142,9 +142,10 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				var query = context.PersonEntities.AsNoTracking();
+				var query = context.PersonEntities.Include(x => x.Events).AsNoTracking();
 
-				query = query.Where(x => x.PersonId != personId);
+				query = query.Where(x => x.PersonId != personId &&
+					!x.Events.Any(x => x.EventId == filter.EventId));
 				
 				if (filter.MinAge.HasValue)
 				{

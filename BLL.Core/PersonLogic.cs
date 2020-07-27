@@ -13,14 +13,17 @@ namespace BLL.Core
 	public class PersonLogic : IPersonLogic
 	{
 		private readonly IPersonRepository _personRepository;
+		private readonly IEventRepository _eventRepository;
 		private readonly IMapper _mapper;
 
 		private const int countOfFriends = 5;
 
 		public PersonLogic(IPersonRepository personRepository,
+			IEventRepository eventRepository,
 			IMapper mapper)
 		{
 			_personRepository = personRepository;
+			_eventRepository = eventRepository;
 			_mapper = mapper;
 		}
 
@@ -105,7 +108,9 @@ namespace BLL.Core
 		public async Task<PersonModel> GetRandomPerson(RandomPersonFilter randomPersonFilter, Guid uid)
 		{
 			var personEntity = await _personRepository.GetPerson(uid);
+			var eventEntity = await _eventRepository.GetEvent(randomPersonFilter.EventUid);
 			var filter = _mapper.Map<RepositoryRandomPersonFilter>(randomPersonFilter);
+			filter.EventId = eventEntity.EventId;
 			var randomPersonEntity = await _personRepository.GetRandomPerson(filter, personEntity.PersonId);
 			return _mapper.Map<PersonModel>(randomPersonEntity);
 		}

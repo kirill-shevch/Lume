@@ -9,9 +9,12 @@ namespace BLL.Core
 	public class PersonValidation : IPersonValidation
 	{
 		private readonly IPersonRepository _personRepository;
-		public PersonValidation(IPersonRepository personRepository)
+		private readonly IEventRepository _eventRepository;
+		public PersonValidation(IPersonRepository personRepository,
+			IEventRepository eventRepository)
 		{
 			_personRepository = personRepository;
+			_eventRepository = eventRepository;
 		}
 
 		public (bool ValidationResult, string ValidationMessage) ValidateGetPerson(Guid personUid)
@@ -36,6 +39,10 @@ namespace BLL.Core
 			if (randomPersonFilter.MinAge.HasValue && randomPersonFilter.MaxAge.HasValue && randomPersonFilter.MinAge > randomPersonFilter.MaxAge)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(15));
+			}
+			if (!_eventRepository.CheckEventExistence(randomPersonFilter.EventUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10));
 			}
 			return (true, string.Empty);
 		}
