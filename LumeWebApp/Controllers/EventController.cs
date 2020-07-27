@@ -87,7 +87,7 @@ namespace LumeWebApp.Controllers
 
 		[HttpPost]
 		[Route("update-event-participant")]
-		public async Task<ActionResult> UpdateEventParticipant(EventParticipantModel request)
+		public async Task<ActionResult<GetEventModel>> UpdateEventParticipant(EventParticipantModel request)
 		{
 			var validationResult = _eventValidation.ValidateUpdateParticipantModel(request);
 			if (!validationResult.ValidationResult)
@@ -95,7 +95,7 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			await _eventLogic.UpdateParticipant(request);
-			return Ok(Messages.ParticipantUpdated);
+			return await _eventLogic.GetEvent(request.EventUid);
 		}
 
 		[HttpDelete]
