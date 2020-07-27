@@ -103,7 +103,7 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task<IEnumerable<PersonEntity>> GetPersonListByPage(int pageNumber, int pageSize, string filter = null, CancellationToken cancellationToken = default)
+		public async Task<IEnumerable<PersonEntity>> GetPersonListByPage(Guid personUid, int pageNumber, int pageSize, string filter = null, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
@@ -113,6 +113,8 @@ namespace DAL.Core.Repositories
 						.ThenInclude(x => x.Friend)
 							.ThenInclude(x => x.PersonImageContentEntity)
 					.AsNoTracking();
+
+				query = query.Where(x => x.PersonUid == personUid);
 
 				if (!string.IsNullOrWhiteSpace(filter))
 				{
