@@ -213,7 +213,7 @@ namespace DAL.Core.Repositories
 				{
 					query = query.Where(x => x.IsOpenForInvitations == repositoryFilter.IsOpenForInvitations);
 				}
-				return await query.ToListAsync();
+				return await query.Include(x => x.EventImageContentEntities).ToListAsync();
 			}
 		}
 	}

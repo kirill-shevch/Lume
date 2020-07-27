@@ -138,12 +138,7 @@ namespace LumeWebApp.Controllers
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			var events = await _eventLogic.SearchForEvent(eventSearchFilter);
-			if (events == null || !events.Any())
-			{
-				return BadRequest(ErrorDictionary.GetErrorMessage(25));
-			}
-			return events;
+			return await _eventLogic.SearchForEvent(eventSearchFilter);
 		}
 	}
 }
