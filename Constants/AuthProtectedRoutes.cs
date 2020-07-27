@@ -13,6 +13,7 @@ namespace Constants
              "/api/person/update-person",
              "/api/person/is-person-filled-up",
              "/api/person/get-person-list",
+             "/api/person/get-random-person",
 
              "/api/event/add-event",
              "/api/event/get-event",

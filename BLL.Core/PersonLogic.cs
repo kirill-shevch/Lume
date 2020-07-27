@@ -2,6 +2,7 @@
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Person;
 using DAL.Core.Interfaces;
+using DAL.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,6 +100,14 @@ namespace BLL.Core
 				model.IsFriend = true;
 			}
 			return models;
+		}
+
+		public async Task<PersonModel> GetRandomPerson(RandomPersonFilter randomPersonFilter, Guid uid)
+		{
+			var personEntity = await _personRepository.GetPerson(uid);
+			var filter = _mapper.Map<RepositoryRandomPersonFilter>(randomPersonFilter);
+			var randomPersonEntity = await _personRepository.GetRandomPerson(filter, personEntity.PersonId);
+			return _mapper.Map<PersonModel>(randomPersonEntity);
 		}
 	}
 }
