@@ -80,7 +80,7 @@ namespace BLL.Core
 
 		public async Task<IEnumerable<PersonModel>> GetPersonListByPage(GetPersonListModel model)
 		{
-			var persons = await _personRepository.GetPersonListByPage(model.PageNumber, model.PageSize, model.Query);
+			var persons = await _personRepository.GetPersonListByPage(model.PersonUid, model.PageNumber, model.PageSize, model.Query);
 			var personModels = _mapper.Map<IEnumerable<PersonModel>>(persons);
 			foreach (var personModel in personModels)
 			{
