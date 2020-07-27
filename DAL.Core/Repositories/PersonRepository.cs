@@ -114,7 +114,7 @@ namespace DAL.Core.Repositories
 							.ThenInclude(x => x.PersonImageContentEntity)
 					.AsNoTracking();
 
-				query = query.Where(x => x.PersonUid == personUid);
+				query = query.Where(x => x.PersonUid != personUid);
 
 				if (!string.IsNullOrWhiteSpace(filter))
 				{
