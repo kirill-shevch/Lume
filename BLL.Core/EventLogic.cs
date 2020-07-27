@@ -45,14 +45,17 @@ namespace BLL.Core
 					IsPrimary = true 
 				});
 			}
-			foreach (var image in addEventModel.Images)
+			if (addEventModel.Images != null)
 			{
-				imageList.Add(new EventImageContentEntity
+				foreach (var image in addEventModel.Images)
 				{
-					Content = image,
-					EventImageContentUid = Guid.NewGuid(),
-					IsPrimary = false
-				});
+					imageList.Add(new EventImageContentEntity
+					{
+						Content = image,
+						EventImageContentUid = Guid.NewGuid(),
+						IsPrimary = false
+					});
+				}
 			}
 			entity.EventImageContentEntities = imageList;
 			await _eventRepository.CreateEvent(entity);
