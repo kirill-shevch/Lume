@@ -23,6 +23,23 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
+		public (bool ValidationResult, string ValidationMessage) ValidateGetRandomPerson(RandomPersonFilter randomPersonFilter)
+		{
+			if (randomPersonFilter.MinAge.HasValue && (randomPersonFilter.MinAge < 0 || randomPersonFilter.MinAge > 150))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(22));
+			}
+			if (randomPersonFilter.MaxAge.HasValue && (randomPersonFilter.MaxAge < 0 || randomPersonFilter.MaxAge > 150))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(22));
+			}
+			if (randomPersonFilter.MinAge.HasValue && randomPersonFilter.MaxAge.HasValue && randomPersonFilter.MinAge > randomPersonFilter.MaxAge)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(15));
+			}
+			return (true, string.Empty);
+		}
+
 		public (bool ValidationResult, string ValidationMessage) ValidateUpdatePerson(UpdatePersonModel model)
 		{
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)

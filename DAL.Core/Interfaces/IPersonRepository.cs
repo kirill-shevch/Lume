@@ -1,4 +1,5 @@
 ﻿using DAL.Core.Entities;
+using DAL.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,6 @@ namespace DAL.Core.Interfaces
 		Task<bool> CheckPersonFriendExistence(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default);
 		Task<IEnumerable<PersonEntity>> GetPersonListByPage(int pageNumber, int pageSize, string filter = null, CancellationToken cancellationToken = default);
 		Task<List<PersonEntity>> GetAllPersonFriends(Guid personUid, CancellationToken cancellationToken = default);
+		Task<PersonEntity> GetRandomPerson(RepositoryRandomPersonFilter filter, long personId);
 	}
 }

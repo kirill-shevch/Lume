@@ -1,5 +1,6 @@
 ﻿using DAL.Core.Entities;
 using DAL.Core.Interfaces;
+using DAL.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -134,6 +135,41 @@ namespace DAL.Core.Repositories
 					.Where(p => p.Person.PersonUid == personUid)
 					.Select(p => p.Friend)
 					.ToListAsync(cancellationToken);
+			}
+		}
+
+		public async Task<PersonEntity> GetRandomPerson(RepositoryRandomPersonFilter filter, long personId)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var query = context.PersonEntities.AsNoTracking();
+
+				query = query.Where(x => x.PersonId != personId);
+				
+				if (filter.MinAge.HasValue)
+				{
+					query = query.Where(x => x.Age >= filter.MinAge.Value);
+				}
+				if (filter.MaxAge.HasValue)
+				{
+					query = query.Where(x => x.Age <= filter.MaxAge.Value);
+				}
+
+				var random = new Random();
+
+				var personList = await query.Select(x => x.PersonId).ToListAsync();
+				if (!personList.Any())
+				{
+					return null;
+				}
+				var randomPersonId = personList.ElementAt(random.Next(0, personList.Count()));
+
+				return await context.PersonEntities
+					.Include(x => x.PersonImageContentEntity)
+					.Include(x => x.FriendList)
+						.ThenInclude(x => x.Friend)
+							.ThenInclude(x => x.PersonImageContentEntity)
+					.SingleOrDefaultAsync(x => x.PersonId == randomPersonId);
 			}
 		}
 	}

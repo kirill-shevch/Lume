@@ -31,7 +31,8 @@ namespace Constants
 			[23] = "Coordinate is not valid.",
 			[24] = "Person is already participate in this event.",
 			[25] = "No matching events found.",
-			[26] = "Person is not participate in this event."
+			[26] = "Person is not participate in this event.",
+			[27] = "No matching person found.",
 		};
 
 		public static string GetErrorMessage(int code) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[code]}\" }}";

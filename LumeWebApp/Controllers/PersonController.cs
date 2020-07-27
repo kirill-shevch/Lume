@@ -89,5 +89,23 @@ namespace LumeWebApp.Controllers
 				Filter = filter });
 			return models.ToList();
 		}
+
+		[HttpPost]
+		[Route("get-random-person")]
+		public async Task<ActionResult<PersonModel>> GetRandomPerson(RandomPersonFilter randomPersonFilter)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _personValidation.ValidateGetRandomPerson(randomPersonFilter);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			var randomEvent = await _personLogic.GetRandomPerson(randomPersonFilter, uid);
+			if (randomEvent == null)
+			{
+				return BadRequest(ErrorDictionary.GetErrorMessage(27));
+			}
+			return randomEvent;
+		}
 	}
 }
