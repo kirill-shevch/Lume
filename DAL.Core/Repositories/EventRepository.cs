@@ -142,8 +142,8 @@ namespace DAL.Core.Repositories
 
 				query = query.Where(x => x.Administrator.PersonUid != filter.PersonUid &&
 					!x.Participants.Any(x => x.Person.PersonUid == filter.PersonUid) &&
-					(!x.MinAge.HasValue || x.MinAge < filter.Age) &&
-					(!x.MaxAge.HasValue || x.MaxAge > filter.Age) &&
+					(!x.MinAge.HasValue || x.MinAge <= filter.Age) &&
+					(!x.MaxAge.HasValue || x.MaxAge >= filter.Age) &&
 					!filter.IgnoredEventUids.Contains(x.EventUid));
 
 				if (filter.PersonXCoordinate.HasValue && filter.PersonYCoordinate.HasValue && filter.Distance.HasValue)
@@ -151,7 +151,10 @@ namespace DAL.Core.Repositories
 					query = query.Where(x => 
 					filter.Distance >= Math.Sqrt(Math.Pow(Math.Abs(x.XCoordinate - filter.PersonXCoordinate.Value), 2) + Math.Pow(Math.Abs(x.YCoordinate - filter.PersonYCoordinate.Value), 2)));
 				}
-
+				if (filter.CityId.HasValue)
+				{
+					query = query.Where(x => x.CityId == filter.CityId);
+				}
 				var random = new Random();
 
 				var events = await query.Select(x => x.EventId).ToListAsync();
@@ -212,7 +215,11 @@ namespace DAL.Core.Repositories
 				{
 					query = query.Where(x => x.IsOpenForInvitations == repositoryFilter.IsOpenForInvitations);
 				}
-				return await query.Include(x => x.EventImageContentEntities).ToListAsync();
+				if (repositoryFilter.CityId.HasValue)
+				{
+					query = query.Where(x => x.CityId == repositoryFilter.CityId);
+				}
+				return await query.Include(x => x.EventImageContentEntities).Include(x => x.City).ToListAsync();
 			}
 		}
 	}

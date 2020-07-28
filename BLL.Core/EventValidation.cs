@@ -67,6 +67,11 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(23));
 			}
+			var cities = _cityLogic.GetCities().Result;
+			if (!cities.Any(x => x.CityId == filter.CityId))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(30));
+			}
 			return (true, string.Empty);
 		}
 
@@ -118,6 +123,11 @@ namespace BLL.Core
 			if (eventSearchFilter.Type.HasValue && !Enum.IsDefined(typeof(EventType), eventSearchFilter.Type))
 			{
 				return (false, ErrorDictionary.GetErrorMessage(14));
+			}
+			var cities = _cityLogic.GetCities().Result;
+			if (!cities.Any(x => x.CityId == eventSearchFilter.CityId))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(30));
 			}
 			return (true, string.Empty);
 		}

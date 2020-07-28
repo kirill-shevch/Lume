@@ -9,5 +9,6 @@ namespace BLL.Core.Models.Event
 		public double? PersonXCoordinate { get; set; }
 		public double? PersonYCoordinate { get; set; }
 		public double? Distance { get; set; }
+		public long? CityId { get; set; }
 	}
 }
