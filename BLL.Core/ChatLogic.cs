@@ -72,7 +72,7 @@ namespace BLL.Core
 				var eventEntity = await _eventRepository.GetEventByChatId(chatEntity.ChatId);
 				chatModel.ChatName = eventEntity.Name;
 				chatModel.EventUid = eventEntity.EventUid;
-				chatModel.EventImageUid = eventEntity.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value).EventImageContentUid;
+				chatModel.EventImageUid = eventEntity.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value)?.EventImageContentUid;
 			}
 			else if (chatEntity.IsGroupChat.HasValue && !chatEntity.IsGroupChat.Value)
 			{
@@ -113,10 +113,19 @@ namespace BLL.Core
 			var personEntity = await _personRepository.GetPerson(personUid);
 			if (chatEntity == null)
 			{
-				return new ChatModel { ChatUid = await _chatRepository.CreatePersonalChat(uid, personUid), IsGroupChat = false, ChatName = personEntity.Name };
+				return new ChatModel 
+				{ 
+					ChatUid = await _chatRepository.CreatePersonalChat(uid, personUid), 
+					IsGroupChat = false, 
+					ChatName = personEntity.Name,
+					PersonUid = personEntity.PersonUid,
+					PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid
+			};
 			}
 			var chatModel = _mapper.Map<ChatModel>(chatEntity);
 			chatModel.ChatName = personEntity.Name;
+			chatModel.PersonUid = personEntity.PersonUid;
+			chatModel.PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid;
 			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, 1, pageSize);
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
 			return chatModel;
@@ -132,13 +141,16 @@ namespace BLL.Core
 				groupChatModel.Name = eventEntity.Name;
 				var lastGroupChatMessageEntity = await _chatRepository.GetChatMessages(eventEntity.ChatId, 1, 1);
 				groupChatModel.LastMessage = _mapper.Map<ChatMessageModel>(lastGroupChatMessageEntity.SingleOrDefault());
+				groupChatModel.EventImageUid = eventEntity.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value)?.EventImageContentUid;
 				chatModels.Add(groupChatModel);
 			}
 			var personToChatEntities = await _chatRepository.GetPersonChats(uid);
 			foreach (var entity in personToChatEntities)
 			{
 				var personalChatModel = _mapper.Map<ChatListModel>(entity.Chat);
-				personalChatModel.Name = entity.FirstPerson.PersonUid == uid ? entity.SecondPerson.Name : entity.FirstPerson.Name;
+				var personEntity = entity.FirstPerson.PersonUid == uid ? entity.SecondPerson : entity.FirstPerson;
+				personalChatModel.Name = personEntity.Name;
+				personalChatModel.PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid;
 				var lastPersonalChatMessageEntity = await _chatRepository.GetChatMessages(entity.ChatId, 1, 1);
 				personalChatModel.LastMessage = _mapper.Map<ChatMessageModel>(lastPersonalChatMessageEntity.SingleOrDefault());
 				chatModels.Add(personalChatModel);
