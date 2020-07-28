@@ -67,10 +67,13 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(23));
 			}
-			var cities = _cityLogic.GetCities().Result;
-			if (!cities.Any(x => x.CityId == filter.CityId))
+			if (filter.CityId.HasValue)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(30));
+				var cities = _cityLogic.GetCities().Result;
+				if (!cities.Any(x => x.CityId == filter.CityId))
+				{
+					return (false, ErrorDictionary.GetErrorMessage(30));
+				}
 			}
 			return (true, string.Empty);
 		}
@@ -125,9 +128,12 @@ namespace BLL.Core
 				return (false, ErrorDictionary.GetErrorMessage(14));
 			}
 			var cities = _cityLogic.GetCities().Result;
-			if (!cities.Any(x => x.CityId == eventSearchFilter.CityId))
+			if (eventSearchFilter.CityId.HasValue)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(30));
+				if (!cities.Any(x => x.CityId == eventSearchFilter.CityId))
+				{
+					return (false, ErrorDictionary.GetErrorMessage(30));
+				}
 			}
 			return (true, string.Empty);
 		}
@@ -150,10 +156,13 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(15));
 			}
-			var cities = _cityLogic.GetCities().Result;
-			if (!cities.Any(x => x.CityId == model.CityId))
+			if (model.CityId.HasValue)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(30));
+				var cities = _cityLogic.GetCities().Result;
+				if (!cities.Any(x => x.CityId == model.CityId))
+				{
+					return (false, ErrorDictionary.GetErrorMessage(30));
+				}
 			}
 			return (true, string.Empty);
 		}
