@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Core.Models.Chat;
+using BLL.Core.Models.City;
 using BLL.Core.Models.Event;
 using BLL.Core.Models.Person;
 using Constants;
@@ -20,6 +21,8 @@ namespace BLL.Core.Mappings
 			CreateMap<EventSearchFilter, RepositoryEventSearchFilter>();
 
 			CreateMap<RandomPersonFilter, RepositoryRandomPersonFilter>();
+
+			CreateMap<CityEntity, CityModel>();
 
 			CreateMap<PersonEntity, PersonModel>()
 				.ForMember(dest => dest.ImageContentUid, 

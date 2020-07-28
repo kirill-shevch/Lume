@@ -27,6 +27,7 @@ namespace DAL.Core
 			builder.ApplyConfiguration(new PersonToChatEntityConfiguration());
 			builder.ApplyConfiguration(new PersonToEventEntityConfiguration());
 			builder.ApplyConfiguration(new ParticipantStatusEntityConfiguration());
+			builder.ApplyConfiguration(new CityEntityConfiguration());
 		}
 
 		public DbSet<ChatEntity> ChatEntities { get; set; }
@@ -42,5 +43,6 @@ namespace DAL.Core
 		public DbSet<PersonToChatEntity> PersonToChatEntities { get; set; }
 		public DbSet<PersonToEventEntity> PersonToEventEntities { get; set; }
 		public DbSet<ParticipantStatusEntity> ParticipantStatusEntities { get; set; }
+		public DbSet<CityEntity> CityEntities { get; set; }
 	}
 }
