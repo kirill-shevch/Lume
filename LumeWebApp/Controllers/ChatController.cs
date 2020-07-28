@@ -23,7 +23,6 @@ namespace LumeWebApp.Controllers
 			_chatLogic = chatLogic;
 		}
 
-
 		[HttpGet]
 		[Route("get-chat")]
 		public async Task<ActionResult<ChatModel>> GetChat(Guid chatUid, int pageNumber, int pageSize) 

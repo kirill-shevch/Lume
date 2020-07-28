@@ -22,6 +22,8 @@ namespace BLL.Core.Mappings
 
 			CreateMap<RandomPersonFilter, RepositoryRandomPersonFilter>();
 
+			CreateMap<GetPersonListFilter, RepositoryGetPersonListFilter>();
+
 			CreateMap<CityEntity, CityModel>();
 
 			CreateMap<PersonEntity, PersonModel>()

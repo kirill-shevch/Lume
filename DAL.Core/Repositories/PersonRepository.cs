@@ -104,7 +104,7 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task<IEnumerable<PersonEntity>> GetPersonListByPage(Guid personUid, int pageNumber, int pageSize, string filter = null, CancellationToken cancellationToken = default)
+		public async Task<IEnumerable<PersonEntity>> GetPersonListByPage(Guid personUid, RepositoryGetPersonListFilter filter, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
@@ -113,17 +113,23 @@ namespace DAL.Core.Repositories
 					.Include(x => x.FriendList)
 						.ThenInclude(x => x.Friend)
 							.ThenInclude(x => x.PersonImageContentEntity)
+					.Include(x => x.City)
 					.AsNoTracking();
 
 				query = query.Where(x => x.PersonUid != personUid);
 
-				if (!string.IsNullOrWhiteSpace(filter))
+				if (!string.IsNullOrWhiteSpace(filter.Query))
 				{
-					query = query.Where(p => p.Name != null && p.Name.Contains(filter));
+					query = query.Where(p => p.Name != null && p.Name.Contains(filter.Query));
 				}
 
-				return await query.Skip(pageSize * (pageNumber - 1))
-					.Take(pageSize)
+				if (filter.CityId.HasValue)
+				{
+					query = query.Where(p => p.CityId == filter.CityId);
+				}
+
+				return await query.Skip(filter.PageSize * (filter.PageNumber - 1))
+					.Take(filter.PageSize)
 					.ToListAsync(cancellationToken);
 			}
 		}
@@ -134,7 +140,9 @@ namespace DAL.Core.Repositories
 			{
 				return await context.PersonFriendListEntities
 					.Include(p => p.Friend)
-					.ThenInclude(f => f.PersonImageContentEntity)
+						.ThenInclude(x => x.City)
+					.Include(p => p.Friend)
+						.ThenInclude(f => f.PersonImageContentEntity)
 					.Where(p => p.Person.PersonUid == personUid)
 					.Select(p => p.Friend)
 					.ToListAsync(cancellationToken);

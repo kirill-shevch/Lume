@@ -30,6 +30,27 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
+		public (bool ValidationResult, string ValidationMessage) ValidateGetPersonListByPage(GetPersonListFilter request)
+		{
+			if (request.PageNumber < 1)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(28));
+			}
+			if (request.PageSize < 1)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(29));
+			}
+			if (request.CityId.HasValue)
+			{
+				var cities = _cityLogic.GetCities().Result;
+				if (!cities.Any(x => x.CityId == request.CityId.Value))
+				{
+					return (false, ErrorDictionary.GetErrorMessage(30));
+				}
+			}
+			return (true, string.Empty);
+		}
+
 		public (bool ValidationResult, string ValidationMessage) ValidateGetRandomPerson(RandomPersonFilter randomPersonFilter)
 		{
 			if (randomPersonFilter.MinAge.HasValue && (randomPersonFilter.MinAge < 0 || randomPersonFilter.MinAge > 150))
