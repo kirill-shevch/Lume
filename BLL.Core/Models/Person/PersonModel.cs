@@ -11,6 +11,8 @@ namespace BLL.Core.Models.Person
 		public byte? Age { get; set; }
 		public Guid? ImageContentUid{ get; set; }
 		public bool? IsFriend { get; set; }
-		public List<PersonModel> Friends{ get; set; }
+		public List<PersonModel> Friends { get; set; }
+		public long? CityId { get; set; }
+		public string CityName { get; set; }
 	}
 }

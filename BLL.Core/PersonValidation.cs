@@ -3,6 +3,7 @@ using BLL.Core.Models.Person;
 using Constants;
 using DAL.Core.Interfaces;
 using System;
+using System.Linq;
 
 namespace BLL.Core
 {
@@ -10,11 +11,14 @@ namespace BLL.Core
 	{
 		private readonly IPersonRepository _personRepository;
 		private readonly IEventRepository _eventRepository;
+		private readonly ICityLogic _cityLogic;
 		public PersonValidation(IPersonRepository personRepository,
-			IEventRepository eventRepository)
+			IEventRepository eventRepository,
+			ICityLogic cityLogic)
 		{
 			_personRepository = personRepository;
 			_eventRepository = eventRepository;
+			_cityLogic = cityLogic;
 		}
 
 		public (bool ValidationResult, string ValidationMessage) ValidateGetPerson(Guid personUid)
@@ -52,6 +56,14 @@ namespace BLL.Core
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2));
+			}
+			if (model.CityId.HasValue)
+			{
+				var cities = _cityLogic.GetCities().Result;
+				if (!cities.Any(x => x.CityId == model.CityId.Value))
+				{
+					return (false, ErrorDictionary.GetErrorMessage(30));
+				}
 			}
 			return (true, string.Empty);
 		}

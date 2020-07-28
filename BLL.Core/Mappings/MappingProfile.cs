@@ -25,8 +25,10 @@ namespace BLL.Core.Mappings
 			CreateMap<CityEntity, CityModel>();
 
 			CreateMap<PersonEntity, PersonModel>()
-				.ForMember(dest => dest.ImageContentUid, 
-				opt => opt.MapFrom(src => src.PersonImageContentEntity == null ? (Guid?)null : src.PersonImageContentEntity.PersonImageContentUid));
+				.ForMember(dest => dest.ImageContentUid,
+				opt => opt.MapFrom(src => src.PersonImageContentEntity == null ? (Guid?)null : src.PersonImageContentEntity.PersonImageContentUid))
+				.ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.City == null ? (long?)null : src.City.CityId))
+				.ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City == null ? string.Empty : src.City.CityName));
 
 			CreateMap<PersonEntity, PersonEventModel>()
 				.ForMember(dest => dest.ImageContentUid,

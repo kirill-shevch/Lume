@@ -57,6 +57,8 @@ namespace BLL.Core
 				entity.Description = updatePersonModel.Description;
 			if (updatePersonModel.Age.HasValue)
 				entity.Age = updatePersonModel.Age;
+			if (updatePersonModel.CityId.HasValue)
+				entity.CityId = updatePersonModel.CityId;
 			await _personRepository.UpdatePerson(entity);
 		}
 

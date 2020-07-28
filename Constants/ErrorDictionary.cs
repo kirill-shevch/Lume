@@ -34,7 +34,8 @@ namespace Constants
 			[26] = "Person is not participate in this event.",
 			[27] = "No matching person found.",
 			[28] = "Page number should be bigger then 1.",
-			[29] = "Page size should be bigger then 1."
+			[29] = "Page size should be bigger then 1.",
+			[30] = "City id is not correct."
 		};
 
 		public static string GetErrorMessage(int code) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[code]}\" }}";
