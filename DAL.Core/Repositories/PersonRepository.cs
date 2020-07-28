@@ -166,6 +166,10 @@ namespace DAL.Core.Repositories
 				{
 					query = query.Where(x => x.Age <= filter.MaxAge.Value);
 				}
+				if (filter.CityId.HasValue)
+				{
+					query = query.Where(x => x.CityId == filter.CityId);
+				}
 
 				var random = new Random();
 
@@ -181,6 +185,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.FriendList)
 						.ThenInclude(x => x.Friend)
 							.ThenInclude(x => x.PersonImageContentEntity)
+					.Include(x => x.City)
 					.SingleOrDefaultAsync(x => x.PersonId == randomPersonId);
 			}
 		}

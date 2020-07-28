@@ -69,6 +69,14 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(10));
 			}
+			if (randomPersonFilter.CityId.HasValue)
+			{
+				var cities = _cityLogic.GetCities().Result;
+				if (!cities.Any(x => x.CityId == randomPersonFilter.CityId.Value))
+				{
+					return (false, ErrorDictionary.GetErrorMessage(30));
+				}
+			}
 			return (true, string.Empty);
 		}
 
