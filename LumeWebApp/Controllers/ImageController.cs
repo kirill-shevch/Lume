@@ -62,5 +62,18 @@ namespace LumeWebApp.Controllers
 			var content = await _imageLogic.GetEventImage(imageUid);
 			return File(content, "image/jpeg");
 		}
+
+		[HttpGet]
+		[Route("get-chat-message-image")]
+		public async Task<ActionResult> GetChatMessageImage(Guid imageUid)
+		{
+			var validationResult = _imageValidation.ValidateGetChatMessageImage(imageUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			var content = await _imageLogic.GetChatMessageImage(imageUid);
+			return File(content, "image/jpeg");
+		}
 	}
 }

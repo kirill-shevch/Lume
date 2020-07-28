@@ -91,5 +91,14 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task<byte[]> GetChatMessageImageContentByUid(Guid imageUid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var entity = await context.ChatImageContentEntities.SingleAsync(x => x.ChatImageContentUid == imageUid);
+				return entity.Content;
+			}
+		}
 	}
 }

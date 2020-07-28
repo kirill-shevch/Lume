@@ -8,7 +8,7 @@ namespace BLL.Core.Interfaces
 	{
 		Task<Guid> SavePersonImage(AddPersonImageModel addPersonImageModel, Guid personUid);
 		Task<byte[]> GetPersonImage(Guid imageUid);
-
 		Task<byte[]> GetEventImage(Guid imageUid);
+		Task<byte[]> GetChatMessageImage(Guid imageUid);
 	}
 }
