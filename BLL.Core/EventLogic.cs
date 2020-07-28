@@ -109,16 +109,18 @@ namespace BLL.Core
 				eventEntity.EndTime = updateEventModel.EndTime;
 			if (updateEventModel.IsOpenForInvitations.HasValue)
 				eventEntity.IsOpenForInvitations = updateEventModel.IsOpenForInvitations;
+			if (updateEventModel.CityId.HasValue)
+				eventEntity.CityId = updateEventModel.CityId;
 			if (updateEventModel.Type.HasValue)
 			{
 				eventEntity.EventTypeId = (long)updateEventModel.Type;
-				eventEntity.EventType = null;
 			}
 			if (updateEventModel.Status.HasValue)
 			{
 				eventEntity.EventStatusId = (long)updateEventModel.Status;
-				eventEntity.EventStatus = null;
 			}
+			eventEntity.EventType = null;
+			eventEntity.EventStatus = null;
 			await _eventRepository.UpdateEvent(eventEntity);
 		}
 

@@ -11,5 +11,6 @@ namespace DAL.Core.Models
 		public double? PersonYCoordinate { get; set; }
 		public double? Distance { get; set; }
 		public Guid	PersonUid { get; set; }
+		public long? CityId { get; set; }
 	}
 }

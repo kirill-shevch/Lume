@@ -19,5 +19,6 @@ namespace BLL.Core.Models.Event
 		public EventType Type { get; set; }
 		public byte[] PrimaryImage { get; set; }
 		public List<byte[]> Images { get; set; }
+		public long CityId { get; set; }
 	}
 }

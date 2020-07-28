@@ -13,7 +13,7 @@ namespace BLL.Core.Interfaces
 		Task AddFriendToPerson(Guid personUid, Guid friendUid);
 		Task RemoveFriendFromPerson(Guid personUid, Guid friendUid);
 		Task<bool> IsPersonFilledUp(Guid personUid);
-		Task<IEnumerable<PersonModel>> GetPersonListByPage(GetPersonListModel model);
+		Task<IEnumerable<PersonModel>> GetPersonListByPage(Guid personUid, GetPersonListFilter model);
 		Task<bool> CheckFriendship(Guid personUid, Guid friendUid);
 		Task<List<PersonModel>> GetAllPersonFriends(Guid personUid);
 		Task<PersonModel> GetRandomPerson(RandomPersonFilter randomPersonFilter, Guid uid);

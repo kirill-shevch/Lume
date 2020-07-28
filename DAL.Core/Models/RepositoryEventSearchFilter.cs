@@ -13,5 +13,6 @@ namespace DAL.Core.Models
 		public EventType? Type { get; set; }
 		public EventStatus? Status { get; set; }
 		public bool? IsOpenForInvitations { get; set; }
+		public long? CityId { get; set; }
 	}
 }

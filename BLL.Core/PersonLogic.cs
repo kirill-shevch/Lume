@@ -57,6 +57,8 @@ namespace BLL.Core
 				entity.Description = updatePersonModel.Description;
 			if (updatePersonModel.Age.HasValue)
 				entity.Age = updatePersonModel.Age;
+			if (updatePersonModel.CityId.HasValue)
+				entity.CityId = updatePersonModel.CityId;
 			await _personRepository.UpdatePerson(entity);
 		}
 
@@ -78,13 +80,14 @@ namespace BLL.Core
 			await _personRepository.RemoveFriendFromPerson(personUid, friendUid);
 		}
 
-		public async Task<IEnumerable<PersonModel>> GetPersonListByPage(GetPersonListModel model)
+		public async Task<IEnumerable<PersonModel>> GetPersonListByPage(Guid personUid, GetPersonListFilter model)
 		{
-			var persons = await _personRepository.GetPersonListByPage(model.PersonUid, model.PageNumber, model.PageSize, model.Query);
+			var filter = _mapper.Map<RepositoryGetPersonListFilter>(model);
+			var persons = await _personRepository.GetPersonListByPage(personUid, filter);
 			var personModels = _mapper.Map<IEnumerable<PersonModel>>(persons);
 			foreach (var personModel in personModels)
 			{
-				personModel.IsFriend = await _personRepository.CheckPersonFriendExistence(model.PersonUid, personModel.PersonUid);
+				personModel.IsFriend = await _personRepository.CheckPersonFriendExistence(personUid, personModel.PersonUid);
 			}
 			return personModels;
 		}

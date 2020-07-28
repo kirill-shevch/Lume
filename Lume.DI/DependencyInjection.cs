@@ -19,6 +19,7 @@ namespace Lume.DI
             services.AddSingleton<IEventLogic, EventLogic>();
             services.AddSingleton<IPersonLogic, PersonLogic>();
             services.AddSingleton<IChatLogic, ChatLogic>();
+            services.AddSingleton<ICityLogic, CityLogic>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
@@ -28,6 +29,8 @@ namespace Lume.DI
             services.AddSingleton<IPersonRepository, PersonRepository>();
             services.AddSingleton<IChatRepository, ChatRepository>();
             services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddSingleton<ICityRepository, CityRepository>();
+
         }
 
         public static void RegisterFactories(this IServiceCollection services)

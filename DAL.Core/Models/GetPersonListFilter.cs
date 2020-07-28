@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace BLL.Core.Models.Person
+﻿namespace DAL.Core.Models
 {
-	public class GetPersonListFilter
+	public class RepositoryGetPersonListFilter
 	{
 		public int PageNumber { get; set; }
 		public int PageSize { get; set; }
