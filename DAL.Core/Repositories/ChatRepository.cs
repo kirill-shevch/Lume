@@ -80,6 +80,10 @@ namespace DAL.Core.Repositories
 					.Include(x => x.FirstPerson)
 					.Include(x => x.SecondPerson)
 					.SingleOrDefaultAsync(x => x.ChatId == chatId && (x.FirstPersonId == personId || x.SecondPersonId == personId));
+				if (personToChat == null)
+				{
+					return string.Empty;
+				}
 				return personToChat.FirstPersonId == personId ? personToChat.SecondPerson.Name : personToChat.FirstPerson.Name;
 			}
 		}

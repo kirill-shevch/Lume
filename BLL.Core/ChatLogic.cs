@@ -69,12 +69,17 @@ namespace BLL.Core
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
 			if (chatEntity.IsGroupChat.HasValue && chatEntity.IsGroupChat.Value)
 			{
-				chatModel.ChatName = await _eventRepository.GetEventNameByChatId(chatEntity.ChatId);
+				var eventEntity = await _eventRepository.GetEventByChatId(chatEntity.ChatId);
+				chatModel.ChatName = eventEntity.Name;
+				chatModel.EventUid = eventEntity.EventUid;
+				chatModel.EventImageUid = eventEntity.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value).EventImageContentUid;
 			}
 			else if (chatEntity.IsGroupChat.HasValue && !chatEntity.IsGroupChat.Value)
 			{
 				var personEntity = await _personRepository.GetPerson(personUid);
 				chatModel.ChatName = await _chatRepository.GetPersonalChatName(chatEntity.ChatId, personEntity.PersonId);
+				chatModel.PersonUid = personEntity.PersonUid;
+				chatModel.PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid;
 			}
 			return chatModel;
 		}

@@ -48,5 +48,10 @@ namespace BLL.Core
 		{
 			return await _imageRepository.GetEventImageContentByUid(imageUid);
 		}
+
+		public async Task<byte[]> GetChatMessageImage(Guid imageUid)
+		{
+			return await _imageRepository.GetChatMessageImageContentByUid(imageUid);
+		}
 	}
 }
