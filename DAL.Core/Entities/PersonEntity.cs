@@ -12,8 +12,10 @@ namespace DAL.Core.Entities
 		public string Description { get; set; }
 		public byte? Age { get; set; }
 		public long? PersonImageContentId { get; set; }
+		public long? CityId { get; set; }
 		public PersonImageContentEntity PersonImageContentEntity { get; set; }
 		public IEnumerable<PersonFriendListEntity> FriendList { get; set; }
 		public IEnumerable<PersonToEventEntity> Events { get; set; }
+		public CityEntity City { get; set; }
 	}
 }
