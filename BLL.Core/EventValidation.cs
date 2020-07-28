@@ -3,6 +3,7 @@ using BLL.Core.Models.Event;
 using Constants;
 using DAL.Core.Interfaces;
 using System;
+using System.Linq;
 
 namespace BLL.Core
 {
@@ -10,11 +11,14 @@ namespace BLL.Core
 	{
 		private readonly IEventRepository _eventRepository;
 		private readonly IPersonRepository _personRepository;
+		private readonly ICityLogic _cityLogic;
 		public EventValidation(IEventRepository eventRepository,
-			IPersonRepository personRepository)
+			IPersonRepository personRepository,
+			ICityLogic cityLogic)
 		{
 			_eventRepository = eventRepository;
 			_personRepository = personRepository;
+			_cityLogic = cityLogic;
 		}
 
 		public (bool ValidationResult, string ValidationMessage) ValidateAddEvent(AddEventModel model)
@@ -34,6 +38,11 @@ namespace BLL.Core
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(15));
+			}
+			var cities = _cityLogic.GetCities().Result;
+			if (!cities.Any(x => x.CityId == model.CityId))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(30));
 			}
 			return (true, string.Empty);
 		}
@@ -130,6 +139,11 @@ namespace BLL.Core
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(15));
+			}
+			var cities = _cityLogic.GetCities().Result;
+			if (!cities.Any(x => x.CityId == model.CityId))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(30));
 			}
 			return (true, string.Empty);
 		}

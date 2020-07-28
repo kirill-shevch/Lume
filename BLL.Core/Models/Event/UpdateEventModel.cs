@@ -17,5 +17,6 @@ namespace BLL.Core.Models.Event
 		public bool? IsOpenForInvitations { get; set; }
 		public EventStatus? Status { get; set; }
 		public EventType? Type { get; set; }
+		public long? CityId { get; set; }
 	}
 }

@@ -19,5 +19,7 @@ namespace BLL.Core.Models.Event
 		public ParticipantStatus? ParticipantStatus { get; set; }
 		public bool? AnyPersonWaitingForApprove { get; set; }
 		public bool IsOpenForInvitations { get; set; }
+		public long? CityId { get; set; }
+		public string CityName { get; set; }
 	}
 }

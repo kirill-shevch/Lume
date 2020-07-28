@@ -49,13 +49,17 @@ namespace BLL.Core.Mappings
 				.ForMember(dest => dest.Images, 
 				opt => opt.MapFrom(
 					src => src.EventImageContentEntities == null ? new List<Guid>() : src.EventImageContentEntities.Where(x => x.IsPrimary.HasValue && !x.IsPrimary.Value).Select(x => x.EventImageContentUid).ToList()))
-				.ForMember(dest => dest.ChatUid, opt => opt.MapFrom(src => src.Chat == null ? (Guid?)null : src.Chat.ChatUid));
+				.ForMember(dest => dest.ChatUid, opt => opt.MapFrom(src => src.Chat == null ? (Guid?)null : src.Chat.ChatUid))
+				.ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.City == null ? (long?)null : src.City.CityId))
+				.ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City == null ? string.Empty : src.City.CityName));
 
 			CreateMap<EventEntity, GetEventListModel>()
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
 				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId))
 				.ForMember(dest => dest.EventPrimaryImageContentUid,
-				opt => opt.MapFrom(src => src.EventImageContentEntities == null ? (Guid?)null : src.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value).EventImageContentUid));
+				opt => opt.MapFrom(src => src.EventImageContentEntities == null ? (Guid?)null : src.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value).EventImageContentUid))
+				.ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.City == null ? (long?)null : src.City.CityId))
+				.ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City == null ? string.Empty : src.City.CityName));
 
 			CreateMap<ChatMessageEntity, ChatMessageModel>()
 				.ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ChatImageContentEntities.Select(x => x.ChatImageContentUid)))
