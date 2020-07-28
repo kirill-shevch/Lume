@@ -8,5 +8,7 @@ namespace BLL.Core.Models.Chat
 		public bool IsGroupChat { get; set; }
 		public string Name { get; set; }
 		public ChatMessageModel LastMessage { get; set; }
+		public Guid? PersonImageUid { get; set; }
+		public Guid? EventImageUid { get; set; }
 	}
 }

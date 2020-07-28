@@ -109,7 +109,9 @@ namespace DAL.Core.Repositories
 			{
 				var entities = await context.PersonToChatEntities
 					.Include(x => x.FirstPerson)
+						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.SecondPerson)
+						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Chat)
 					.Where(x => x.FirstPerson.PersonUid == uid || x.SecondPerson.PersonUid == uid)
 					.ToListAsync();
