@@ -44,11 +44,19 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateGetChat(Guid chatUid)
+		public (bool ValidationResult, string ValidationMessage) ValidateGetChat(Guid chatUid, int pageNumber, int pageSize)
 		{
 			if (!_chatRepository.CheckChatExistence(chatUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(19));
+			}
+			if (pageNumber < 1)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(28));
+			}
+			if (pageSize < 1)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(29));
 			}
 			return (true, string.Empty);
 		}

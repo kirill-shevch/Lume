@@ -26,15 +26,15 @@ namespace LumeWebApp.Controllers
 
 		[HttpGet]
 		[Route("get-chat")]
-		public async Task<ActionResult<ChatModel>> GetChat(Guid chatUid, uint pageNumber, uint pageSize) 
+		public async Task<ActionResult<ChatModel>> GetChat(Guid chatUid, int pageNumber, int pageSize) 
 		{
 			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
-			var validationResult = _chatValidation.ValidateGetChat(chatUid);
+			var validationResult = _chatValidation.ValidateGetChat(chatUid, pageNumber, pageSize);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			return await _chatLogic.GetChat(chatUid, (int)pageNumber, (int)pageSize, uid);
+			return await _chatLogic.GetChat(chatUid, pageNumber, pageSize, uid);
 		}
 
 		[HttpGet]
