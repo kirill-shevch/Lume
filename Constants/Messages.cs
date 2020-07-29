@@ -8,5 +8,7 @@
 		public const string ParticipantCreated = @"{ ""data"":""Participant has been succesfully created!"" }";
 		public const string RandomEventAccepted = @"{ ""data"":""Random event has been succesfully accepted!"" }";
 		public const string RandomEventRejected = @"{ ""data"":""Random event has been succesfully rejected!"" }";
+		public const string RandomPersonAccepted = @"{ ""data"":""Random person has been succesfully accepted!"" }";
+		public const string RandomPersonRejected = @"{ ""data"":""Random person has been succesfully rejected!"" }";
 	}
 }

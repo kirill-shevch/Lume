@@ -1,4 +1,5 @@
 ﻿using BLL.Core.Interfaces;
+using BLL.Core.Models.Event;
 using BLL.Core.Models.Person;
 using Constants;
 using LumeWebApp.Requests.Person;
@@ -17,11 +18,17 @@ namespace LumeWebApp.Controllers
 	{
 		private readonly IPersonLogic _personLogic;
 		private readonly IPersonValidation _personValidation;
+		private readonly IEventValidation _eventValidation;
+		private readonly IEventLogic _eventLogic;
 		public PersonController(IPersonLogic personLogic,
-			IPersonValidation personValidation)
+			IPersonValidation personValidation,
+			IEventValidation eventValidation,
+			IEventLogic eventLogic)
 		{
 			_personLogic = personLogic;
 			_personValidation = personValidation;
+			_eventValidation = eventValidation;
+			_eventLogic = eventLogic;
 		}
 
 		[HttpGet]
@@ -107,6 +114,33 @@ namespace LumeWebApp.Controllers
 				return BadRequest(ErrorDictionary.GetErrorMessage(27));
 			}
 			return randomEvent;
+		}
+
+		[HttpPost]
+		[Route("accept-random-person")]
+		public async Task<ActionResult> AcceptRandomPerson(EventParticipantModel request)
+		{
+			var validationResult = _eventValidation.ValidateAddParticipantModel(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.AddParticipant(request);
+			await _personLogic.AddPersonSwipeHistory(request.PersonUid, request.EventUid);
+			return Ok(Messages.RandomPersonAccepted);
+		}
+
+		[HttpPost]
+		[Route("reject-random-person")]
+		public async Task<ActionResult> RejectRandomEvent(Guid eventUid, Guid personUid)
+		{
+			var validationResult = _personValidation.ValidateRejectRandomEvent(eventUid, personUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _personLogic.AddPersonSwipeHistory(personUid, eventUid);
+			return Ok(Messages.RandomPersonRejected);
 		}
 	}
 }
