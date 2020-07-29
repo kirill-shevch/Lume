@@ -50,6 +50,7 @@ namespace DAL.Core.Repositories
 							.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Chat)
 					.Include(x => x.City)
+					.Include(x => x.SwipeHistory)
 					.SingleOrDefaultAsync(x => x.EventUid == eventUid, cancellationToken);
 			}
 		}
@@ -144,7 +145,7 @@ namespace DAL.Core.Repositories
 					!x.Participants.Any(x => x.Person.PersonUid == filter.PersonUid) &&
 					(!x.MinAge.HasValue || x.MinAge <= filter.Age) &&
 					(!x.MaxAge.HasValue || x.MaxAge >= filter.Age) &&
-					!filter.IgnoredEventUids.Contains(x.EventUid));
+					!filter.IgnoringEventList.Contains(x.EventId));
 
 				if (filter.PersonXCoordinate.HasValue && filter.PersonYCoordinate.HasValue && filter.Distance.HasValue)
 				{
@@ -220,6 +221,15 @@ namespace DAL.Core.Repositories
 					query = query.Where(x => x.CityId == repositoryFilter.CityId);
 				}
 				return await query.Include(x => x.EventImageContentEntities).Include(x => x.City).ToListAsync();
+			}
+		}
+
+		public async Task AddEventSwipeHistoryRecord(EventSwipeHistoryEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.AddAsync(entity);
+				await context.SaveChangesAsync();
 			}
 		}
 	}

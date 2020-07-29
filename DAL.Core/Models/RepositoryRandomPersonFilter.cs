@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DAL.Core.Models
 {
@@ -8,5 +9,6 @@ namespace DAL.Core.Models
 		public byte? MaxAge { get; set; }
 		public long EventId { get; set; }
 		public long? CityId { get; set; }
+		public List<long> IgnoringPersonList { get; set; }
 	}
 }
