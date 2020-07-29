@@ -140,5 +140,33 @@ namespace LumeWebApp.Controllers
 			}
 			return await _eventLogic.SearchForEvent(eventSearchFilter);
 		}
+
+		[HttpPost]
+		[Route("accept-random-event")]
+		public async Task<ActionResult> AcceptRandomEvent(EventParticipantModel request)
+		{
+			var validationResult = _eventValidation.ValidateAddParticipantModel(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.AddParticipant(request);
+			await _eventLogic.AddEventSwipeHistory(request.EventUid, request.PersonUid);
+			return Ok(Messages.RandomEventAccepted);
+		}
+
+		[HttpPost]
+		[Route("reject-random-event")]
+		public async Task<ActionResult> RejectRandomEvent(Guid eventUid)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _eventValidation.ValidateGetEvent(eventUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.AddEventSwipeHistory(eventUid, uid);
+			return Ok(Messages.RandomEventRejected);
+		}
 	}
 }

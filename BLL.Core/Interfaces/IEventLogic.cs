@@ -16,5 +16,6 @@ namespace BLL.Core.Interfaces
 		Task RemoveParticipant(Guid personUid, Guid eventUid);
 		Task<GetEventModel> GetRandomEvent(RandomEventFilter filter, Guid personUid);
 		Task<List<GetEventListModel>> SearchForEvent(EventSearchFilter filter);
+		Task AddEventSwipeHistory(Guid eventUid, Guid personUid);
 	}
 }
