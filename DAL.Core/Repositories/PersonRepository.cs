@@ -28,6 +28,7 @@ namespace DAL.Core.Repositories
 						.ThenInclude(x => x.Friend)
 							.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.City)
+					.Include(x => x.SwipeHistory)
 					.SingleOrDefaultAsync(x => x.PersonUid == uid, cancellationToken);
 			}
 		}
@@ -156,7 +157,8 @@ namespace DAL.Core.Repositories
 				var query = context.PersonEntities.Include(x => x.Events).AsNoTracking();
 
 				query = query.Where(x => x.PersonId != personId &&
-					!x.Events.Any(x => x.EventId == filter.EventId));
+					!x.Events.Any(x => x.EventId == filter.EventId) &&
+					!filter.IgnoringPersonList.Contains(x.PersonId));
 				
 				if (filter.MinAge.HasValue)
 				{
@@ -187,6 +189,15 @@ namespace DAL.Core.Repositories
 							.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.City)
 					.SingleOrDefaultAsync(x => x.PersonId == randomPersonId);
+			}
+		}
+
+		public async Task AddPersonSwipeHistoryRecord(PersonSwipeHistoryEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.AddAsync(entity);
+				await context.SaveChangesAsync();
 			}
 		}
 	}

@@ -2,7 +2,6 @@
 using DAL.Core.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,5 +19,6 @@ namespace DAL.Core.Interfaces
 		Task<IEnumerable<PersonEntity>> GetPersonListByPage(Guid personUid, RepositoryGetPersonListFilter filter, CancellationToken cancellationToken = default);
 		Task<List<PersonEntity>> GetAllPersonFriends(Guid personUid, CancellationToken cancellationToken = default);
 		Task<PersonEntity> GetRandomPerson(RepositoryRandomPersonFilter filter, long personId);
+		Task AddPersonSwipeHistoryRecord(PersonSwipeHistoryEntity entity);
 	}
 }

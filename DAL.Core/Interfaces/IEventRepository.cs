@@ -21,5 +21,6 @@ namespace DAL.Core.Interfaces
 		Task<PersonToEventEntity> GetParticipant(Guid personUid, Guid eventUid);
 		Task<EventEntity> GetRandomEvent(RepositoryRandomEventFilter filter);
 		Task<List<EventEntity>> SearchForEvent(RepositoryEventSearchFilter repositoryFilter);
+		Task AddEventSwipeHistoryRecord(EventSwipeHistoryEntity entity);
 	}
 }

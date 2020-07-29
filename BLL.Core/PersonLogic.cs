@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Person;
+using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using DAL.Core.Models;
 using System;
@@ -59,6 +60,10 @@ namespace BLL.Core
 				entity.Age = updatePersonModel.Age;
 			if (updatePersonModel.CityId.HasValue)
 				entity.CityId = updatePersonModel.CityId;
+			entity.PersonImageContentEntity = null;
+			entity.FriendList = null;
+			entity.City = null;
+			entity.SwipeHistory = null;
 			await _personRepository.UpdatePerson(entity);
 		}
 
@@ -114,7 +119,12 @@ namespace BLL.Core
 			var eventEntity = await _eventRepository.GetEvent(randomPersonFilter.EventUid);
 			var filter = _mapper.Map<RepositoryRandomPersonFilter>(randomPersonFilter);
 			filter.EventId = eventEntity.EventId;
+			filter.IgnoringPersonList = eventEntity.SwipeHistory.Select(x => x.PersonId).ToList();
 			var randomPersonEntity = await _personRepository.GetRandomPerson(filter, personEntity.PersonId);
+			if (randomPersonEntity != null)
+			{
+				await _eventRepository.AddEventSwipeHistoryRecord(new EventSwipeHistoryEntity { EventId = eventEntity.EventId, PersonId = randomPersonEntity.PersonId });
+			}
 			return _mapper.Map<PersonModel>(randomPersonEntity);
 		}
 	}
