@@ -17,5 +17,6 @@ namespace BLL.Core.Interfaces
 		Task<bool> CheckFriendship(Guid personUid, Guid friendUid);
 		Task<List<PersonModel>> GetAllPersonFriends(Guid personUid);
 		Task<PersonModel> GetRandomPerson(RandomPersonFilter randomPersonFilter, Guid uid);
+		Task AddPersonSwipeHistory(Guid eventUid, Guid personUid);
 	}
 }

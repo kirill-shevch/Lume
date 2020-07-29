@@ -121,11 +121,14 @@ namespace BLL.Core
 			filter.EventId = eventEntity.EventId;
 			filter.IgnoringPersonList = eventEntity.SwipeHistory.Select(x => x.PersonId).ToList();
 			var randomPersonEntity = await _personRepository.GetRandomPerson(filter, personEntity.PersonId);
-			if (randomPersonEntity != null)
-			{
-				await _eventRepository.AddEventSwipeHistoryRecord(new EventSwipeHistoryEntity { EventId = eventEntity.EventId, PersonId = randomPersonEntity.PersonId });
-			}
 			return _mapper.Map<PersonModel>(randomPersonEntity);
+		}
+
+		public async Task AddPersonSwipeHistory(Guid eventUid, Guid personUid)
+		{
+			var eventEntity = await _eventRepository.GetEvent(eventUid);
+			var personEntity = await _personRepository.GetPerson(personUid);
+			await _personRepository.AddPersonSwipeHistoryRecord(new PersonSwipeHistoryEntity { PersonId = personEntity.PersonId, EventId = eventEntity.EventId });
 		}
 	}
 }

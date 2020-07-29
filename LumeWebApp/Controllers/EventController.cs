@@ -17,12 +17,14 @@ namespace LumeWebApp.Controllers
 	{
 		private readonly IEventLogic _eventLogic;
 		private readonly IEventValidation _eventValidation;
-
+		private readonly IPersonLogic _personLogic;
 		public EventController(IEventLogic eventLogic,
+			IPersonLogic personLogic,
 			IEventValidation eventValidation)
 		{
 			_eventLogic = eventLogic;
 			_eventValidation = eventValidation;
+			_personLogic = personLogic;
 		}
 
 		[HttpPost]
@@ -139,6 +141,34 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			return await _eventLogic.SearchForEvent(eventSearchFilter);
+		}
+
+		[HttpPost]
+		[Route("accept-random-event")]
+		public async Task<ActionResult> AcceptRandomEvent(EventParticipantModel request)
+		{
+			var validationResult = _eventValidation.ValidateAddParticipantModel(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.AddParticipant(request);
+			await _personLogic.AddPersonSwipeHistory(request.EventUid, request.PersonUid);
+			return Ok(Messages.RandomEventAccepted);
+		}
+
+		[HttpPost]
+		[Route("reject-random-event")]
+		public async Task<ActionResult> RejectRandomEvent(Guid eventUid)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _eventValidation.ValidateGetEvent(eventUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _personLogic.AddPersonSwipeHistory(eventUid, uid);
+			return Ok(Messages.RandomEventRejected);
 		}
 	}
 }

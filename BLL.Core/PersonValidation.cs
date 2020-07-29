@@ -80,6 +80,19 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
+		public (bool ValidationResult, string ValidationMessage) ValidateRejectRandomEvent(Guid eventUid, Guid personUid)
+		{
+			if (!_personRepository.CheckPersonExistence(personUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(2));
+			}
+			if (!_eventRepository.CheckEventExistence(eventUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10));
+			}
+			return (true, string.Empty);
+		}
+
 		public (bool ValidationResult, string ValidationMessage) ValidateUpdatePerson(UpdatePersonModel model)
 		{
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)

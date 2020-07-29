@@ -168,10 +168,6 @@ namespace BLL.Core
 			repositoryFilter.PersonUid = personUid;
 			repositoryFilter.IgnoringEventList = personEntity.SwipeHistory.Select(x => x.EventId).ToList();
 			var entity = await _eventRepository.GetRandomEvent(repositoryFilter);
-			if (entity != null)
-			{
-				await _personRepository.AddPersonSwipeHistoryRecord(new PersonSwipeHistoryEntity { PersonId = personEntity.PersonId, EventId = entity.EventId });
-			}
 			return _mapper.Map<GetEventModel>(entity);
 		}
 
@@ -180,6 +176,13 @@ namespace BLL.Core
 			var repositoryFilter = _mapper.Map<RepositoryEventSearchFilter>(filter);
 			var entities = await _eventRepository.SearchForEvent(repositoryFilter);
 			return _mapper.Map<List<GetEventListModel>>(entities);
+		}
+
+		public async Task AddEventSwipeHistory(Guid personUid, Guid eventUid)
+		{
+			var eventEntity = await _eventRepository.GetEvent(eventUid);
+			var personEntity = await _personRepository.GetPerson(personUid);
+			await _eventRepository.AddEventSwipeHistoryRecord(new EventSwipeHistoryEntity { EventId = eventEntity.EventId, PersonId = personEntity.PersonId });
 		}
 	}
 }
