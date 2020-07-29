@@ -14,6 +14,8 @@ namespace Constants
              "/api/person/is-person-filled-up",
              "/api/person/get-person-list",
              "/api/person/get-random-person",
+             "/api/person/accept-random-person",
+             "/api/person/reject-random-person",
 
              "/api/event/add-event",
              "/api/event/get-event",
@@ -24,6 +26,8 @@ namespace Constants
              "/api/event/remove-event-participant",
              "/api/event/get-random-event",
              "/api/evemt/search-for-event",
+             "/api/evemt/accept-random-event",
+             "/api/evemt/reject-random-event",
 
              "/api/friends/add-friend",
              "/api/friends/remove-friend",

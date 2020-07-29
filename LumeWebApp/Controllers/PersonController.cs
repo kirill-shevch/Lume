@@ -126,7 +126,7 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			await _eventLogic.AddParticipant(request);
-			await _personLogic.AddPersonSwipeHistory(request.PersonUid, request.EventUid);
+			await _eventLogic.AddEventSwipeHistory(request.PersonUid, request.EventUid);
 			return Ok(Messages.RandomPersonAccepted);
 		}
 
@@ -139,7 +139,7 @@ namespace LumeWebApp.Controllers
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			await _personLogic.AddPersonSwipeHistory(personUid, eventUid);
+			await _eventLogic.AddEventSwipeHistory(personUid, eventUid);
 			return Ok(Messages.RandomPersonRejected);
 		}
 	}

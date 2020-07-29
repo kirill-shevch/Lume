@@ -178,7 +178,7 @@ namespace BLL.Core
 			return _mapper.Map<List<GetEventListModel>>(entities);
 		}
 
-		public async Task AddEventSwipeHistory(Guid eventUid, Guid personUid)
+		public async Task AddEventSwipeHistory(Guid personUid, Guid eventUid)
 		{
 			var eventEntity = await _eventRepository.GetEvent(eventUid);
 			var personEntity = await _personRepository.GetPerson(personUid);

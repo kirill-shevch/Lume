@@ -17,12 +17,14 @@ namespace LumeWebApp.Controllers
 	{
 		private readonly IEventLogic _eventLogic;
 		private readonly IEventValidation _eventValidation;
-
+		private readonly IPersonLogic _personLogic;
 		public EventController(IEventLogic eventLogic,
+			IPersonLogic personLogic,
 			IEventValidation eventValidation)
 		{
 			_eventLogic = eventLogic;
 			_eventValidation = eventValidation;
+			_personLogic = personLogic;
 		}
 
 		[HttpPost]
@@ -151,7 +153,7 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			await _eventLogic.AddParticipant(request);
-			await _eventLogic.AddEventSwipeHistory(request.EventUid, request.PersonUid);
+			await _personLogic.AddPersonSwipeHistory(request.EventUid, request.PersonUid);
 			return Ok(Messages.RandomEventAccepted);
 		}
 
@@ -165,7 +167,7 @@ namespace LumeWebApp.Controllers
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			await _eventLogic.AddEventSwipeHistory(eventUid, uid);
+			await _personLogic.AddPersonSwipeHistory(eventUid, uid);
 			return Ok(Messages.RandomEventRejected);
 		}
 	}

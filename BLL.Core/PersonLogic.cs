@@ -124,11 +124,11 @@ namespace BLL.Core
 			return _mapper.Map<PersonModel>(randomPersonEntity);
 		}
 
-		public async Task AddPersonSwipeHistory(Guid personUid, Guid eventUid)
+		public async Task AddPersonSwipeHistory(Guid eventUid, Guid personUid)
 		{
 			var eventEntity = await _eventRepository.GetEvent(eventUid);
 			var personEntity = await _personRepository.GetPerson(personUid);
-			await _personRepository.AddPersonSwipeHistoryRecord(new PersonSwipeHistoryEntity { EventId = eventEntity.EventId, PersonId = personEntity.PersonId });
+			await _personRepository.AddPersonSwipeHistoryRecord(new PersonSwipeHistoryEntity { PersonId = personEntity.PersonId, EventId = eventEntity.EventId });
 		}
 	}
 }
