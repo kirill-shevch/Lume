@@ -28,6 +28,7 @@ namespace DAL.Core.Entities
 		public PersonEntity Administrator { get; set; }
 		public ChatEntity Chat { get; set; }
 		public IEnumerable<PersonToEventEntity> Participants { get; set; }
+		public IEnumerable<EventSwipeHistoryEntity> SwipeHistory { get; set; }
 		public CityEntity City { get; set; }
 	}
 }

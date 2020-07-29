@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS LumeDB.dbo.PersonFriendList;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToEvent;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToChat;
 DROP TABLE IF EXISTS LumeDB.dbo.EventImageContent;
+DROP TABLE IF EXISTS LumeDB.dbo.EventSwipeHistory;
+DROP TABLE IF EXISTS LumeDB.dbo.PersonSwipeHistory;
 DROP TABLE IF EXISTS LumeDB.dbo.Event;
 DROP TABLE IF EXISTS LumeDB.dbo.EventType;
 DROP TABLE IF EXISTS LumeDB.dbo.EventStatus;
@@ -100,6 +102,22 @@ CREATE TABLE LumeDB.dbo.Event (
 	CONSTRAINT FK_Event_Chat FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId),
 	CONSTRAINT FK_Event_City FOREIGN KEY (CityId) REFERENCES LumeDB.dbo.City (CityId),
 	CONSTRAINT PK_EventId PRIMARY KEY CLUSTERED (EventId)
+);
+
+CREATE TABLE LumeDB.dbo.PersonSwipeHistory (
+	PersonId bigint,
+	EventId bigint,
+	CONSTRAINT PK_PersonSwipeHistory_Person_Event PRIMARY KEY (PersonId, EventId),
+  	CONSTRAINT FK_Person_PersonSwipeHistory FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
+  	CONSTRAINT FK_Event_PersonSwipeHistory FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId)
+);
+
+CREATE TABLE LumeDB.dbo.EventSwipeHistory (
+	EventId bigint,
+	PersonId bigint,
+	CONSTRAINT PK_EventSwipeHistory_Event_Person PRIMARY KEY (EventId, PersonId),
+  	CONSTRAINT FK_Event_EventSwipeHistory FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId),
+  	CONSTRAINT FK_Person_EventSwipeHistory FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId)
 );
 
 CREATE TABLE LumeDB.dbo.EventImageContent (

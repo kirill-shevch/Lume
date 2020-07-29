@@ -15,6 +15,7 @@ namespace DAL.Core.Entities
 		public long? CityId { get; set; }
 		public PersonImageContentEntity PersonImageContentEntity { get; set; }
 		public IEnumerable<PersonFriendListEntity> FriendList { get; set; }
+		public IEnumerable<PersonSwipeHistoryEntity> SwipeHistory { get; set; }
 		public IEnumerable<PersonToEventEntity> Events { get; set; }
 		public CityEntity City { get; set; }
 	}
