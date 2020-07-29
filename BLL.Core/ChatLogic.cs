@@ -47,7 +47,7 @@ namespace BLL.Core
 			foreach (var image in request.Images)
 			{
 				var chatImageUid = Guid.NewGuid();
-				await _imageRepository.SaveChatImage(chatMessageUid, new ChatImageContentEntity { Content = image, ChatImageContentUid = chatMessageUid });
+				await _imageRepository.SaveChatImage(chatMessageUid, new ChatImageContentEntity { Content = image, ChatImageContentUid = chatImageUid });
 				chatImageUids.Add(chatImageUid);
 			}
 			return new ChatMessageModel 
