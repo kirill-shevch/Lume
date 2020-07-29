@@ -158,7 +158,9 @@ namespace DAL.Core.Repositories
 
 				query = query.Where(x => x.PersonId != personId &&
 					!x.Events.Any(x => x.EventId == filter.EventId) &&
-					!filter.IgnoringPersonList.Contains(x.PersonId));
+					!filter.IgnoringPersonList.Contains(x.PersonId) &&
+					!string.IsNullOrEmpty(x.Name) &&
+					x.CityId.HasValue);
 				
 				if (filter.MinAge.HasValue)
 				{
