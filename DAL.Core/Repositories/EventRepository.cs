@@ -156,6 +156,10 @@ namespace DAL.Core.Repositories
 				{
 					query = query.Where(x => x.CityId == filter.CityId);
 				}
+				if (filter.EventTypes != null && filter.EventTypes.Any())
+				{
+					query = query.Where(x => filter.EventTypes.Contains(x.EventTypeId));
+				}
 				var random = new Random();
 
 				var events = await query.Select(x => x.EventId).ToListAsync();
