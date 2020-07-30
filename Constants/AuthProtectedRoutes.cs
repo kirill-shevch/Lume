@@ -41,7 +41,9 @@ namespace Constants
 
              "/api/image/add-person-image",
 
-             "/api/city/get-cities"
+             "/api/city/get-cities",
+
+             "/api/contacts/get-person-list-by-contacts"
         };
     }
 }
