@@ -3,6 +3,7 @@ using BLL.Authorization.Models;
 using DAL.Authorization;
 using DAL.Authorization.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -113,6 +114,11 @@ namespace BLL.Authorization
 			dalPerson.ExpirationTime = DateTime.UtcNow.AddDays(7);
 			dalPerson.TemporaryCode = string.Empty;
 			await _authorizationRepository.UpdatePerson(dalPerson, cancellationToken);
+		}
+
+		public async Task<List<Guid>> GetPersonListByContacts(List<string> phoneNumbers)
+		{
+			return await _authorizationRepository.GetPersonListByContacts(phoneNumbers);
 		}
 	}
 }

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,6 +41,14 @@ namespace DAL.Authorization
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				return await context.PersonAuthEntities.SingleOrDefaultAsync(x => x.PersonUid == personUid, cancellationToken);
+			}
+		}
+
+		public async Task<List<Guid>> GetPersonListByContacts(List<string> phoneNumbers)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonAuthEntities.Where(x => phoneNumbers.Contains(x.PhoneNumber)).Select(x => x.PersonUid).ToListAsync();
 			}
 		}
 

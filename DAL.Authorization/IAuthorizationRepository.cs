@@ -1,5 +1,6 @@
 ﻿using DAL.Authorization.Entities;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,5 +12,6 @@ namespace DAL.Authorization
 		Task UpdatePerson(PersonAuthEntity personAuthEntity, CancellationToken cancellationToken = default);
 		Task<PersonAuthEntity> GetPerson(string phoneNumber, CancellationToken cancellationToken = default);
 		Task<PersonAuthEntity> GetPerson(Guid personUid, CancellationToken cancellationToken = default);
+		Task<List<Guid>> GetPersonListByContacts(List<string> phoneNumbers);
 	}
 }
