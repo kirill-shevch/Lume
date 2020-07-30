@@ -160,6 +160,14 @@ namespace DAL.Core.Repositories
 				{
 					query = query.Where(x => filter.EventTypes.Contains(x.EventTypeId));
 				}
+				if (filter.IsOpenForInvitations.HasValue)
+				{
+					query = query.Where(x => x.IsOpenForInvitations == filter.IsOpenForInvitations);
+				}
+				if (filter.IsOnline.HasValue)
+				{
+					query = query.Where(x => x.IsOnline == filter.IsOnline);
+				}
 				var random = new Random();
 
 				var events = await query.Select(x => x.EventId).ToListAsync();
@@ -223,6 +231,10 @@ namespace DAL.Core.Repositories
 				if (repositoryFilter.CityId.HasValue)
 				{
 					query = query.Where(x => x.CityId == repositoryFilter.CityId);
+				}
+				if (repositoryFilter.IsOnline.HasValue)
+				{
+					query = query.Where(x => x.IsOnline == repositoryFilter.IsOnline);
 				}
 				return await query.Include(x => x.EventImageContentEntities).Include(x => x.City).ToListAsync();
 			}

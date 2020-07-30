@@ -19,7 +19,8 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.Description);
 			builder.Property(t => t.StartTime);
 			builder.Property(t => t.EndTime);
-			builder.Property(t => t.IsOpenForInvitations);			
+			builder.Property(t => t.IsOpenForInvitations);
+			builder.Property(t => t.IsOnline);
 			builder.Property(t => t.EventTypeId);
 			builder.Property(t => t.EventStatusId);
 			builder.Property(t => t.AdministratorId);

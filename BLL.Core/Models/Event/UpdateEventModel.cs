@@ -15,6 +15,7 @@ namespace BLL.Core.Models.Event
 		public DateTime? StartTime { get; set; }
 		public DateTime? EndTime { get; set; }
 		public bool? IsOpenForInvitations { get; set; }
+		public bool? IsOnline { get; set; }
 		public EventStatus? Status { get; set; }
 		public EventType? Type { get; set; }
 		public long? CityId { get; set; }
