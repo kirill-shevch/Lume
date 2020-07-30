@@ -149,12 +149,14 @@ namespace DAL.Core.Repositories
 
 				if (filter.PersonXCoordinate.HasValue && filter.PersonYCoordinate.HasValue && filter.Distance.HasValue)
 				{
-					query = query.Where(x => 
-					filter.Distance >= Math.Sqrt(Math.Pow(Math.Abs(x.XCoordinate - filter.PersonXCoordinate.Value), 2) + Math.Pow(Math.Abs(x.YCoordinate - filter.PersonYCoordinate.Value), 2)));
+					query = query.Where(x =>
+					(filter.Distance >= Math.Sqrt(Math.Pow(Math.Abs(x.XCoordinate - filter.PersonXCoordinate.Value), 2) + Math.Pow(Math.Abs(x.YCoordinate - filter.PersonYCoordinate.Value), 2))) || 
+					(!filter.IsOnline.HasValue && x.IsOnline.Value));
 				}
 				if (filter.CityId.HasValue)
 				{
-					query = query.Where(x => x.CityId == filter.CityId);
+					query = query.Where(x => (x.CityId == filter.CityId) ||
+					(!filter.IsOnline.HasValue && x.IsOnline.Value));
 				}
 				if (filter.EventTypes != null && filter.EventTypes.Any())
 				{
@@ -234,7 +236,8 @@ namespace DAL.Core.Repositories
 				}
 				if (repositoryFilter.IsOnline.HasValue)
 				{
-					query = query.Where(x => x.IsOnline == repositoryFilter.IsOnline);
+					query = query.Where(x => (x.IsOnline == repositoryFilter.IsOnline) ||
+					(!repositoryFilter.IsOnline.HasValue && x.IsOnline.Value));
 				}
 				return await query.Include(x => x.EventImageContentEntities).Include(x => x.City).ToListAsync();
 			}
