@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Constants;
 using System.Collections.Generic;
 
 namespace BLL.Core.Models.Event
@@ -9,5 +9,6 @@ namespace BLL.Core.Models.Event
 		public double? PersonYCoordinate { get; set; }
 		public double? Distance { get; set; }
 		public long? CityId { get; set; }
+		public List<EventType> EventTypes { get; set; }
 	}
 }

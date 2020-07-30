@@ -16,7 +16,8 @@ namespace BLL.Core.Mappings
 	{
 		public MappingProfile()
 		{
-			CreateMap<RandomEventFilter, RepositoryRandomEventFilter>();
+			CreateMap<RandomEventFilter, RepositoryRandomEventFilter>()
+				.ForMember(dest => dest.EventTypes, opt => opt.MapFrom(src => src.EventTypes.Select(x => (long)x).ToList()));
 
 			CreateMap<EventSearchFilter, RepositoryEventSearchFilter>();
 

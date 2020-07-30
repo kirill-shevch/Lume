@@ -75,6 +75,16 @@ namespace BLL.Core
 					return (false, ErrorDictionary.GetErrorMessage(30));
 				}
 			}
+			if (filter.EventTypes != null && filter.EventTypes.Any())
+			{
+				foreach (var type in filter.EventTypes)
+				{
+					if (!Enum.IsDefined(typeof(EventType), type))
+					{
+						return (false, ErrorDictionary.GetErrorMessage(14));
+					}
+				}
+			}
 			return (true, string.Empty);
 		}
 

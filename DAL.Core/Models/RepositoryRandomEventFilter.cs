@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Constants;
+using System;
 using System.Collections.Generic;
 
 namespace DAL.Core.Models
@@ -12,5 +13,6 @@ namespace DAL.Core.Models
 		public Guid	PersonUid { get; set; }
 		public long? CityId { get; set; }
 		public List<long> IgnoringEventList { get; set; }
+		public List<long> EventTypes { get; set; }
 	}
 }
