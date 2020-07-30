@@ -13,6 +13,7 @@ namespace BLL.Core.Models.Event
 		public double YCoordinate { get; set; }
 		public string Description { get; set; }
 		public bool? IsOpenForInvitations { get; set; }
+		public bool? IsOnline { get; set; }
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 		public EventStatus Status { get; set; }

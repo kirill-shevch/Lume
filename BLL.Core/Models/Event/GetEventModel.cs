@@ -24,6 +24,7 @@ namespace BLL.Core.Models.Event
 		public PersonModel Administrator { get; set; }
 		public IEnumerable<PersonEventModel> Participants { get; set; }
 		public bool IsOpenForInvitations { get; set; }
+		public bool IsOnline { get; set; }
 		public long? CityId { get; set; }
 		public string CityName { get; set; }
 	}
