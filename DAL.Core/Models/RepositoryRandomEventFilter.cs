@@ -12,6 +12,8 @@ namespace DAL.Core.Models
 		public double? Distance { get; set; }
 		public Guid	PersonUid { get; set; }
 		public long? CityId { get; set; }
+		public bool? IsOpenForInvitations { get; set; }
+		public bool? IsOnline { get; set; }
 		public List<long> IgnoringEventList { get; set; }
 		public List<long> EventTypes { get; set; }
 	}

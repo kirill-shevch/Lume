@@ -10,5 +10,7 @@ namespace BLL.Core.Models.Event
 		public double? Distance { get; set; }
 		public long? CityId { get; set; }
 		public List<EventType> EventTypes { get; set; }
+		public bool? IsOpenForInvitations { get; set; }
+		public bool? IsOnline { get; set; }
 	}
 }
