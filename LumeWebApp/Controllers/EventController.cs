@@ -8,6 +8,7 @@ using Constants;
 using LumeWebApp.Responses.Event;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Utils;
 
 namespace LumeWebApp.Controllers
 {
@@ -126,7 +127,7 @@ namespace LumeWebApp.Controllers
 			var randomEvent = await _eventLogic.GetRandomEvent(randomEventFilter, uid);
 			if (randomEvent == null)
 			{
-				return BadRequest(ErrorDictionary.GetErrorMessage(25));
+				return BadRequest(ErrorDictionary.GetErrorMessage(25, CultureParser.GetCultureFromHttpContext(HttpContext)));
 			}
 			return randomEvent;
 		}
