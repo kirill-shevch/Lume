@@ -41,12 +41,12 @@ namespace Lume.DI
 
         public static void RegisterValidations(this IServiceCollection services)
         {
-            services.AddSingleton<IAuthorizationValidation, AuthorizationValidation>();
-            services.AddSingleton<IImageValidation, ImageValidation>();
-            services.AddSingleton<IEventValidation, EventValidation>();
-            services.AddSingleton<IPersonValidation, PersonValidation>();
-            services.AddSingleton<IChatValidation, ChatValidation>();
-            services.AddSingleton<IFriendValidation, FriendValidation>();
+            services.AddTransient<IAuthorizationValidation, AuthorizationValidation>();
+            services.AddTransient<IImageValidation, ImageValidation>();
+            services.AddTransient<IEventValidation, EventValidation>();
+            services.AddTransient<IPersonValidation, PersonValidation>();
+            services.AddTransient<IChatValidation, ChatValidation>();
+            services.AddTransient<IFriendValidation, FriendValidation>();
         }
     }
 }

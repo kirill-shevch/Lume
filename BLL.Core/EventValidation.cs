@@ -2,19 +2,21 @@
 using BLL.Core.Models.Event;
 using Constants;
 using DAL.Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 
 namespace BLL.Core
 {
-	public class EventValidation : IEventValidation
+	public class EventValidation : BaseValidator, IEventValidation
 	{
 		private readonly IEventRepository _eventRepository;
 		private readonly IPersonRepository _personRepository;
 		private readonly ICityLogic _cityLogic;
 		public EventValidation(IEventRepository eventRepository,
 			IPersonRepository personRepository,
-			ICityLogic cityLogic)
+			ICityLogic cityLogic,
+			IHttpContextAccessor contextAccessor) : base(contextAccessor)
 		{
 			_eventRepository = eventRepository;
 			_personRepository = personRepository;
@@ -25,24 +27,24 @@ namespace BLL.Core
 		{
 			if (string.IsNullOrEmpty(model.Name))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(16));
+				return (false, ErrorDictionary.GetErrorMessage(16, _culture));
 			}
 			if (!Enum.IsDefined(typeof(EventStatus), model.Status))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(13));
+				return (false, ErrorDictionary.GetErrorMessage(13, _culture));
 			}
 			if (!Enum.IsDefined(typeof(EventType), model.Type))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(14));
+				return (false, ErrorDictionary.GetErrorMessage(14, _culture));
 			}
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(15));
+				return (false, ErrorDictionary.GetErrorMessage(15, _culture));
 			}
 			var cities = _cityLogic.GetCities().Result;
 			if (!cities.Any(x => x.CityId == model.CityId))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(30));
+				return (false, ErrorDictionary.GetErrorMessage(30, _culture));
 			}
 			return (true, string.Empty);
 		}
@@ -51,7 +53,7 @@ namespace BLL.Core
 		{
 			if (!_eventRepository.CheckEventExistence(eventUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(10));
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
 			}
 
 			return (true, string.Empty);
@@ -61,18 +63,18 @@ namespace BLL.Core
 		{
 			if (filter.PersonXCoordinate < 0)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(23));
+				return (false, ErrorDictionary.GetErrorMessage(23, _culture));
 			}
 			if (filter.PersonYCoordinate < 0)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(23));
+				return (false, ErrorDictionary.GetErrorMessage(23, _culture));
 			}
 			if (filter.CityId.HasValue)
 			{
 				var cities = _cityLogic.GetCities().Result;
 				if (!cities.Any(x => x.CityId == filter.CityId))
 				{
-					return (false, ErrorDictionary.GetErrorMessage(30));
+					return (false, ErrorDictionary.GetErrorMessage(30, _culture));
 				}
 			}
 			if (filter.EventTypes != null && filter.EventTypes.Any())
@@ -81,7 +83,7 @@ namespace BLL.Core
 				{
 					if (!Enum.IsDefined(typeof(EventType), type))
 					{
-						return (false, ErrorDictionary.GetErrorMessage(14));
+						return (false, ErrorDictionary.GetErrorMessage(14, _culture));
 					}
 				}
 			}
@@ -92,20 +94,20 @@ namespace BLL.Core
 		{
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(2));
+				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
 			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(10));
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
 			}
 			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
 			if (participant == null)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(26));
+				return (false, ErrorDictionary.GetErrorMessage(26, _culture));
 			}
 			if (!Enum.IsDefined(typeof(ParticipantStatus), model.ParticipantStatus))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(21));
+				return (false, ErrorDictionary.GetErrorMessage(21, _culture));
 			}
 			return (true, string.Empty);
 		}
@@ -114,11 +116,11 @@ namespace BLL.Core
 		{
 			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(2));
+				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
 			if (!_eventRepository.CheckEventExistence(eventUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(10));
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
 			}
 			return (true, string.Empty);
 		}
@@ -127,22 +129,22 @@ namespace BLL.Core
 		{
 			if (eventSearchFilter.MinAge.HasValue && eventSearchFilter.MaxAge.HasValue && eventSearchFilter.MinAge > eventSearchFilter.MaxAge)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(15));
+				return (false, ErrorDictionary.GetErrorMessage(15, _culture));
 			}
 			if (eventSearchFilter.Status.HasValue && !Enum.IsDefined(typeof(EventStatus), eventSearchFilter.Status))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(13));
+				return (false, ErrorDictionary.GetErrorMessage(13, _culture));
 			}
 			if (eventSearchFilter.Type.HasValue && !Enum.IsDefined(typeof(EventType), eventSearchFilter.Type))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(14));
+				return (false, ErrorDictionary.GetErrorMessage(14, _culture));
 			}
 			var cities = _cityLogic.GetCities().Result;
 			if (eventSearchFilter.CityId.HasValue)
 			{
 				if (!cities.Any(x => x.CityId == eventSearchFilter.CityId))
 				{
-					return (false, ErrorDictionary.GetErrorMessage(30));
+					return (false, ErrorDictionary.GetErrorMessage(30, _culture));
 				}
 			}
 			return (true, string.Empty);
@@ -152,26 +154,26 @@ namespace BLL.Core
 		{
 			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(10));
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
 			}
 			if (model.Status.HasValue && !Enum.IsDefined(typeof(EventStatus), model.Status))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(13));
+				return (false, ErrorDictionary.GetErrorMessage(13, _culture));
 			}
 			if (model.Type.HasValue && !Enum.IsDefined(typeof(EventType), model.Type))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(14));
+				return (false, ErrorDictionary.GetErrorMessage(14, _culture));
 			}
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(15));
+				return (false, ErrorDictionary.GetErrorMessage(15, _culture));
 			}
 			if (model.CityId.HasValue)
 			{
 				var cities = _cityLogic.GetCities().Result;
 				if (!cities.Any(x => x.CityId == model.CityId))
 				{
-					return (false, ErrorDictionary.GetErrorMessage(30));
+					return (false, ErrorDictionary.GetErrorMessage(30, _culture));
 				}
 			}
 			return (true, string.Empty);
@@ -181,20 +183,20 @@ namespace BLL.Core
 		{
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(2));
+				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
 			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(10));
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
 			}
 			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
 			if (participant != null)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(24));
+				return (false, ErrorDictionary.GetErrorMessage(24, _culture));
 			}
 			if (!Enum.IsDefined(typeof(ParticipantStatus), model.ParticipantStatus))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(21));
+				return (false, ErrorDictionary.GetErrorMessage(21, _culture));
 			}
 			return (true, string.Empty);
 		}
