@@ -4,12 +4,15 @@ using Constants;
 using Lume.DI;
 using LumeWebApp.Middleware;
 using LumeWebApp.SwaggerAttributes;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Utils.TelemetryInitializers;
 
 namespace LumeWebApp
 {
@@ -41,6 +44,7 @@ namespace LumeWebApp
                 swagger.OperationFilter<CustomHeaderSwaggerAttribute>();
                 swagger.SwaggerDoc("v2", new OpenApiInfo { Title = "Lume API" });
             });
+            services.AddSingleton<ITelemetryInitializer, RequestBodyInitializer>();
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 

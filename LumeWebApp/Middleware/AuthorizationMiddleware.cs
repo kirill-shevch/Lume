@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Utils;
 
 namespace LumeWebApp.Middleware
 {
@@ -35,14 +36,14 @@ namespace LumeWebApp.Middleware
 				{
 					httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
 					httpContext.Response.ContentType = "application/json";
-					return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(5));
+					return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(5, CultureParser.GetCultureFromHttpContext(httpContext)));
 				}
 			}
 			else
 			{
 				httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
 				httpContext.Response.ContentType = "application/json";
-				return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(5));
+				return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(5, CultureParser.GetCultureFromHttpContext(httpContext)));
 			}
 			return _next(httpContext);
 		}
