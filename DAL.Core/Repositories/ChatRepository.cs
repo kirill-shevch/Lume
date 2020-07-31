@@ -143,6 +143,7 @@ namespace DAL.Core.Repositories
 			{
 				return await context.ChatMessageEntities.Where(x => x.ChatId == chatId && x.ChatMessageId > lastMessageId)
 					.Include(x => x.Author)
+						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.ChatImageContentEntities)
 					.OrderByDescending(x => x.ChatMessageId)
 					.ToListAsync();
