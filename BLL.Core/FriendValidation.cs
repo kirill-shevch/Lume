@@ -1,15 +1,17 @@
 ﻿using BLL.Core.Interfaces;
 using Constants;
 using DAL.Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 
 namespace BLL.Core
 {
-    public class FriendValidation : IFriendValidation
+    public class FriendValidation : BaseValidator, IFriendValidation
     {
         private readonly IPersonRepository _personRepository;
 
-        public FriendValidation(IPersonRepository personRepository)
+        public FriendValidation(IPersonRepository personRepository,
+            IHttpContextAccessor contextAccessor) : base(contextAccessor)
         {
             _personRepository = personRepository;
         } 
@@ -20,11 +22,11 @@ namespace BLL.Core
 
             if (_personRepository.CheckPersonFriendExistence(personUid, friendUid).Result)
             {
-                return (false, ErrorDictionary.GetErrorMessage(18));
+                return (false, ErrorDictionary.GetErrorMessage(18, _culture));
             }
             if (!isFriendExists)
             {
-                return (false, ErrorDictionary.GetErrorMessage(2));
+                return (false, ErrorDictionary.GetErrorMessage(2, _culture));
             }
 
             return (true, string.Empty);
@@ -36,11 +38,11 @@ namespace BLL.Core
 
             if (!_personRepository.CheckPersonFriendExistence(personUid, friendUid).Result)
             {
-                return (false, ErrorDictionary.GetErrorMessage(17));
+                return (false, ErrorDictionary.GetErrorMessage(17, _culture));
             }
             if (!isFriendExists)
             {
-                return (false, ErrorDictionary.GetErrorMessage(2));
+                return (false, ErrorDictionary.GetErrorMessage(2, _culture));
             }
 
             return (true, string.Empty);

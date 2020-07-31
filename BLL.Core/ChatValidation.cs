@@ -2,20 +2,22 @@
 using BLL.Core.Models.Chat;
 using Constants;
 using DAL.Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BLL.Core
 {
-	public class ChatValidation : IChatValidation
+	public class ChatValidation : BaseValidator, IChatValidation
 	{
 		private readonly IPersonRepository _personRepository;
 		private readonly IChatRepository _chatRepository;
 		private readonly IChatLogic _chatLogic;
 		public ChatValidation(IPersonRepository personRepository,
 			IChatRepository chatRepository,
-			IChatLogic chatLogic)
+			IChatLogic chatLogic,
+			IHttpContextAccessor contextAccessor): base(contextAccessor)
 		{
 			_personRepository = personRepository;
 			_chatRepository = chatRepository;
@@ -28,7 +30,7 @@ namespace BLL.Core
 			{
 				if (!_personRepository.CheckPersonExistence(personUid).Result)
 				{
-					return (false, ErrorDictionary.GetErrorMessage(2));
+					return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 				}
 			}
 			return (true, string.Empty);
@@ -39,7 +41,7 @@ namespace BLL.Core
 			var personChatList = _chatLogic.GetPersonChatList(personUid).Result;
 			if (!personChatList.Any(x => x.ChatUid == request.ChatUid))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(20));
+				return (false, ErrorDictionary.GetErrorMessage(20, _culture));
 			}
 			return (true, string.Empty);
 		}
@@ -48,15 +50,15 @@ namespace BLL.Core
 		{
 			if (!_chatRepository.CheckChatExistence(chatUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(19));
+				return (false, ErrorDictionary.GetErrorMessage(19, _culture));
 			}
 			if (pageNumber < 1)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(28));
+				return (false, ErrorDictionary.GetErrorMessage(28, _culture));
 			}
 			if (pageSize < 1)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(29));
+				return (false, ErrorDictionary.GetErrorMessage(29, _culture));
 			}
 			return (true, string.Empty);
 		}
@@ -65,11 +67,11 @@ namespace BLL.Core
 		{
 			if (!_chatRepository.CheckChatExistence(chatUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(19));
+				return (false, ErrorDictionary.GetErrorMessage(19, _culture));
 			}
 			if (messageUid.HasValue && !_chatRepository.CheckChatMessageExistence(messageUid.Value).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(11));
+				return (false, ErrorDictionary.GetErrorMessage(11, _culture));
 			}
 			return (true, string.Empty);
 		}
@@ -78,7 +80,7 @@ namespace BLL.Core
 		{
 			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(2));
+				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
 			return (true, string.Empty);
 		}

@@ -2,27 +2,23 @@
 using BLL.Core.Models.Image;
 using Constants;
 using DAL.Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Linq;
 
 namespace BLL.Core
 {
-	public class ImageValidation : IImageValidation
+	public class ImageValidation : BaseValidator, IImageValidation
 	{
 		private readonly IPersonRepository _personRepository;
-		private readonly IEventRepository _eventRepository;
-		private readonly IChatRepository _chatRepository;
 		private readonly IImageRepository _imageRepository;
 
 		public ImageValidation(IPersonRepository personRepository,
-			IEventRepository eventRepository,
-			IChatRepository chatRepository,
-			IImageRepository imageRepository)
+			IImageRepository imageRepository,
+			IHttpContextAccessor contextAccessor) : base(contextAccessor)
 		{
 			_personRepository = personRepository;
-			_eventRepository = eventRepository;
-			_chatRepository = chatRepository;
 			_imageRepository = imageRepository;
 		}
 
@@ -30,11 +26,11 @@ namespace BLL.Core
 		{
 			if (model.Content == null || !model.Content.Any())
 			{
-				return (false, ErrorDictionary.GetErrorMessage(9));
+				return (false, ErrorDictionary.GetErrorMessage(9, _culture));
 			}
 			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(2));
+				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
 
 			return (true, string.Empty);
@@ -44,7 +40,7 @@ namespace BLL.Core
 		{
 			if (!_imageRepository.CheckPersonImageExistence(uid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(12));
+				return (false, ErrorDictionary.GetErrorMessage(12, _culture));
 			}
 
 			return (true, string.Empty);
@@ -54,7 +50,7 @@ namespace BLL.Core
 		{
 			if (!_imageRepository.CheckEventImageExistence(uid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(12));
+				return (false, ErrorDictionary.GetErrorMessage(12, _culture));
 			}
 			return (true, string.Empty);
 		}
@@ -63,7 +59,7 @@ namespace BLL.Core
 		{
 			if (!_imageRepository.CheckChatMessageImageExistence(uid).Result)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(12));
+				return (false, ErrorDictionary.GetErrorMessage(12, _culture));
 			}
 
 			return (true, string.Empty);
