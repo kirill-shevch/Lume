@@ -38,8 +38,6 @@ namespace Constants
 			[(30, "en-US")] = "City id is not correct.",										[(30, "ru-RU")] = "Неверный идентификатор города."
 		};
 
-		public static string GetErrorMessage(int code) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, "En")]}\" }}";
-
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";
 	}
 }

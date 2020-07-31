@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Utils;
 
 namespace LumeWebApp.Controllers
 {
@@ -111,7 +112,7 @@ namespace LumeWebApp.Controllers
 			var randomEvent = await _personLogic.GetRandomPerson(randomPersonFilter, uid);
 			if (randomEvent == null)
 			{
-				return BadRequest(ErrorDictionary.GetErrorMessage(27));
+				return BadRequest(ErrorDictionary.GetErrorMessage(27, CultureParser.GetCultureFromHttpContext(HttpContext)));
 			}
 			return randomEvent;
 		}
