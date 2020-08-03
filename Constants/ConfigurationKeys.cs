@@ -6,5 +6,6 @@
 		public const string AzureConnectionString = "AZURESQLCONNSTR_CONNECTIONSTRING";
 		public const string SmsSendingApiKey = "SMSSENDING_APIKEY";
 		public const string SmsServiceUrl = "SmsServiceUrl";
+		public const string EnableSmsService = "EnableSmsService";
 	}
 }
