@@ -34,8 +34,8 @@ namespace LumeWebApp.Controllers
 			}
             Guid personUid;
             var person = await _authorizationLogic.GetPerson(phoneNumber);
-            //TODO generate random code
-            var code = "0000";
+            var random = new Random();
+            var code = random.Next(0, 999999).ToString("d6");
             await _authorizationLogic.SendCodeToPhone(code, phoneNumber);
             if (person == null)
             {
