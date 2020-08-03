@@ -1,10 +1,16 @@
 ﻿using BLL.Authorization.Interfaces;
 using BLL.Authorization.Models;
+using Constants;
 using DAL.Authorization;
 using DAL.Authorization.Entities;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,10 +18,14 @@ namespace BLL.Authorization
 {
 	public class AuthorizationLogic : IAuthorizationLogic
 	{
+		private const string SendingRequest = @"{ ""apiKey"": ""{0}"", ""sms"": [ { ""channel"": ""char"", ""phone"": ""{1}"", ""text"": ""Lume code {2}"", ""sender"": ""VIRTA"" } ] }";
+
+		private readonly IConfiguration _configuration;
 		private readonly IAuthorizationRepository _authorizationRepository;
-		public AuthorizationLogic(IAuthorizationRepository authorizationRepository)
+		public AuthorizationLogic(IAuthorizationRepository authorizationRepository, IConfiguration configuration)
 		{
 			_authorizationRepository = authorizationRepository;
+			_configuration = configuration;
 		}
 
 		public async Task<Guid> AddPerson(string code, string phoneNumber, CancellationToken cancellationToken = default)
@@ -80,8 +90,28 @@ namespace BLL.Authorization
 
 		public async Task SendCodeToPhone(string code, string phoneNumber, CancellationToken cancellationToken = default)
 		{
-			//TODO call special service for sms sending
-			//throw new NotImplementedException();
+			using (var httpClient = new HttpClient())
+			{
+				var apikey = _configuration.GetValue<string>(ConfigurationKeys.SmsSendingApiKey);
+				var url = _configuration.GetValue<string>(ConfigurationKeys.SmsServiceUrl);
+				var sms = new Dictionary<string, string>
+				{
+					{ "channel", "char" },
+					{ "phone", phoneNumber },
+					{ "text", string.Format("Lume code {0}", code) },
+					{ "sender", "VIRTA" }
+				};
+				var body = new Dictionary<object, object>
+				{
+					{ "apiKey", apikey },
+					{ "sms", new List<object> { sms } }
+				};
+				var content = JsonConvert.SerializeObject(body);
+				var buffer = Encoding.UTF8.GetBytes(content);
+				var byteContent = new ByteArrayContent(buffer);
+				byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+				await httpClient.PostAsync(url, byteContent);
+			}
 		}
 
 		private string RandomString(int length)

@@ -1,7 +1,9 @@
 ﻿using BLL.Authorization.Interfaces;
 using BLL.Core.Interfaces;
+using Constants;
 using LumeWebApp.Responses;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -14,13 +16,16 @@ namespace LumeWebApp.Controllers
         private readonly IAuthorizationLogic _authorizationLogic;
         private readonly IAuthorizationValidation _authorizationValidation;
         private readonly IPersonLogic _personLogic;
+        private readonly IConfiguration _configuration;
         public AuthorizationController(IAuthorizationLogic authorizationLogic,
             IAuthorizationValidation authorizationValidation,
-            IPersonLogic personLogic)
+            IPersonLogic personLogic,
+            IConfiguration configuration)
         {
             _authorizationLogic = authorizationLogic;
             _authorizationValidation = authorizationValidation;
             _personLogic = personLogic;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -34,9 +39,17 @@ namespace LumeWebApp.Controllers
 			}
             Guid personUid;
             var person = await _authorizationLogic.GetPerson(phoneNumber);
-            //TODO generate random code
-            var code = "0000";
-            await _authorizationLogic.SendCodeToPhone(code, phoneNumber);
+            var random = new Random();
+            string code;
+			if (_configuration.GetValue<bool>(ConfigurationKeys.EnableSmsService))
+			{
+                code = random.Next(0, 999999).ToString("d6");
+                await _authorizationLogic.SendCodeToPhone(code, phoneNumber);
+            }
+			else
+			{
+                code = "000000";
+			}
             if (person == null)
             {
                 personUid = await _authorizationLogic.AddPerson(code, phoneNumber);

@@ -22,7 +22,7 @@ CREATE TABLE LumeDB.dbo.PersonAuth (
 	AccessKey nvarchar(50) NULL,
 	RefreshKey nvarchar(50) NULL,
 	ExpirationTime datetime2(7) NULL,
-	TemporaryCode nvarchar(5) NULL,
+	TemporaryCode nvarchar(6) NULL,
 	PhoneNumber nvarchar(20) NOT NULL UNIQUE,
 	CONSTRAINT PK_PersonAuthId PRIMARY KEY CLUSTERED (PersonAuthId)
 );
