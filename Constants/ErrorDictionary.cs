@@ -35,7 +35,9 @@ namespace Constants
 			[(27, "en-US")] = "No matching person found.",										[(27, "ru-RU")] = "Не найдено подходящих пользователей.",
 			[(28, "en-US")] = "Page number should be bigger then 0.",							[(28, "ru-RU")] = "Номер страницы должен быть больше 0.",
 			[(29, "en-US")] = "Page size should be bigger then 0.",								[(29, "ru-RU")] = "Размер страницы должен быть больше 0.",
-			[(30, "en-US")] = "City id is not correct.",										[(30, "ru-RU")] = "Неверный идентификатор города."
+			[(30, "en-US")] = "City id is not correct.",										[(30, "ru-RU")] = "Неверный идентификатор города.",
+			[(31, "en-US")] = "City id should not be empty.",									[(31, "ru-RU")] = "Идентификатор города не должен быть пустым.",
+			[(32, "en-US")] = "City id should be empty.",										[(32, "ru-RU")] = "Идентификатор города должен быть пустым."
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";
