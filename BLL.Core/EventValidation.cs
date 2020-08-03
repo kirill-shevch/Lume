@@ -41,10 +41,21 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(15, _culture));
 			}
-			var cities = _cityLogic.GetCities().Result;
-			if (!cities.Any(x => x.CityId == model.CityId))
+			if (model.IsOnline.HasValue && !model.IsOnline.Value && !model.CityId.HasValue)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(30, _culture));
+				return (false, ErrorDictionary.GetErrorMessage(31, _culture));
+			}
+			if (model.IsOnline.HasValue && model.IsOnline.Value && !model.CityId.HasValue)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(32, _culture));
+			}
+			if (model.CityId.HasValue)
+			{
+				var cities = _cityLogic.GetCities().Result;
+				if (!cities.Any(x => x.CityId == model.CityId))
+				{
+					return (false, ErrorDictionary.GetErrorMessage(30, _culture));
+				}
 			}
 			return (true, string.Empty);
 		}
