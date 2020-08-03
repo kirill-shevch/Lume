@@ -45,7 +45,7 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(31, _culture));
 			}
-			if (model.IsOnline.HasValue && model.IsOnline.Value && !model.CityId.HasValue)
+			if (model.IsOnline.HasValue && model.IsOnline.Value && model.CityId.HasValue)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(32, _culture));
 			}
