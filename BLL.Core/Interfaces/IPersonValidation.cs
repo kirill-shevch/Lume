@@ -9,6 +9,6 @@ namespace BLL.Core.Interfaces
 		(bool ValidationResult, string ValidationMessage) ValidateGetPerson(Guid personUid);
 		(bool ValidationResult, string ValidationMessage) ValidateGetRandomPerson(RandomPersonFilter randomPersonFilter);
 		(bool ValidationResult, string ValidationMessage) ValidateGetPersonListByPage(GetPersonListFilter request);
-		(bool ValidationResult, string ValidationMessage) ValidateRejectRandomEvent(Guid eventUid, Guid personUid);
+		(bool ValidationResult, string ValidationMessage) ValidateRejectRandomPerson(Guid eventUid, Guid personUid);
 	}
 }

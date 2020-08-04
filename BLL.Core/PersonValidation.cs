@@ -83,7 +83,7 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateRejectRandomEvent(Guid eventUid, Guid personUid)
+		public (bool ValidationResult, string ValidationMessage) ValidateRejectRandomPerson(Guid eventUid, Guid personUid)
 		{
 			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
@@ -101,6 +101,10 @@ namespace BLL.Core
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
+			}
+			if (model.Age.HasValue && model.Age.Value < 0)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(22, _culture));
 			}
 			if (model.CityId.HasValue)
 			{

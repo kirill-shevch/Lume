@@ -74,6 +74,7 @@ namespace LumeWebApp.Controllers
 				Age = request.Age,
 				Name = request.Name,
 				Description = request.Description,
+				Login = request.Login,
 				CityId = request.CityId				
 			};
 			var validationResult = _personValidation.ValidateUpdatePerson(model);
@@ -133,9 +134,9 @@ namespace LumeWebApp.Controllers
 
 		[HttpPost]
 		[Route("reject-random-person")]
-		public async Task<ActionResult> RejectRandomEvent(Guid eventUid, Guid personUid)
+		public async Task<ActionResult> RejectRandomPerson(Guid eventUid, Guid personUid)
 		{
-			var validationResult = _personValidation.ValidateRejectRandomEvent(eventUid, personUid);
+			var validationResult = _personValidation.ValidateRejectRandomPerson(eventUid, personUid);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);

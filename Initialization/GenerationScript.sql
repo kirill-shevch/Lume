@@ -46,6 +46,7 @@ CREATE TABLE LumeDB.dbo.Person (
 	PersonUid uniqueidentifier NOT NULL UNIQUE,
 	Name nvarchar(200) NULL,
 	Description nvarchar(800) NULL,
+	Login nvarchar(400) NULL,
 	Age tinyint NULL,
 	PersonImageContentId bigint NULL,
 	CityId bigint NULL,
