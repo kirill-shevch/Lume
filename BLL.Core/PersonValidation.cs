@@ -102,6 +102,10 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
+			if (model.Age.HasValue && model.Age.Value < 0)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(22, _culture));
+			}
 			if (model.CityId.HasValue)
 			{
 				var cities = _cityLogic.GetCities().Result;
