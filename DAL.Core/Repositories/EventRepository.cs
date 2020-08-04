@@ -232,12 +232,12 @@ namespace DAL.Core.Repositories
 				}
 				if (repositoryFilter.CityId.HasValue)
 				{
-					query = query.Where(x => x.CityId == repositoryFilter.CityId);
+					query = query.Where(x => (x.CityId == repositoryFilter.CityId) ||
+					(!repositoryFilter.IsOnline.HasValue && x.IsOnline.Value));
 				}
 				if (repositoryFilter.IsOnline.HasValue)
 				{
-					query = query.Where(x => (x.IsOnline == repositoryFilter.IsOnline) ||
-					(!repositoryFilter.IsOnline.HasValue && x.IsOnline.Value));
+					query = query.Where(x => x.IsOnline == repositoryFilter.IsOnline);
 				}
 				return await query.Include(x => x.EventImageContentEntities).Include(x => x.City).ToListAsync();
 			}
