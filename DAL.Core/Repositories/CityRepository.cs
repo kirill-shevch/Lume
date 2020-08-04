@@ -8,8 +8,8 @@ namespace DAL.Core.Repositories
 {
 	public class CityRepository : ICityRepository
 	{
-		private readonly CoreContextFactory _dbContextFactory;
-		public CityRepository(CoreContextFactory dbContextFactory)
+		private readonly ICoreContextFactory _dbContextFactory;
+		public CityRepository(ICoreContextFactory dbContextFactory)
 		{
 			_dbContextFactory = dbContextFactory;
 		}

@@ -35,7 +35,7 @@ namespace Lume.DI
 
         public static void RegisterFactories(this IServiceCollection services)
         {
-            services.AddSingleton<CoreContextFactory>();
+            services.AddSingleton<ICoreContextFactory, CoreContextFactory>();
             services.AddSingleton<AuthorizationContextFactory>();
         }
 
