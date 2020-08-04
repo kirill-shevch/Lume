@@ -83,7 +83,7 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateRejectRandomEvent(Guid eventUid, Guid personUid)
+		public (bool ValidationResult, string ValidationMessage) ValidateRejectRandomPerson(Guid eventUid, Guid personUid)
 		{
 			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{

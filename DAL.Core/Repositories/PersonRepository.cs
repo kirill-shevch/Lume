@@ -121,7 +121,9 @@ namespace DAL.Core.Repositories
 
 				if (!string.IsNullOrWhiteSpace(filter.Query))
 				{
-					query = query.Where(p => p.Name != null && p.Name.Contains(filter.Query));
+					query = query.Where(p => (p.Name != null && p.Name.Contains(filter.Query) ||
+						p.Description != null && p.Description.Contains(filter.Query) ||
+						p.Login != null && p.Login.Contains(filter.Query)));
 				}
 
 				if (filter.CityId.HasValue)
