@@ -9,8 +9,8 @@ namespace DAL.Core.Repositories
 {
 	public class ImageRepository : IImageRepository
 	{
-		private readonly CoreContextFactory _dbContextFactory;
-		public ImageRepository(CoreContextFactory dbContextFactory)
+		private readonly ICoreContextFactory _dbContextFactory;
+		public ImageRepository(ICoreContextFactory dbContextFactory)
 		{
 			_dbContextFactory = dbContextFactory;
 		}

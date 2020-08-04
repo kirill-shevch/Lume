@@ -11,8 +11,8 @@ namespace DAL.Core.Repositories
 {
 	public class ChatRepository : IChatRepository
 	{
-		private readonly CoreContextFactory _dbContextFactory;
-		public ChatRepository(CoreContextFactory dbContextFactory)
+		private readonly ICoreContextFactory _dbContextFactory;
+		public ChatRepository(ICoreContextFactory dbContextFactory)
 		{
 			_dbContextFactory = dbContextFactory;
 		}

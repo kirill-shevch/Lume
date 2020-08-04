@@ -1,10 +1,11 @@
 ﻿using Constants;
+using DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace DAL.Core
 {
-	public class CoreContextFactory
+	public class CoreContextFactory : ICoreContextFactory
 	{
 		private readonly IConfiguration _configuration;
 		public CoreContextFactory(IConfiguration configuration)

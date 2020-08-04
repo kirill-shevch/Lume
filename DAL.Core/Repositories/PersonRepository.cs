@@ -12,8 +12,8 @@ namespace DAL.Core.Repositories
 {
 	public class PersonRepository : IPersonRepository
 	{
-		private readonly CoreContextFactory _dbContextFactory;
-		public PersonRepository(CoreContextFactory dbContextFactory)
+		private readonly ICoreContextFactory _dbContextFactory;
+		public PersonRepository(ICoreContextFactory dbContextFactory)
 		{
 			_dbContextFactory = dbContextFactory;
 		}

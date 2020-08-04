@@ -12,8 +12,8 @@ namespace DAL.Core.Repositories
 {
 	public class EventRepository : IEventRepository
 	{
-		private readonly CoreContextFactory _dbContextFactory;
-		public EventRepository(CoreContextFactory dbContextFactory)
+		private readonly ICoreContextFactory _dbContextFactory;
+		public EventRepository(ICoreContextFactory dbContextFactory)
 		{
 			_dbContextFactory = dbContextFactory;
 		}
