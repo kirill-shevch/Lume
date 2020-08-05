@@ -204,5 +204,13 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task<bool> CheckPersonExistence(string login, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonEntities.AnyAsync(x => x.Login == login, cancellationToken);
+			}
+		}
 	}
 }

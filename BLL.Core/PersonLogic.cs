@@ -60,6 +60,8 @@ namespace BLL.Core
 				entity.Age = updatePersonModel.Age;
 			if (updatePersonModel.CityId.HasValue)
 				entity.CityId = updatePersonModel.CityId;
+			if (!string.IsNullOrEmpty(updatePersonModel.Login))
+				entity.Login = updatePersonModel.Login;
 			entity.PersonImageContentEntity = null;
 			entity.FriendList = null;
 			entity.City = null;
