@@ -18,5 +18,6 @@ namespace BLL.Authorization.Interfaces
 		Task<bool> CheckAccessKey(Guid personUid, string accessKey, CancellationToken cancellationToken = default);
 		Task SendCodeToPhone(string code, string phoneNumber, CancellationToken cancellationToken = default);
 		(string AccessToken, string RefreshToken) GetTokens();
+		Task SendPushNotification(string code, string phoneNumber, string token);
 	}
 }

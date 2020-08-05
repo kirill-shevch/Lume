@@ -1,6 +1,9 @@
 ﻿using BLL.Authorization.Interfaces;
 using BLL.Core.Interfaces;
 using Constants;
+using FirebaseAdmin;
+using FirebaseAdmin.Messaging;
+using Google.Apis.Auth.OAuth2;
 using LumeWebApp.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -29,8 +32,8 @@ namespace LumeWebApp.Controllers
         }
 
         [HttpPost]
-        [Route("get-code")]
-        public async Task<ActionResult<SignInResponse>> GetAuthorizationCode(string phoneNumber)
+        [Route("get-sms-code")]
+        public async Task<ActionResult<SignInResponse>> GetAuthorizationSMSCode(string phoneNumber)
         {
             var validationResult = _authorizationValidation.ValidateGetCode(phoneNumber);
 			if (!validationResult.ValidationResult)
@@ -50,6 +53,34 @@ namespace LumeWebApp.Controllers
 			{
                 code = "000000";
 			}
+            if (person == null)
+            {
+                personUid = await _authorizationLogic.AddPerson(code, phoneNumber);
+            }
+            else
+            {
+                personUid = person.PersonUid;
+                await _authorizationLogic.UpdatePerson(phoneNumber, code);
+            }
+            return new SignInResponse { PersonUid = personUid };
+        }
+
+        [HttpPost]
+        [Route("get-push-code")]
+        public async Task<ActionResult<SignInResponse>> GetAuthorizationPushCode(string phoneNumber, string token)
+        {
+            var validationResult = _authorizationValidation.ValidateGetPushCode(phoneNumber, token);
+            if (!validationResult.ValidationResult)
+            {
+                return BadRequest(validationResult.ValidationMessage);
+            }
+            Guid personUid;
+            var person = await _authorizationLogic.GetPerson(phoneNumber);
+            var random = new Random();
+            var code = random.Next(0, 999999).ToString("d6");
+
+            await _authorizationLogic.SendPushNotification(code, phoneNumber, token);
+
             if (person == null)
             {
                 personUid = await _authorizationLogic.AddPerson(code, phoneNumber);

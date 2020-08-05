@@ -7,5 +7,6 @@
 		public const string SmsSendingApiKey = "SMSSENDING_APIKEY";
 		public const string SmsServiceUrl = "SmsServiceUrl";
 		public const string EnableSmsService = "EnableSmsService";
+		public const string FirebaseKey = "FIREBASE_KEY";
 	}
 }

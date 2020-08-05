@@ -66,5 +66,22 @@ namespace BLL.Authorization
 
 			return (true, string.Empty);
 		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateGetPushCode(string phoneNumber, string token)
+		{
+			if (string.IsNullOrWhiteSpace(phoneNumber))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(6, _culture));
+			}
+			else if (!Regex.Match(phoneNumber, RegexTemplates.PhoneTemplate).Success)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(6, _culture));
+			}
+			if (string.IsNullOrWhiteSpace(token))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(6, _culture));
+			}
+			return (true, string.Empty);
+		}
 	}
 }
