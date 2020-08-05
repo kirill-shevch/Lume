@@ -162,7 +162,7 @@ namespace BLL.Authorization
 
 		public async Task SendPushNotification(string code, string phoneNumber, string token)
 		{
-			string key = _configuration.GetValue<string>(ConfigurationKeys.FirebaseKey);
+			var key = _configuration.GetValue<string>(ConfigurationKeys.FirebaseKey);
 			if (!string.IsNullOrEmpty(key))
 			{
 				if (FirebaseApp.DefaultInstance == null)

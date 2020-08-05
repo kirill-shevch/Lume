@@ -72,7 +72,7 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			await _eventLogic.UpdateEvent(request);
-			return Ok(Messages.UpdateSuccess);
+			return Ok(Messages.GetMessage(MessageTitles.UpdateSuccess, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
 
 		[HttpPost]
@@ -85,7 +85,7 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			await _eventLogic.AddParticipant(request);
-			return Ok(Messages.ParticipantCreated);
+			return Ok(Messages.GetMessage(MessageTitles.ParticipantCreated, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
 
 		[HttpPost]
@@ -155,7 +155,7 @@ namespace LumeWebApp.Controllers
 			}
 			await _eventLogic.AddParticipant(request);
 			await _personLogic.AddPersonSwipeHistory(request.EventUid, request.PersonUid);
-			return Ok(Messages.RandomEventAccepted);
+			return Ok(Messages.GetMessage(MessageTitles.RandomEventAccepted, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
 
 		[HttpPost]
@@ -169,7 +169,7 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			await _personLogic.AddPersonSwipeHistory(eventUid, uid);
-			return Ok(Messages.RandomEventRejected);
+			return Ok(Messages.GetMessage(MessageTitles.RandomEventRejected, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
 	}
 }
