@@ -102,7 +102,7 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
-			if (!string.IsNullOrEmpty(model.Login) && _personRepository.CheckPersonExistence(model.Login).Result)
+			if (!string.IsNullOrEmpty(model.Login) && _personRepository.CheckPersonExistence(model.PersonUid, model.Login).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(33, _culture));
 			}
