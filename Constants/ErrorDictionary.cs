@@ -39,6 +39,7 @@ namespace Constants
 			[(31, "en-US")] = "City id should not be empty.",									[(31, "ru-RU")] = "Идентификатор города не должен быть пустым.",
 			[(32, "en-US")] = "City id should be empty.",										[(32, "ru-RU")] = "Идентификатор города должен быть пустым.",
 			[(33, "en-US")] = "Person with such login is already exist in the database.",		[(33, "ru-RU")] = "Пользователем с таким логином уже существует.",
+			[(34, "en-US")] = "Token should not be empty.",										[(34, "ru-RU")] = "Токен не должен быть пустым.",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";

@@ -7,5 +7,6 @@ namespace BLL.Authorization.Interfaces
 		(bool ValidationResult, string ValidationMessage) ValidateGetCode(string phoneNumber);
 		(bool ValidationResult, string ValidationMessage) ValidateSetCode(AuthorizationPersonModel person, string code);
 		(bool ValidationResult, string ValidationMessage) ValidateGetAccessToken(AuthorizationPersonModel person, string refreshToken);
+		(bool ValidationResult, string ValidationMessage) ValidateGetPushCode(string phoneNumber, string token);
 	}
 }

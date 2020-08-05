@@ -6,6 +6,7 @@ using BLL.Core.Interfaces;
 using BLL.Core.Models.Person;
 using Constants;
 using Microsoft.AspNetCore.Mvc;
+using Utils;
 
 namespace LumeWebApp.Controllers
 {
@@ -38,7 +39,7 @@ namespace LumeWebApp.Controllers
 
             await _personLogic.AddFriendToPerson(uid, friendGuid);
 
-            return Ok(Messages.FriendAdded);
+            return Ok(Messages.GetMessage(MessageTitles.FriendAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
         }
 
         [HttpDelete]
@@ -56,7 +57,7 @@ namespace LumeWebApp.Controllers
 
             await _personLogic.RemoveFriendFromPerson(uid, friendGuid);
 
-            return Ok(Messages.FriendRemoved);
+            return Ok(Messages.GetMessage(MessageTitles.FriendRemoved, CultureParser.GetCultureFromHttpContext(HttpContext)));
         }
 
         [HttpGet]
