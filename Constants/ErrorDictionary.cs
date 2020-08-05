@@ -37,7 +37,8 @@ namespace Constants
 			[(29, "en-US")] = "Page size should be bigger then 0.",								[(29, "ru-RU")] = "Размер страницы должен быть больше 0.",
 			[(30, "en-US")] = "City id is not correct.",										[(30, "ru-RU")] = "Неверный идентификатор города.",
 			[(31, "en-US")] = "City id should not be empty.",									[(31, "ru-RU")] = "Идентификатор города не должен быть пустым.",
-			[(32, "en-US")] = "City id should be empty.",										[(32, "ru-RU")] = "Идентификатор города должен быть пустым."
+			[(32, "en-US")] = "City id should be empty.",										[(32, "ru-RU")] = "Идентификатор города должен быть пустым.",
+			[(33, "en-US")] = "Person with such login is already exist in the database.",		[(33, "ru-RU")] = "Пользователем с таким логином уже существует.",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";
