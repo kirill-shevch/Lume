@@ -74,7 +74,9 @@ namespace BLL.Core
 			var entity = await _personRepository.GetPerson(personUid);
 			return entity != null &&
 				!string.IsNullOrEmpty(entity.Name) &&
-				entity.Age.HasValue;
+				entity.Age.HasValue &&
+				!string.IsNullOrEmpty(entity.Login) &&
+				entity.PersonImageContentEntity != null;
 		}
 
 		public async Task AddFriendToPerson(Guid personUid, Guid friendUid)
