@@ -50,6 +50,7 @@ CREATE TABLE LumeDB.dbo.Person (
 	Age tinyint NULL,
 	PersonImageContentId bigint NULL,
 	CityId bigint NULL,
+	Token nvarchar(400) NULL,
 	CONSTRAINT FK_Person_PersonImageContent FOREIGN KEY (PersonImageContentId) REFERENCES LumeDB.dbo.PersonImageContent (PersonImageContentId),
 	CONSTRAINT FK_Person_City FOREIGN KEY (CityId) REFERENCES LumeDB.dbo.City (CityId),
 	CONSTRAINT PK_PersonId PRIMARY KEY CLUSTERED (PersonId)

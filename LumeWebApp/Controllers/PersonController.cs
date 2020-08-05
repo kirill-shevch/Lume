@@ -75,7 +75,8 @@ namespace LumeWebApp.Controllers
 				Name = request.Name,
 				Description = request.Description,
 				Login = request.Login,
-				CityId = request.CityId				
+				CityId = request.CityId,
+				Token = request.Token
 			};
 			var validationResult = _personValidation.ValidateUpdatePerson(model);
 			if (!validationResult.ValidationResult)

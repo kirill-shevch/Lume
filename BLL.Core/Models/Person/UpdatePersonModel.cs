@@ -10,5 +10,6 @@ namespace BLL.Core.Models.Person
 		public string Login { get; set; }
 		public byte? Age { get; set; }
 		public long? CityId { get; set; }
+		public string Token { get; set; }
 	}
 }

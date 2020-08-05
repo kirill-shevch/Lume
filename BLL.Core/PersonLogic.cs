@@ -62,6 +62,8 @@ namespace BLL.Core
 				entity.CityId = updatePersonModel.CityId;
 			if (!string.IsNullOrEmpty(updatePersonModel.Login))
 				entity.Login = updatePersonModel.Login;
+			if (!string.IsNullOrEmpty(updatePersonModel.Token))
+				entity.Token = updatePersonModel.Token;
 			entity.PersonImageContentEntity = null;
 			entity.FriendList = null;
 			entity.City = null;
