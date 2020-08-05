@@ -39,7 +39,7 @@ namespace LumeWebApp.Controllers
 
             await _personLogic.AddFriendToPerson(uid, friendGuid);
 
-            return Ok(Messages.GetMessage(MessageTitles.FriendAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
+            return Ok(Messages.GetMessageJson(MessageTitles.FriendAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
         }
 
         [HttpDelete]
@@ -57,7 +57,7 @@ namespace LumeWebApp.Controllers
 
             await _personLogic.RemoveFriendFromPerson(uid, friendGuid);
 
-            return Ok(Messages.GetMessage(MessageTitles.FriendRemoved, CultureParser.GetCultureFromHttpContext(HttpContext)));
+            return Ok(Messages.GetMessageJson(MessageTitles.FriendRemoved, CultureParser.GetCultureFromHttpContext(HttpContext)));
         }
 
         [HttpGet]
