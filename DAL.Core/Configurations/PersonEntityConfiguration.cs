@@ -16,6 +16,7 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.Login);
 			builder.Property(t => t.Age); 
 			builder.Property(t => t.PersonImageContentId);
+			builder.Property(t => t.Token);
 			builder.HasOne(t => t.PersonImageContentEntity).WithMany().HasForeignKey(x => x.PersonImageContentId);
 			builder.HasMany(t => t.FriendList).WithOne().HasForeignKey(x => x.PersonId);
 		}
