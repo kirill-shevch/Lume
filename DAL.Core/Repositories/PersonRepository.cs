@@ -109,6 +109,8 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
+				var personFriendList = await context.PersonFriendListEntities.Include(x => x.Person).Where(x => x.Person.PersonUid == personUid).Select(x => x.FriendId).ToListAsync();
+
 				var query = context.PersonEntities
 					.Include(x => x.PersonImageContentEntity)
 					.Include(x => x.FriendList)
@@ -122,13 +124,17 @@ namespace DAL.Core.Repositories
 				if (!string.IsNullOrWhiteSpace(filter.Query))
 				{
 					query = query.Where(p => (p.Name != null && p.Name.Contains(filter.Query) ||
-						p.Description != null && p.Description.Contains(filter.Query) ||
 						p.Login != null && p.Login.Contains(filter.Query)));
 				}
 
 				if (filter.CityId.HasValue)
 				{
 					query = query.Where(p => p.CityId == filter.CityId);
+				}
+
+				if (personFriendList.Any())
+				{
+					query = query.OrderByDescending(x => personFriendList.Contains(x.PersonId));
 				}
 
 				return await query.Skip(filter.PageSize * (filter.PageNumber - 1))
