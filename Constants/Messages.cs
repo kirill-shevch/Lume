@@ -39,7 +39,7 @@ namespace Constants
 			[(MessageTitles.PushNotificationMessage, "ru-RU")] = "Код авторизации: {0}"
 		};
 
-		public static string GetMessageJson(MessageTitles title, string culture) => $"{{ \"data\":{MessageContent[(title, culture)]} }}";
+		public static string GetMessageJson(MessageTitles title, string culture) => $"{{ \"data\":\"{MessageContent[(title, culture)]}\" }}";
 		public static string GetMessage(MessageTitles title, string culture) => MessageContent[(title, culture)];
 	}
 }
