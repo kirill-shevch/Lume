@@ -113,8 +113,9 @@ namespace BLL.Core
 				eventEntity.IsOnline = updateEventModel.IsOnline;
 			if (updateEventModel.CityId.HasValue)
 				eventEntity.CityId = updateEventModel.CityId;
-			if (updateEventModel.Types == null && updateEventModel.Types.Any())
+			if (updateEventModel.Types != null && updateEventModel.Types.Any())
 			{
+				await _eventRepository.RemoveEventTypes(eventEntity.EventId);
 				eventEntity.EventTypes = new List<EventTypeToEventEntity>(
 					updateEventModel.Types.Select(x => new EventTypeToEventEntity { EventId = eventEntity.EventId, EventTypeId = (long)x }));
 			}

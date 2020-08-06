@@ -1,4 +1,5 @@
-﻿using DAL.Core;
+﻿using Constants;
+using DAL.Core;
 using DAL.Core.Entities;
 using DAL.Core.Models;
 using DAL.Core.Repositories;
@@ -53,7 +54,9 @@ namespace UnitTestProject.DALTests
 					MaxAge = 21,
 					StartTime = new DateTime(2020, 08, 20, 18, 0, 0),
 					EndTime = new DateTime(2020, 08, 20, 23, 0, 0),
-					EventTypes = new List<EventTypeToEventEntity> { new EventTypeToEventEntity { EventId = 1, EventTypeId = 0 } },
+					EventTypes = new List<EventTypeToEventEntity> { 
+						new EventTypeToEventEntity { EventId = 1, EventTypeId = 1 }, 
+						new EventTypeToEventEntity { EventId = 1, EventTypeId = 2 } },
 					EventStatusId = 0,
 					IsOpenForInvitations = true,
 					CityId = 0,
@@ -61,13 +64,14 @@ namespace UnitTestProject.DALTests
 				},
 				new EventEntity
 				{
+					EventId = 2,
 					Name = "Name2",
 					Description = "Description2",
 					MinAge = 15,
 					MaxAge = 25,
 					StartTime = new DateTime(2020, 08, 20, 10, 0, 0),
 					EndTime = new DateTime(2020, 08, 20, 15, 0, 0),
-					EventTypes = new List<EventTypeToEventEntity> { new EventTypeToEventEntity { EventId = 1, EventTypeId = 1 } },
+					EventTypes = new List<EventTypeToEventEntity> { new EventTypeToEventEntity { EventId = 2, EventTypeId = 2 } },
 					EventStatusId = 1,
 					IsOpenForInvitations = false,
 					CityId = 1,
@@ -75,13 +79,14 @@ namespace UnitTestProject.DALTests
 				},
 				new EventEntity
 				{
+					EventId = 3,
 					Name = "Name3",
 					Description = "Description3",
 					MinAge = 15,
 					MaxAge = 25,
 					StartTime = new DateTime(2020, 08, 20, 10, 0, 0),
 					EndTime = new DateTime(2020, 08, 20, 15, 0, 0),
-					EventTypes = new List<EventTypeToEventEntity> { new EventTypeToEventEntity { EventId = 1, EventTypeId = 1 } },
+					EventTypes = new List<EventTypeToEventEntity> { new EventTypeToEventEntity { EventId = 3, EventTypeId = 2 } },
 					EventStatusId = 1,
 					IsOpenForInvitations = false,
 					CityId = 1,
@@ -100,7 +105,7 @@ namespace UnitTestProject.DALTests
 				yield return new TestCaseData(new RepositoryEventSearchFilter { MaxAge = 23 });
 				yield return new TestCaseData(new RepositoryEventSearchFilter { StartTime = new DateTime(2020, 08, 20, 18, 0, 0) });
 				yield return new TestCaseData(new RepositoryEventSearchFilter { EndTime = new DateTime(2020, 08, 20, 23, 0, 0) });
-				yield return new TestCaseData(new RepositoryEventSearchFilter { Type = 0 });
+				yield return new TestCaseData(new RepositoryEventSearchFilter { Type = (EventType)1 });
 				yield return new TestCaseData(new RepositoryEventSearchFilter { Status = 0 });
 				yield return new TestCaseData(new RepositoryEventSearchFilter { CityId = 0, IsOnline = false });
 				yield return new TestCaseData(new RepositoryEventSearchFilter { CityId = 2 });

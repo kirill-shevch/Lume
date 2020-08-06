@@ -31,6 +31,10 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
+				foreach (var type in eventEntity.EventTypes)
+				{
+					type.EventType = await context.EventTypeEntities.SingleAsync(x => x.EventTypeId == type.EventTypeId);
+				}
 				await context.AddAsync(eventEntity, cancellationToken);
 				await context.SaveChangesAsync(cancellationToken);
 			}
@@ -91,6 +95,11 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
+				foreach (var type in eventEntity.EventTypes)
+				{
+					type.EventType = await context.EventTypeEntities.SingleAsync(x => x.EventTypeId == type.EventTypeId);
+				}
+				await context.AddRangeAsync(eventEntity.EventTypes);
 				context.Update(eventEntity);
 				await context.SaveChangesAsync(cancellationToken);
 			}
@@ -266,6 +275,16 @@ namespace DAL.Core.Repositories
 				await inProgressEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.InProgress);
 				var endedEvents = context.EventEntities.Where(x => x.EndTime < date && (x.EventStatusId == (long)EventStatus.InProgress || x.EventStatusId == (long)EventStatus.Preparing));
 				await endedEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.Ended);
+				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task RemoveEventTypes(long eventId)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var entities = context.EventTypeToEventEntities.Where(x => x.EventId == eventId);
+				context.RemoveRange(entities);
 				await context.SaveChangesAsync();
 			}
 		}

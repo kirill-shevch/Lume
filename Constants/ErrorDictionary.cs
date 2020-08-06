@@ -40,7 +40,8 @@ namespace Constants
 			[(32, "en-US")] = "City id should be empty.",										[(32, "ru-RU")] = "Идентификатор города должен быть пустым.",
 			[(33, "en-US")] = "Person with such login is already exist in the database.",		[(33, "ru-RU")] = "Пользователем с таким логином уже существует.",
 			[(34, "en-US")] = "Token should not be empty.",										[(34, "ru-RU")] = "Токен не должен быть пустым.",
-			[(35, "en-US")] = "Event can have maximum 3 types.",								[(35, "ru-RU")] = "У события не может быть больше 3-х типов",
+			[(35, "en-US")] = "Event can have maximum 3 types.",								[(35, "ru-RU")] = "У события не может быть больше 3-х типов.",
+			[(36, "en-US")] = "At least 1 event type is required.",								[(36, "ru-RU")] = "Необходимо указать хотя бы 1 тип события.",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";

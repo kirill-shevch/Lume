@@ -33,15 +33,22 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(13, _culture));
 			}
-			if (model.Types.Count > 3)
+			if (model.Types == null || model.Types.Any())
 			{
-				return (false, ErrorDictionary.GetErrorMessage(35, _culture));
+				return (false, ErrorDictionary.GetErrorMessage(36, _culture));
 			}
-			foreach (var type in model.Types)
+			else
 			{
-				if (!Enum.IsDefined(typeof(EventType), type))
+				if (model.Types.Count > 3)
 				{
-					return (false, ErrorDictionary.GetErrorMessage(14, _culture));
+					return (false, ErrorDictionary.GetErrorMessage(35, _culture));
+				}
+				foreach (var type in model.Types)
+				{
+					if (!Enum.IsDefined(typeof(EventType), type))
+					{
+						return (false, ErrorDictionary.GetErrorMessage(14, _culture));
+					}
 				}
 			}
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)
@@ -178,15 +185,18 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(13, _culture));
 			}
-			if (model.Types.Count > 3)
+			if (model.Types != null)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(35, _culture));
-			}
-			foreach (var type in model.Types)
-			{
-				if (!Enum.IsDefined(typeof(EventType), type))
+				if (model.Types.Count > 3)
 				{
-					return (false, ErrorDictionary.GetErrorMessage(14, _culture));
+					return (false, ErrorDictionary.GetErrorMessage(35, _culture));
+				}
+				foreach (var type in model.Types)
+				{
+					if (!Enum.IsDefined(typeof(EventType), type))
+					{
+						return (false, ErrorDictionary.GetErrorMessage(14, _culture));
+					}
 				}
 			}
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)

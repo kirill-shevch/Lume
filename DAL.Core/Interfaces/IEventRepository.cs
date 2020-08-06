@@ -23,5 +23,6 @@ namespace DAL.Core.Interfaces
 		Task<List<EventEntity>> SearchForEvent(RepositoryEventSearchFilter repositoryFilter);
 		Task AddEventSwipeHistoryRecord(EventSwipeHistoryEntity entity);
 		Task TransferEventsStatuses(CancellationToken cancellationToken = default);
+		Task RemoveEventTypes(long eventId);
 	}
 }

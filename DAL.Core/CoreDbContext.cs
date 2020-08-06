@@ -30,6 +30,7 @@ namespace DAL.Core
 			builder.ApplyConfiguration(new CityEntityConfiguration());
 			builder.ApplyConfiguration(new EventSwipeHistoryEntityConfiguration());
 			builder.ApplyConfiguration(new PersonSwipeHistoryEntityConfiguration());
+			builder.ApplyConfiguration(new EventTypeToEventEntityConfiguration());
 		}
 
 		public DbSet<ChatEntity> ChatEntities { get; set; }
@@ -48,5 +49,6 @@ namespace DAL.Core
 		public DbSet<CityEntity> CityEntities { get; set; }
 		public DbSet<PersonSwipeHistoryEntity> PersonSwipeHistoryEntities { get; set; }
 		public DbSet<EventSwipeHistoryEntity> EventSwipeHistoryEntities { get; set; }
+		public DbSet<EventTypeToEventEntity> EventTypeToEventEntities { get; set; }
 	}
 }
