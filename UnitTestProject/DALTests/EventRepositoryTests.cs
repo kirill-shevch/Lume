@@ -46,13 +46,14 @@ namespace UnitTestProject.DALTests
 			await context.EventEntities.AddRangeAsync(
 				new EventEntity
 				{
+					EventId = 1,
 					Name = "Name1",
 					Description = "Description1",
 					MinAge = 18,
 					MaxAge = 21,
 					StartTime = new DateTime(2020, 08, 20, 18, 0, 0),
 					EndTime = new DateTime(2020, 08, 20, 23, 0, 0),
-					EventTypeId = 0,
+					EventTypes = new List<EventTypeToEventEntity> { new EventTypeToEventEntity { EventId = 1, EventTypeId = 0 } },
 					EventStatusId = 0,
 					IsOpenForInvitations = true,
 					CityId = 0,
@@ -66,7 +67,7 @@ namespace UnitTestProject.DALTests
 					MaxAge = 25,
 					StartTime = new DateTime(2020, 08, 20, 10, 0, 0),
 					EndTime = new DateTime(2020, 08, 20, 15, 0, 0),
-					EventTypeId = 1,
+					EventTypes = new List<EventTypeToEventEntity> { new EventTypeToEventEntity { EventId = 1, EventTypeId = 1 } },
 					EventStatusId = 1,
 					IsOpenForInvitations = false,
 					CityId = 1,
@@ -80,7 +81,7 @@ namespace UnitTestProject.DALTests
 					MaxAge = 25,
 					StartTime = new DateTime(2020, 08, 20, 10, 0, 0),
 					EndTime = new DateTime(2020, 08, 20, 15, 0, 0),
-					EventTypeId = 1,
+					EventTypes = new List<EventTypeToEventEntity> { new EventTypeToEventEntity { EventId = 1, EventTypeId = 1 } },
 					EventStatusId = 1,
 					IsOpenForInvitations = false,
 					CityId = 1,

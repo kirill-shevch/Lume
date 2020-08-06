@@ -1,5 +1,6 @@
 ﻿using Constants;
 using System;
+using System.Collections.Generic;
 
 namespace BLL.Core.Models.Event
 {
@@ -13,7 +14,7 @@ namespace BLL.Core.Models.Event
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 		public EventStatus Status { get; set; }
-		public EventType Type { get; set; }
+		public List<EventType> Types { get; set; }
 		public Guid? EventPrimaryImageContentUid { get; set; }
 		public bool? IsAdministrator { get; set; }
 		public ParticipantStatus? ParticipantStatus { get; set; }

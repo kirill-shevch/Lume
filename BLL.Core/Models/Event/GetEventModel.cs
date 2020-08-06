@@ -17,7 +17,7 @@ namespace BLL.Core.Models.Event
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 		public EventStatus Status { get; set; }
-		public EventType Type { get; set; }
+		public List<EventType> Types { get; set; }
 		public Guid? EventPrimaryImageContentUid { get; set; }
 		public List<Guid> Images { get; set; }
 		public Guid? ChatUid { get; set; }

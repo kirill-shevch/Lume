@@ -17,7 +17,7 @@ namespace BLL.Core.Models.Event
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 		public EventStatus Status { get; set; }
-		public EventType Type { get; set; }
+		public List<EventType> Types { get; set; }
 		public byte[] PrimaryImage { get; set; }
 		public List<byte[]> Images { get; set; }
 		public long? CityId { get; set; }

@@ -39,11 +39,11 @@ namespace BLL.Core.Mappings
 
 			CreateMap<AddEventModel, EventEntity>()
 				.ForMember(dest => dest.EventStatusId, opt => opt.MapFrom(src => (long)src.Status))
-				.ForMember(dest => dest.EventTypeId, opt => opt.MapFrom(src => (long)src.Type));
+				.ForMember(dest => dest.EventTypes, opt => opt.MapFrom(src => new List<EventTypeToEventEntity>(src.Types.Select(x => new EventTypeToEventEntity { EventTypeId = (long)x }))));
 
 			CreateMap<EventEntity, GetEventModel>()
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
-				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId))
+				.ForMember(dest => dest.Types, opt => opt.MapFrom(src => src.EventTypes.Select(x => (EventType)x.EventTypeId)))
 				.ForMember(dest => dest.Participants, opt => opt.MapFrom(src => src.Participants.Select(x => x.Person)))
 				.ForMember(dest => dest.EventPrimaryImageContentUid, 
 				opt => opt.MapFrom(src => src.EventImageContentEntities == null ? (Guid?)null : src.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value).EventImageContentUid))
@@ -56,7 +56,7 @@ namespace BLL.Core.Mappings
 
 			CreateMap<EventEntity, GetEventListModel>()
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => (EventStatus)src.EventStatusId))
-				.ForMember(dest => dest.Type, opt => opt.MapFrom(src => (EventType)src.EventTypeId))
+				.ForMember(dest => dest.Types, opt => opt.MapFrom(src => src.EventTypes.Select(x => (EventType)x.EventTypeId)))
 				.ForMember(dest => dest.EventPrimaryImageContentUid,
 				opt => opt.MapFrom(src => src.EventImageContentEntities == null ? (Guid?)null : src.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value).EventImageContentUid))
 				.ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.City == null ? (long?)null : src.City.CityId))

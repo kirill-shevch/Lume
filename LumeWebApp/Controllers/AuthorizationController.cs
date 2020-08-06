@@ -1,9 +1,6 @@
 ﻿using BLL.Authorization.Interfaces;
 using BLL.Core.Interfaces;
 using Constants;
-using FirebaseAdmin;
-using FirebaseAdmin.Messaging;
-using Google.Apis.Auth.OAuth2;
 using LumeWebApp.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

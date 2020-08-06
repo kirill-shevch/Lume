@@ -42,7 +42,8 @@ namespace DAL.Core.Repositories
 			{
 				return await context.EventEntities
 					.Include(x => x.EventStatus)
-					.Include(x => x.EventType)
+					.Include(x => x.EventTypes)
+						.ThenInclude(x => x.EventType)
 					.Include(x => x.EventImageContentEntities)
 					.Include(x => x.Administrator)
 						.ThenInclude(x => x.PersonImageContentEntity)
@@ -71,7 +72,8 @@ namespace DAL.Core.Repositories
 			{
 				return await context.EventEntities
 					.Include(x => x.EventStatus)
-					.Include(x => x.EventType)
+					.Include(x => x.EventTypes)
+						.ThenInclude(x => x.EventType)
 					.Include(x => x.EventImageContentEntities)
 					.Include(x => x.Administrator)
 						.ThenInclude(x => x.PersonImageContentEntity)
@@ -138,6 +140,7 @@ namespace DAL.Core.Repositories
 			{
 				var query = context.EventEntities
 					.Include(x => x.Administrator)
+					.Include(x => x.EventTypes)
 					.Include(x => x.Participants)
 						.ThenInclude(x => x.Person)
 					.AsNoTracking();
@@ -161,7 +164,7 @@ namespace DAL.Core.Repositories
 				}
 				if (filter.EventTypes != null && filter.EventTypes.Any())
 				{
-					query = query.Where(x => filter.EventTypes.Contains(x.EventTypeId));
+					query = query.Where(x => x.EventTypes.Any(x => filter.EventTypes.Contains(x.EventTypeId)));
 				}
 				if (filter.IsOpenForInvitations.HasValue)
 				{
@@ -181,7 +184,8 @@ namespace DAL.Core.Repositories
 				var randomEventId = events.ElementAt(random.Next(0, events.Count()));
 				return await context.EventEntities
 					.Include(x => x.EventStatus)
-					.Include(x => x.EventType)
+					.Include(x => x.EventTypes)
+						.ThenInclude(x => x.EventType)
 					.Include(x => x.EventImageContentEntities)
 					.Include(x => x.Administrator)
 						.ThenInclude(x => x.PersonImageContentEntity)
@@ -198,7 +202,7 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				var query = context.EventEntities.AsNoTracking();
+				var query = context.EventEntities.Include(x => x.EventTypes).AsNoTracking();
 				if (!string.IsNullOrEmpty(repositoryFilter.Query))
 				{
 					query = query.Where(x => x.Name.Contains(repositoryFilter.Query) || x.Description.Contains(repositoryFilter.Query));
@@ -221,7 +225,7 @@ namespace DAL.Core.Repositories
 				}
 				if (repositoryFilter.Type.HasValue)
 				{
-					query = query.Where(x => x.EventTypeId == (long)repositoryFilter.Type);
+					query = query.Where(x => x.EventTypes.Any(x => x.EventTypeId == (long)repositoryFilter.Type));
 				}
 				if (repositoryFilter.Status.HasValue)
 				{

@@ -113,11 +113,17 @@ namespace BLL.Core
 				eventEntity.IsOnline = updateEventModel.IsOnline;
 			if (updateEventModel.CityId.HasValue)
 				eventEntity.CityId = updateEventModel.CityId;
-			if (updateEventModel.Type.HasValue)
-				eventEntity.EventTypeId = (long)updateEventModel.Type;
+			if (updateEventModel.Types == null && updateEventModel.Types.Any())
+			{
+				eventEntity.EventTypes = new List<EventTypeToEventEntity>(
+					updateEventModel.Types.Select(x => new EventTypeToEventEntity { EventId = eventEntity.EventId, EventTypeId = (long)x }));
+			}
+			else
+			{
+				eventEntity.EventTypes = null;
+			}
 			if (updateEventModel.Status.HasValue)
 				eventEntity.EventStatusId = (long)updateEventModel.Status;
-			eventEntity.EventType = null;
 			eventEntity.EventStatus = null;
 			eventEntity.City = null;
 			eventEntity.EventImageContentEntities = null;
