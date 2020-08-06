@@ -39,6 +39,10 @@ namespace BLL.Core
 			}
 			else
 			{
+				if (model.Types.Count != model.Types.Distinct().Count())
+				{
+					return (false, ErrorDictionary.GetErrorMessage(37, _culture));
+				}
 				if (model.Types.Count > 3)
 				{
 					return (false, ErrorDictionary.GetErrorMessage(35, _culture));
@@ -187,6 +191,10 @@ namespace BLL.Core
 			}
 			if (model.Types != null)
 			{
+				if (model.Types.Count != model.Types.Distinct().Count())
+				{
+					return (false, ErrorDictionary.GetErrorMessage(37, _culture));
+				}
 				if (model.Types.Count > 3)
 				{
 					return (false, ErrorDictionary.GetErrorMessage(35, _culture));
