@@ -22,5 +22,6 @@ namespace DAL.Core.Interfaces
 		Task<EventEntity> GetRandomEvent(RepositoryRandomEventFilter filter);
 		Task<List<EventEntity>> SearchForEvent(RepositoryEventSearchFilter repositoryFilter);
 		Task AddEventSwipeHistoryRecord(EventSwipeHistoryEntity entity);
+		Task TransferEventsStatuses(CancellationToken cancellationToken = default);
 	}
 }
