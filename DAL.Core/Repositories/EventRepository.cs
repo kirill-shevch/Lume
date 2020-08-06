@@ -1,4 +1,5 @@
-﻿using DAL.Core.Entities;
+﻿using Constants;
+using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using DAL.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -248,6 +249,19 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				await context.AddAsync(entity);
+				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task TransferEventsStatuses(CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var date = DateTime.UtcNow;
+				var inProgressEvents = context.EventEntities.Where(x => x.StartTime < date && x.EndTime > date && x.EventStatusId == (long)EventStatus.Preparing);
+				await inProgressEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.InProgress);
+				var endedEvents = context.EventEntities.Where(x => x.EndTime < date && (x.EventStatusId == (long)EventStatus.InProgress || x.EventStatusId == (long)EventStatus.Preparing));
+				await endedEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.Ended);
 				await context.SaveChangesAsync();
 			}
 		}

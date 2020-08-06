@@ -1,4 +1,5 @@
 using AutoMapper;
+using BLL.Core;
 using BLL.Core.Mappings;
 using Constants;
 using Lume.DI;
@@ -45,6 +46,7 @@ namespace LumeWebApp
                 swagger.SwaggerDoc("v2", new OpenApiInfo { Title = "Lume API" });
             });
             services.AddSingleton<ITelemetryInitializer, RequestBodyInitializer>();
+            services.AddHostedService<EventStatusTransferService>();
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
