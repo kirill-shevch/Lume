@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS LumeDB.dbo.PersonToChat;
 DROP TABLE IF EXISTS LumeDB.dbo.EventImageContent;
 DROP TABLE IF EXISTS LumeDB.dbo.EventSwipeHistory;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonSwipeHistory;
+DROP TABLE IF EXISTS LumeDB.dbo.EventTypeToEvent;
 DROP TABLE IF EXISTS LumeDB.dbo.Event;
 DROP TABLE IF EXISTS LumeDB.dbo.EventType;
 DROP TABLE IF EXISTS LumeDB.dbo.EventStatus;
@@ -94,7 +95,6 @@ CREATE TABLE LumeDB.dbo.Event (
 	EndTime datetime2(7) NULL,
 	IsOpenForInvitations bit NOT NULL DEFAULT 0,
 	IsOnline bit NOT NULL DEFAULT 0,
-	EventTypeId bigint NULL,
 	EventStatusId bigint NULL,
 	AdministratorId bigint NULL,
 	ChatId bigint null,
@@ -105,6 +105,14 @@ CREATE TABLE LumeDB.dbo.Event (
 	CONSTRAINT FK_Event_Chat FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId),
 	CONSTRAINT FK_Event_City FOREIGN KEY (CityId) REFERENCES LumeDB.dbo.City (CityId),
 	CONSTRAINT PK_EventId PRIMARY KEY CLUSTERED (EventId)
+);
+
+CREATE TABLE LumeDB.dbo.EventTypeToEvent (
+	EventTypeId bigint,
+  	EventId bigint,
+  	CONSTRAINT PK_EventType_Event PRIMARY KEY (EventTypeId, EventId),
+  	CONSTRAINT FK_EventType_EventTypeToEvent FOREIGN KEY (EventTypeId) REFERENCES LumeDB.dbo.EventType (EventTypeId),
+  	CONSTRAINT FK_Event_EventTypeToEvent FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId)
 );
 
 CREATE TABLE LumeDB.dbo.PersonSwipeHistory (
