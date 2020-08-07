@@ -3,6 +3,14 @@
 	public enum EventType
 	{
 		Party,
-		Booze
+		Culture,
+		Sport,
+		Nature,
+		Communication,
+		Game,
+		Study,
+		Food,
+		Concert,
+		Travel
 	}
 }
