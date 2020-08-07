@@ -36,10 +36,11 @@ namespace BLL.Core
 			var chatEntity = await _chatRepository.GetChat(request.ChatUid);
 			var personEntity = await _personRepository.GetPerson(personUid);
 			var chatMessageUid = Guid.NewGuid();
+			var date = DateTime.UtcNow;
 			await _chatRepository.AddChatMessage(new ChatMessageEntity {
 				ChatMessageUid = chatMessageUid,
 				Content = request.Content,
-				MessageTime = DateTime.UtcNow,
+				MessageTime = date,
 				ChatId = chatEntity.ChatId,
 				AuthorId = personEntity.PersonId
 			});
@@ -57,6 +58,7 @@ namespace BLL.Core
 				MessageUid = chatMessageUid,
 				PersonUid = personEntity.PersonUid,
 				PersonName = personEntity.Name,
+				MessageTime = date,
 				PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid
 			};
 		}
