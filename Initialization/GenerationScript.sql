@@ -99,7 +99,6 @@ CREATE TABLE LumeDB.dbo.Event (
 	AdministratorId bigint NULL,
 	ChatId bigint null,
 	CityId bigint null,
-	CONSTRAINT FK_Event_EventType FOREIGN KEY (EventTypeId) REFERENCES LumeDB.dbo.EventType (EventTypeId),
 	CONSTRAINT FK_Event_EventStatus FOREIGN KEY (EventStatusId) REFERENCES LumeDB.dbo.EventStatus (EventStatusId),
 	CONSTRAINT FK_Event_Person FOREIGN KEY (AdministratorId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT FK_Event_Chat FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId),
@@ -191,7 +190,7 @@ CREATE TABLE LumeDB.dbo.PersonFriendList (
 );
 
 INSERT INTO LumeDB.dbo.EventType (EventTypeName)  
-VALUES ('Party'),('Booze');  
+VALUES ('Party'),('Culture'),('Sport'),('Nature'),('Communication'),('Game'),('Study'),('Food'),('Concert'),('Travel');
 
 INSERT INTO LumeDB.dbo.EventStatus (EventStatusName)  
 VALUES ('Preparing'),('InProgress'),('Ended'),('Canceled');  
