@@ -87,6 +87,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.Chat)
 					.Include(x => x.City)
 					.Where(x => x.Administrator.PersonUid == personUid || x.Participants.Any(x => x.Person.PersonUid == personUid))
+					.OrderBy(x => x.StartTime)
 					.ToListAsync();
 			}
 		}
