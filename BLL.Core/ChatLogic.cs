@@ -86,11 +86,12 @@ namespace BLL.Core
 			return chatModel;
 		}
 
-		public async Task<List<ChatMessageModel>> GetNewChatMessages(Guid chatUid, Guid? messageUid)
+		public async Task<List<ChatMessageModel>> GetNewChatMessages(Guid chatUid, Guid? messageUid, Guid personUid)
 		{
 			var numberOfAttempts = 30;
 			var waitingInterval = 3000;
 			var chatEntity = await _chatRepository.GetChat(chatUid);
+			var personEntity = await _personRepository.GetPerson(personUid);
 			long chatMessageId = 0;
 			if (messageUid.HasValue)
 			{
@@ -99,7 +100,7 @@ namespace BLL.Core
 			}
 			for (int i = 0; i < numberOfAttempts; i++)
 			{
-				var messageEntities = await _chatRepository.GetNewChatMessages(chatEntity.ChatId, chatMessageId);
+				var messageEntities = await _chatRepository.GetNewChatMessages(chatEntity.ChatId, chatMessageId, personEntity.PersonId);
 				if (messageEntities != null && messageEntities.Any())
 				{
 					return _mapper.Map<List<ChatMessageModel>>(messageEntities);

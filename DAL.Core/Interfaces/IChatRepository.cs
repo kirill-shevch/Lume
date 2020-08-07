@@ -18,6 +18,6 @@ namespace DAL.Core.Interfaces
 		Task AddChatMessage(ChatMessageEntity chatMessageEntity);
 		Task<string> GetPersonalChatName(long chatId, long personId);
 		Task<ChatMessageEntity> GetChatMessage(Guid uid);
-		Task<List<ChatMessageEntity>> GetNewChatMessages(long chatId, long lastmessageId);
+		Task<List<ChatMessageEntity>> GetNewChatMessages(long chatId, long lastmessageId, long personId);
 	}
 }

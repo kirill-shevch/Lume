@@ -137,11 +137,11 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task<List<ChatMessageEntity>> GetNewChatMessages(long chatId, long lastMessageId)
+		public async Task<List<ChatMessageEntity>> GetNewChatMessages(long chatId, long lastMessageId, long personId)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				return await context.ChatMessageEntities.Where(x => x.ChatId == chatId && x.ChatMessageId > lastMessageId)
+				return await context.ChatMessageEntities.Where(x => x.ChatId == chatId && x.ChatMessageId > lastMessageId && x.AuthorId != personId)
 					.Include(x => x.Author)
 						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.ChatImageContentEntities)
