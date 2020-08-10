@@ -74,12 +74,13 @@ namespace LumeWebApp.Controllers
 		[Route("get-new-chat-messages")]
 		public async Task<ActionResult<List<ChatMessageModel>>> GetNewChatMessages(Guid chatUid, Guid? messageUid)
 		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			var validationResult = _chatValidation.ValidateGetNewChatMessages(chatUid, messageUid);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			return await _chatLogic.GetNewChatMessages(chatUid, messageUid);
+			return await _chatLogic.GetNewChatMessages(chatUid, messageUid, uid);
 		}
 	}
 }
