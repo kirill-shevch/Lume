@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FirebaseAdmin" Version="1.15.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BLL.Core\BLL.Core.csproj" />
+    <ProjectReference Include="..\BLL.Notification\BLL.Notification.csproj" />
     <ProjectReference Include="..\DAL.Authorization\DAL.Authorization.csproj" />
   </ItemGroup>
 

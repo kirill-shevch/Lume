@@ -2,6 +2,8 @@
 using BLL.Authorization.Interfaces;
 using BLL.Core;
 using BLL.Core.Interfaces;
+using BLL.Notification;
+using BLL.Notification.Interfaces;
 using DAL.Authorization;
 using DAL.Core;
 using DAL.Core.Interfaces;
@@ -20,6 +22,7 @@ namespace Lume.DI
             services.AddSingleton<IPersonLogic, PersonLogic>();
             services.AddSingleton<IChatLogic, ChatLogic>();
             services.AddSingleton<ICityLogic, CityLogic>();
+            services.AddSingleton<IPushNotificationService, PushNotificationService>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
