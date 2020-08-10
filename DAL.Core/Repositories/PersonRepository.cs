@@ -218,5 +218,14 @@ namespace DAL.Core.Repositories
 				return await context.PersonEntities.AnyAsync(x => personUid != x.PersonUid && x.Login == login, cancellationToken);
 			}
 		}
+
+		public async Task RemovePersonImage(PersonImageContentEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				context.PersonImageContentEntities.Remove(entity);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

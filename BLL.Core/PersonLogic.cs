@@ -15,16 +15,19 @@ namespace BLL.Core
 	{
 		private readonly IPersonRepository _personRepository;
 		private readonly IEventRepository _eventRepository;
+		private readonly IImageLogic _imageLogic;
 		private readonly IMapper _mapper;
 
 		private const int countOfFriends = 5;
 
 		public PersonLogic(IPersonRepository personRepository,
 			IEventRepository eventRepository,
+			IImageLogic imageLogic,
 			IMapper mapper)
 		{
 			_personRepository = personRepository;
 			_eventRepository = eventRepository;
+			_imageLogic = imageLogic;
 			_mapper = mapper;
 		}
 
@@ -49,9 +52,9 @@ namespace BLL.Core
 			return model;
 		}
 
-		public async Task UpdatePerson(UpdatePersonModel updatePersonModel)
+		public async Task UpdatePerson(UpdatePersonModel updatePersonModel, Guid personUid)
 		{
-			var entity = await _personRepository.GetPerson(updatePersonModel.PersonUid);
+			var entity = await _personRepository.GetPerson(personUid);
 			if (!string.IsNullOrEmpty(updatePersonModel.Name))
 				entity.Name = updatePersonModel.Name;
 			if (!string.IsNullOrEmpty(updatePersonModel.Description))
@@ -64,6 +67,16 @@ namespace BLL.Core
 				entity.Login = updatePersonModel.Login;
 			if (!string.IsNullOrEmpty(updatePersonModel.Token))
 				entity.Token = updatePersonModel.Token;
+			if (updatePersonModel.Image != null)
+			{
+				if (entity.PersonImageContentEntity != null)
+				{
+					await _personRepository.RemovePersonImage(entity.PersonImageContentEntity);
+					await _imageLogic.RemoveImage(entity.PersonImageContentEntity.PersonImageContentUid);
+				}
+				var imageUid = await _imageLogic.SaveImage(updatePersonModel.Image);
+				entity.PersonImageContentEntity = new PersonImageContentEntity { PersonImageContentUid = imageUid };
+			}
 			entity.PersonImageContentEntity = null;
 			entity.FriendList = null;
 			entity.City = null;

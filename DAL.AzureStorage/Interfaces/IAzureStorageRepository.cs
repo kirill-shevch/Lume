@@ -7,5 +7,6 @@ namespace DAL.AzureStorage.Interfaces
 		Task AddImage(string name, byte[] content);
 		Task<byte[]> GetImage(string name);
 		Task<bool> CheckImageExistance(string name);
+		Task RemoveImage(string name);
 	}
 }

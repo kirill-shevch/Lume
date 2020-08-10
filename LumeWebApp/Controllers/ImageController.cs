@@ -1,10 +1,6 @@
 ﻿using BLL.Core.Interfaces;
-using BLL.Core.Models;
-using BLL.Core.Models.Image;
-using Constants;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LumeWebApp.Controllers

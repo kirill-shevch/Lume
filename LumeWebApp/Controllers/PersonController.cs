@@ -2,7 +2,6 @@
 using BLL.Core.Models.Event;
 using BLL.Core.Models.Person;
 using Constants;
-using LumeWebApp.Requests.Person;
 using LumeWebApp.Responses.Person;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -65,25 +64,15 @@ namespace LumeWebApp.Controllers
 
 		[HttpPost]
 		[Route("update-person")]
-		public async Task<ActionResult> UpdatePerson(UpdatePersonRequest request)
+		public async Task<ActionResult> UpdatePerson(UpdatePersonModel request)
 		{
 			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
-			var model = new UpdatePersonModel
-			{
-				PersonUid = uid,
-				Age = request.Age,
-				Name = request.Name,
-				Description = request.Description,
-				Login = request.Login,
-				CityId = request.CityId,
-				Token = request.Token
-			};
-			var validationResult = _personValidation.ValidateUpdatePerson(model);
+			var validationResult = _personValidation.ValidateUpdatePerson(request, uid);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			await _personLogic.UpdatePerson(model);
+			await _personLogic.UpdatePerson(request, uid);
 			return Ok(Messages.GetMessageJson(MessageTitles.UpdateSuccess, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
 

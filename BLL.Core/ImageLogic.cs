@@ -28,5 +28,13 @@ namespace BLL.Core
 		{
 			return await _imageRepository.GetImage(imageUid.ToString());
 		}
+
+		public async Task RemoveImage(Guid imageUid)
+		{
+			if (await _imageRepository.CheckImageExistance(imageUid.ToString()))
+			{
+				await _imageRepository.RemoveImage(imageUid.ToString());
+			}
+		}
 	}
 }

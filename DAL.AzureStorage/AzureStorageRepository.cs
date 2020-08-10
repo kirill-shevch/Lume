@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Constants;
 using DAL.AzureStorage.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -47,6 +48,13 @@ namespace DAL.AzureStorage
 			var blobContainer = new BlobContainerClient(_connectionString, _blobContainerName);
 			var blobClient = blobContainer.GetBlobClient(name);
 			return await blobClient.ExistsAsync();
+		}
+
+		public async Task RemoveImage(string name)
+		{
+			var blobContainer = new BlobContainerClient(_connectionString, _blobContainerName);
+			var blobClient = blobContainer.GetBlobClient(name);
+			await blobClient.DeleteAsync(DeleteSnapshotsOption.IncludeSnapshots);
 		}
 	}
 }

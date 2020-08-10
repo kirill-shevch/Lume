@@ -1,5 +1,4 @@
-﻿using BLL.Core.Models.Image;
-using System;
+﻿using System;
 
 namespace BLL.Core.Interfaces
 {
