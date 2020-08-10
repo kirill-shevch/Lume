@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestProject", "UnitTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL.Notification", "BLL.Notification\BLL.Notification.csproj", "{6E27DB53-E6D9-4437-B594-21DA520960D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.AzureStorage", "DAL.AzureStorage\DAL.AzureStorage.csproj", "{8C0A339F-7453-44F6-94C8-50374F775D47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{6E27DB53-E6D9-4437-B594-21DA520960D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E27DB53-E6D9-4437-B594-21DA520960D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E27DB53-E6D9-4437-B594-21DA520960D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C0A339F-7453-44F6-94C8-50374F775D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C0A339F-7453-44F6-94C8-50374F775D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C0A339F-7453-44F6-94C8-50374F775D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C0A339F-7453-44F6-94C8-50374F775D47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{F3E78E9E-3A1E-4A86-91FD-B53DB87B89F2} = {D5D6565E-E405-468C-8C1D-3548B3499E36}
 		{2DA06AC1-6C76-4B19-BB56-47FFBAD55422} = {7832462C-6603-4FFF-8F4F-ED9D6B947B30}
 		{6E27DB53-E6D9-4437-B594-21DA520960D5} = {19B97C3D-8096-4356-8253-615B3EDDBA79}
+		{8C0A339F-7453-44F6-94C8-50374F775D47} = {E3916F39-E5B6-4923-A532-647E9D3AB2B7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {871C1DBD-7173-4E3D-B6E8-DEDDC541DCD5}

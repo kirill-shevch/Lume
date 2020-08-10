@@ -13,6 +13,7 @@
     <ProjectReference Include="..\BLL.Core\BLL.Core.csproj" />
     <ProjectReference Include="..\BLL.Notification\BLL.Notification.csproj" />
     <ProjectReference Include="..\DAL.Authorization\DAL.Authorization.csproj" />
+    <ProjectReference Include="..\DAL.AzureStorage\DAL.AzureStorage.csproj" />
     <ProjectReference Include="..\DAL.Core\DAL.Core.csproj" />
   </ItemGroup>
 
