@@ -30,7 +30,6 @@ namespace Lume.DI
         public static void RegisterRepositories(this IServiceCollection services)
         {
             services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
-            services.AddSingleton<IImageRepository, ImageRepository>();
             services.AddSingleton<IPersonRepository, PersonRepository>();
             services.AddSingleton<IChatRepository, ChatRepository>();
             services.AddSingleton<IEventRepository, EventRepository>();
