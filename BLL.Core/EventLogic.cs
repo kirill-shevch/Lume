@@ -17,18 +17,21 @@ namespace BLL.Core
 	{
 		private readonly IEventRepository _eventRepository;
 		private readonly IPersonRepository _personRepository;
+		private readonly IImageLogic _imageLogic;
 		private readonly IMapper _mapper;
 		private readonly IPushNotificationService _pushNotificationService;
 
 		public EventLogic(IEventRepository eventRepository,
 			IPersonRepository personRepository,
 			IMapper mapper,
-			IPushNotificationService pushNotificationService)
+			IPushNotificationService pushNotificationService,
+			IImageLogic imageLogic)
 		{
 			_eventRepository = eventRepository;
 			_personRepository = personRepository;
 			_mapper = mapper;
 			_pushNotificationService = pushNotificationService;
+			_imageLogic = imageLogic;
 		}
 
 		public async Task<Guid> AddEvent(AddEventModel addEventModel, Guid personUid)
@@ -42,10 +45,10 @@ namespace BLL.Core
 			var imageList = new List<EventImageContentEntity>();
 			if (addEventModel.PrimaryImage != null && addEventModel.PrimaryImage.Any())
 			{
+				var eventImageContentUid = await _imageLogic.SaveImage(addEventModel.PrimaryImage);
 				imageList.Add(new EventImageContentEntity 
 				{ 
-					Content = addEventModel.PrimaryImage, 
-					EventImageContentUid = Guid.NewGuid(), 
+					EventImageContentUid = eventImageContentUid, 
 					IsPrimary = true 
 				});
 			}
@@ -53,10 +56,10 @@ namespace BLL.Core
 			{
 				foreach (var image in addEventModel.Images)
 				{
+					var eventImageContentUid = await _imageLogic.SaveImage(image);
 					imageList.Add(new EventImageContentEntity
 					{
-						Content = image,
-						EventImageContentUid = Guid.NewGuid(),
+						EventImageContentUid = eventImageContentUid,
 						IsPrimary = false
 					});
 				}
