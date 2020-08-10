@@ -33,7 +33,7 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(13, _culture));
 			}
-			if (model.Types == null || model.Types.Any())
+			if (model.Types == null || !model.Types.Any())
 			{
 				return (false, ErrorDictionary.GetErrorMessage(36, _culture));
 			}

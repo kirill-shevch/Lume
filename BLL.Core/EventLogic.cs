@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Event;
+using BLL.Notification.Interfaces;
 using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
@@ -17,14 +18,17 @@ namespace BLL.Core
 		private readonly IEventRepository _eventRepository;
 		private readonly IPersonRepository _personRepository;
 		private readonly IMapper _mapper;
+		private readonly IPushNotificationService _pushNotificationService;
 
 		public EventLogic(IEventRepository eventRepository,
 			IPersonRepository personRepository,
-			IMapper mapper)
+			IMapper mapper,
+			IPushNotificationService pushNotificationService)
 		{
 			_eventRepository = eventRepository;
 			_personRepository = personRepository;
 			_mapper = mapper;
+			_pushNotificationService = pushNotificationService;
 		}
 
 		public async Task<Guid> AddEvent(AddEventModel addEventModel, Guid personUid)
@@ -139,6 +143,12 @@ namespace BLL.Core
 		{
 			var entity = await CreateParticipantEntity(eventParticipantModel);
 			await _eventRepository.AddParticipant(entity);
+			var person = await _personRepository.GetPerson(eventParticipantModel.PersonUid);
+			if (!string.IsNullOrEmpty(person.Token))
+			{
+				var eventEntity = await _eventRepository.GetEvent(eventParticipantModel.EventUid);
+				await _pushNotificationService.SendPushNotification(person.Token, MessageTitles.AddParticipantNotificationMessage, eventEntity.Name);
+			}
 		}
 
 		public async Task UpdateParticipant(EventParticipantModel eventParticipantModel)

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BLL.Notification\BLL.Notification.csproj" />
     <ProjectReference Include="..\DAL.Core\DAL.Core.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>

@@ -1,11 +1,9 @@
 ﻿using BLL.Authorization.Interfaces;
 using BLL.Authorization.Models;
+using BLL.Notification.Interfaces;
 using Constants;
 using DAL.Authorization;
 using DAL.Authorization.Entities;
-using FirebaseAdmin;
-using FirebaseAdmin.Messaging;
-using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -17,7 +15,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Utils;
 
 namespace BLL.Authorization
 {
@@ -28,13 +25,16 @@ namespace BLL.Authorization
 		private readonly IConfiguration _configuration;
 		private readonly IAuthorizationRepository _authorizationRepository;
 		private readonly IHttpContextAccessor _contextAccessor;
+		private readonly IPushNotificationService _pushNotificationService;
 		public AuthorizationLogic(IAuthorizationRepository authorizationRepository, 
 			IConfiguration configuration,
-			IHttpContextAccessor contextAccessor)
+			IHttpContextAccessor contextAccessor,
+			IPushNotificationService pushNotificationService)
 		{
 			_authorizationRepository = authorizationRepository;
 			_configuration = configuration;
 			_contextAccessor = contextAccessor;
+			_pushNotificationService = pushNotificationService;
 		}
 
 		public async Task<Guid> AddPerson(string code, string phoneNumber, CancellationToken cancellationToken = default)
@@ -160,28 +160,9 @@ namespace BLL.Authorization
 			return await _authorizationRepository.GetPersonListByContacts(phoneNumbers);
 		}
 
-		public async Task SendPushNotification(string code, string phoneNumber, string token)
+		public async Task SendPushNotification(string code, string token)
 		{
-			var key = _configuration.GetValue<string>(ConfigurationKeys.FirebaseKey);
-			if (!string.IsNullOrEmpty(key))
-			{
-				if (FirebaseApp.DefaultInstance == null)
-				{
-					FirebaseApp.Create(new AppOptions { Credential = GoogleCredential.FromJson(key) });
-				}
-				var httpContext = _contextAccessor.HttpContext;
-				var culture = CultureParser.GetCultureFromHttpContext(httpContext);
-				var message = new Message
-				{
-					Notification = new Notification
-					{
-						Title = "Lume",
-						Body = string.Format(Messages.GetMessage(MessageTitles.PushNotificationMessage, culture), code)
-					},
-					Token = token
-				};
-				await FirebaseMessaging.DefaultInstance.SendAsync(message);
-			}
+			await _pushNotificationService.SendPushNotification(token, MessageTitles.PushNotificationMessage, code);
 		}
 	}
 }

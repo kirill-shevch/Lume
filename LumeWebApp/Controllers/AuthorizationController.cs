@@ -76,7 +76,7 @@ namespace LumeWebApp.Controllers
             var random = new Random();
             var code = random.Next(0, 999999).ToString("d6");
 
-            await _authorizationLogic.SendPushNotification(code, phoneNumber, token);
+            await _authorizationLogic.SendPushNotification(code, token);
 
             if (person == null)
             {
