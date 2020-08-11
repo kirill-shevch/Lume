@@ -67,13 +67,11 @@ namespace BLL.Core
 				entity.Login = updatePersonModel.Login;
 			if (!string.IsNullOrEmpty(updatePersonModel.Token))
 				entity.Token = updatePersonModel.Token;
+			var deleteOldImage = false;
+			var imageToDelete = entity.PersonImageContentEntity;
 			if (updatePersonModel.Image != null)
 			{
-				if (entity.PersonImageContentEntity != null)
-				{
-					await _personRepository.RemovePersonImage(entity.PersonImageContentEntity);
-					await _imageLogic.RemoveImage(entity.PersonImageContentEntity.PersonImageContentUid);
-				}
+				deleteOldImage = entity.PersonImageContentEntity != null;
 				var imageUid = await _imageLogic.SaveImage(updatePersonModel.Image);
 				entity.PersonImageContentEntity = new PersonImageContentEntity { PersonImageContentUid = imageUid };
 			}
@@ -86,6 +84,12 @@ namespace BLL.Core
 			entity.City = null;
 			entity.SwipeHistory = null;
 			await _personRepository.UpdatePerson(entity);
+
+			if (deleteOldImage)
+			{
+				await _personRepository.RemovePersonImage(imageToDelete);
+				await _imageLogic.RemoveImage(imageToDelete.PersonImageContentUid);
+			}
 			return model;
 		}
 
