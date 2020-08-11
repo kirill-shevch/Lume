@@ -16,7 +16,7 @@ namespace DAL.AzureStorage
 		public AzureStorageRepository(IConfiguration configuration)
 		{
 			_configuration = configuration;
-			_connectionString = _configuration.GetValue<string>(ConfigurationKeys.AzureStorageConnectionString);
+			_connectionString = _configuration.GetValue<string>(ConfigurationKeys.AzureStorageConnectionString) ?? _configuration.GetValue<string>(ConfigurationKeys.LocalAzureStorageConnectionString);
 			_blobContainerName = _configuration.GetValue<string>(ConfigurationKeys.AzureStorageBlobContainerName);
 			var blobContainer = new BlobContainerClient(_connectionString, _blobContainerName);
 			blobContainer.CreateIfNotExists();
