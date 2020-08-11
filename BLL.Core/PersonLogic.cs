@@ -77,7 +77,10 @@ namespace BLL.Core
 				var imageUid = await _imageLogic.SaveImage(updatePersonModel.Image);
 				entity.PersonImageContentEntity = new PersonImageContentEntity { PersonImageContentUid = imageUid };
 			}
-			entity.PersonImageContentEntity = null;
+			else
+			{
+				entity.PersonImageContentEntity = null;
+			}
 			entity.FriendList = null;
 			entity.City = null;
 			entity.SwipeHistory = null;
