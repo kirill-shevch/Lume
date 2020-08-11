@@ -52,7 +52,7 @@ namespace BLL.Core
 			return model;
 		}
 
-		public async Task UpdatePerson(UpdatePersonModel updatePersonModel, Guid personUid)
+		public async Task<PersonModel> UpdatePerson(UpdatePersonModel updatePersonModel, Guid personUid)
 		{
 			var entity = await _personRepository.GetPerson(personUid);
 			if (!string.IsNullOrEmpty(updatePersonModel.Name))
@@ -81,10 +81,12 @@ namespace BLL.Core
 			{
 				entity.PersonImageContentEntity = null;
 			}
+			var model = _mapper.Map<PersonModel>(entity);
 			entity.FriendList = null;
 			entity.City = null;
 			entity.SwipeHistory = null;
 			await _personRepository.UpdatePerson(entity);
+			return model;
 		}
 
 		public async Task<bool> IsPersonFilledUp(Guid personUid)

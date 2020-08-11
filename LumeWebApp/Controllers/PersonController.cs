@@ -64,7 +64,7 @@ namespace LumeWebApp.Controllers
 
 		[HttpPost]
 		[Route("update-person")]
-		public async Task<ActionResult> UpdatePerson(UpdatePersonModel request)
+		public async Task<ActionResult<PersonModel>> UpdatePerson(UpdatePersonModel request)
 		{
 			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			var validationResult = _personValidation.ValidateUpdatePerson(request, uid);
@@ -72,8 +72,7 @@ namespace LumeWebApp.Controllers
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			await _personLogic.UpdatePerson(request, uid);
-			return Ok(Messages.GetMessageJson(MessageTitles.UpdateSuccess, CultureParser.GetCultureFromHttpContext(HttpContext)));
+			return await _personLogic.UpdatePerson(request, uid);
 		}
 
 		[HttpPost]
