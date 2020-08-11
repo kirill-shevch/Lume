@@ -273,10 +273,23 @@ namespace DAL.Core.Repositories
 			{
 				var date = DateTime.UtcNow;
 				var inProgressEvents = context.EventEntities.Where(x => x.StartTime < date && x.EndTime > date && x.EventStatusId == (long)EventStatus.Preparing);
-				await inProgressEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.InProgress);
+				await inProgressEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.InProgress, cancellationToken);
 				var endedEvents = context.EventEntities.Where(x => x.EndTime < date && (x.EventStatusId == (long)EventStatus.InProgress || x.EventStatusId == (long)EventStatus.Preparing));
-				await endedEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.Ended);
-				await context.SaveChangesAsync();
+				await endedEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.Ended, cancellationToken);
+				await context.SaveChangesAsync(cancellationToken);
+			}
+		}
+
+		public async Task RemoveOutdatedParticipants(CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var outdatedParticipants = context.PersonToEventEntities.Include(x => x.Event)
+					.Where(x => (x.Event.EventStatusId == (long)EventStatus.Ended || x.Event.EventStatusId == (long)EventStatus.Canceled) &&
+					(x.ParticipantStatusId == (long)ParticipantStatus.WaitingForApproveFromEvent || x.ParticipantStatusId == (long)ParticipantStatus.WaitingForApproveFromUser));
+				await outdatedParticipants.ForEachAsync(x => x.ParticipantStatusId = (long)ParticipantStatus.Rejected, cancellationToken);
+				context.PersonToEventEntities.UpdateRange(outdatedParticipants);
+				await context.SaveChangesAsync(cancellationToken);
 			}
 		}
 

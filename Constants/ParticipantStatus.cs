@@ -4,6 +4,7 @@
 	{
 		WaitingForApproveFromUser,
 		WaitingForApproveFromEvent,
-		Active
+		Active,
+		Rejected
 	}
 }

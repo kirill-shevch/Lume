@@ -6,19 +6,20 @@ using System.Threading.Tasks;
 
 namespace BLL.Core
 {
-	public class EventStatusTransferService : IHostedService
+	public class BackgroundJobService : IHostedService
     {
         private readonly IEventRepository _eventRepository;
         private Timer _timer;
 
-        public EventStatusTransferService(IEventRepository eventRepository)
+        public BackgroundJobService(IEventRepository eventRepository)
 		{
             _eventRepository = eventRepository;
 		}
 
         private void DoWork(object state)
         {
-            _eventRepository.TransferEventsStatuses().Wait();
+            _eventRepository.TransferEventsStatuses();
+            _eventRepository.RemoveOutdatedParticipants();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

@@ -46,7 +46,7 @@ namespace LumeWebApp
                 swagger.SwaggerDoc("v2", new OpenApiInfo { Title = "Lume API" });
             });
             services.AddSingleton<ITelemetryInitializer, RequestBodyInitializer>();
-            services.AddHostedService<EventStatusTransferService>();
+            services.AddHostedService<BackgroundJobService>();
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
