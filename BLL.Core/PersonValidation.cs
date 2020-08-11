@@ -96,13 +96,13 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateUpdatePerson(UpdatePersonModel model)
+		public (bool ValidationResult, string ValidationMessage) ValidateUpdatePerson(UpdatePersonModel model, Guid personUid)
 		{
-			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
+			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
-			if (!string.IsNullOrEmpty(model.Login) && _personRepository.CheckPersonExistence(model.PersonUid, model.Login).Result)
+			if (!string.IsNullOrEmpty(model.Login) && _personRepository.CheckPersonExistence(personUid, model.Login).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(33, _culture));
 			}

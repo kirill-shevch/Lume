@@ -21,5 +21,6 @@ namespace DAL.Core.Interfaces
 		Task<List<PersonEntity>> GetAllPersonFriends(Guid personUid, CancellationToken cancellationToken = default);
 		Task<PersonEntity> GetRandomPerson(RepositoryRandomPersonFilter filter, long personId);
 		Task AddPersonSwipeHistoryRecord(PersonSwipeHistoryEntity entity);
+		Task RemovePersonImage(PersonImageContentEntity entity);
 	}
 }

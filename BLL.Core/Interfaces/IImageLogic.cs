@@ -1,14 +1,12 @@
-﻿using BLL.Core.Models.Image;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace BLL.Core.Interfaces
 {
 	public interface IImageLogic
 	{
-		Task<Guid> SavePersonImage(AddPersonImageModel addPersonImageModel, Guid personUid);
-		Task<byte[]> GetPersonImage(Guid imageUid);
-		Task<byte[]> GetEventImage(Guid imageUid);
-		Task<byte[]> GetChatMessageImage(Guid imageUid);
+		Task<Guid> SaveImage(byte[] content);
+		Task<byte[]> GetImage(Guid imageUid);
+		Task RemoveImage(Guid imageUid);
 	}
 }

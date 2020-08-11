@@ -13,7 +13,6 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.EventImageContentUid);
 			builder.Property(t => t.IsPrimary);
 			builder.Property(t => t.EventId);
-			builder.Property(t => t.Content);
 		}
 	}
 }

@@ -15,18 +15,18 @@ namespace BLL.Core
 	{
 		private readonly IChatRepository _chatRepository;
 		private readonly IEventRepository _eventRepository;
-		private readonly IImageRepository _imageRepository;
+		private readonly IImageLogic _imageLogic;
 		private readonly IPersonRepository _personRepository;
 		private readonly IMapper _mapper;
 		public ChatLogic(IChatRepository chatRepository,
 			IEventRepository eventRepository,
-			IImageRepository imageRepository,
+			IImageLogic imageLogic,
 			IPersonRepository personRepository,
 			IMapper mapper)
 		{
 			_chatRepository = chatRepository;
 			_eventRepository = eventRepository;
-			_imageRepository = imageRepository;
+			_imageLogic = imageLogic;
 			_personRepository = personRepository;
 			_mapper = mapper;
 		}
@@ -47,8 +47,8 @@ namespace BLL.Core
 			var chatImageUids = new List<Guid>();
 			foreach (var image in request.Images)
 			{
-				var chatImageUid = Guid.NewGuid();
-				await _imageRepository.SaveChatImage(chatMessageUid, new ChatImageContentEntity { Content = image, ChatImageContentUid = chatImageUid });
+				var chatImageUid = await _imageLogic.SaveImage(image);
+				await _chatRepository.SaveChatImage(chatMessageUid, new ChatImageContentEntity { ChatImageContentUid = chatImageUid });
 				chatImageUids.Add(chatImageUid);
 			}
 			return new ChatMessageModel 

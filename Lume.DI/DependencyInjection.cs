@@ -5,6 +5,8 @@ using BLL.Core.Interfaces;
 using BLL.Notification;
 using BLL.Notification.Interfaces;
 using DAL.Authorization;
+using DAL.AzureStorage;
+using DAL.AzureStorage.Interfaces;
 using DAL.Core;
 using DAL.Core.Interfaces;
 using DAL.Core.Repositories;
@@ -28,12 +30,11 @@ namespace Lume.DI
         public static void RegisterRepositories(this IServiceCollection services)
         {
             services.AddSingleton<IAuthorizationRepository, AuthorizationRepository>();
-            services.AddSingleton<IImageRepository, ImageRepository>();
             services.AddSingleton<IPersonRepository, PersonRepository>();
             services.AddSingleton<IChatRepository, ChatRepository>();
             services.AddSingleton<IEventRepository, EventRepository>();
             services.AddSingleton<ICityRepository, CityRepository>();
-
+            services.AddSingleton<IAzureStorageRepository, AzureStorageRepository>();
         }
 
         public static void RegisterFactories(this IServiceCollection services)

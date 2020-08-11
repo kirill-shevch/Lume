@@ -5,3 +5,7 @@ sqlcmd -S localhost,1433 -U sa -P 'Passw0rd'
 CREATE DATABASE LumeDB
 GO
 EXIT
+
+docker pull mcr.microsoft.com/azure-storage/azurite
+
+docker run -p 10000:10000 -p 10001:10001 mcr.microsoft.com/azure-storage/azurite
