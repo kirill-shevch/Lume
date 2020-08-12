@@ -137,10 +137,11 @@ namespace BLL.Core
 		public async Task<List<PersonModel>> GetAllPersonFriends(Guid personUid)
 		{
 			var entities = await _personRepository.GetAllPersonFriends(personUid);
+			var notApprovedFriends = await _personRepository.GetNewFriends(personUid);
 			var models = _mapper.Map<List<PersonModel>>(entities);
 			foreach (var model in models)
 			{
-				model.IsFriend = true;
+				model.IsFriend = !notApprovedFriends.Any(x => x.PersonUid == model.PersonUid);
 			}
 			return models;
 		}

@@ -16,6 +16,7 @@ namespace Constants
              "/api/person/get-random-person",
              "/api/person/accept-random-person",
              "/api/person/reject-random-person",
+             "/api/person/get-person-notifications",
 
              "/api/event/add-event",
              "/api/event/get-event",
