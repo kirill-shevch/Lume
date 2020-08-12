@@ -90,6 +90,13 @@ namespace LumeWebApp.Controllers
 		}
 
 		[HttpPost]
+		[Route("get-person-notifications")]
+		public async Task<ActionResult<PersonNotificationsModel>> GetPersonNotifications()
+		{
+
+		}
+
+		[HttpPost]
 		[Route("get-random-person")]
 		public async Task<ActionResult<PersonModel>> GetRandomPerson(RandomPersonFilter randomPersonFilter)
 		{
