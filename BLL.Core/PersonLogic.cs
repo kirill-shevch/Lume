@@ -106,7 +106,7 @@ namespace BLL.Core
 		public async Task AddFriendToPerson(Guid personUid, Guid friendUid)
 		{
 			await _personRepository.AddFriendToPerson(personUid, friendUid, true);
-			if (await _personRepository.CheckPersonFriendExistence(friendUid, personUid))
+			if (!(await _personRepository.CheckPersonFriendExistence(friendUid, personUid)))
 			{
 				await _personRepository.AddFriendToPerson(friendUid, personUid, false);
 			}
