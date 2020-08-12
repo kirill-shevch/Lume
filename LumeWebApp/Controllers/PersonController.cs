@@ -111,12 +111,13 @@ namespace LumeWebApp.Controllers
 		[Route("accept-random-person")]
 		public async Task<ActionResult> AcceptRandomPerson(EventParticipantModel request)
 		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			var validationResult = _eventValidation.ValidateAddParticipantModel(request);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			await _eventLogic.AddParticipant(request);
+			await _eventLogic.AddParticipant(request, uid);
 			await _eventLogic.AddEventSwipeHistory(request.PersonUid, request.EventUid);
 			return Ok(Messages.GetMessageJson(MessageTitles.RandomPersonAccepted, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
