@@ -66,7 +66,7 @@ namespace BLL.Core
 			}
 			entity.EventImageContentEntities = imageList;
 			await _eventRepository.CreateEvent(entity);
-			await AddParticipant(new EventParticipantModel { EventUid = eventUid, PersonUid = person.PersonUid, ParticipantStatus = ParticipantStatus.Active });
+			await AddParticipant(new EventParticipantModel { EventUid = eventUid, PersonUid = person.PersonUid, ParticipantStatus = ParticipantStatus.Active }, personUid);
 			return eventUid;
 		}
 
@@ -142,16 +142,17 @@ namespace BLL.Core
 			await _eventRepository.UpdateEvent(eventEntity);
 		}
 
-		public async Task AddParticipant(EventParticipantModel eventParticipantModel)
+		public async Task<GetEventModel> AddParticipant(EventParticipantModel eventParticipantModel, Guid personUid)
 		{
 			var entity = await CreateParticipantEntity(eventParticipantModel);
 			await _eventRepository.AddParticipant(entity);
 			var person = await _personRepository.GetPerson(eventParticipantModel.PersonUid);
-			if (!string.IsNullOrEmpty(person.Token))
+			if (!string.IsNullOrEmpty(person.Token) &&eventParticipantModel.PersonUid != personUid)
 			{
 				var eventEntity = await _eventRepository.GetEvent(eventParticipantModel.EventUid);
 				await _pushNotificationService.SendPushNotification(person.Token, MessageTitles.AddParticipantNotificationMessage, eventEntity.Name);
 			}
+			return await GetEvent(eventParticipantModel.EventUid);
 		}
 
 		public async Task UpdateParticipant(EventParticipantModel eventParticipantModel)
