@@ -167,5 +167,13 @@ namespace BLL.Core
 		{
 			await _personRepository.ConfirmFriend(uid, friendGuid);
 		}
+
+		public async Task<PersonNotificationsModel> GetPersonNotifications(Guid uid)
+		{
+			var model = new PersonNotificationsModel();
+			model.NewEventInvitationsCount = (await _eventRepository.GetPersonInvitations(uid)).Count;
+			model.NewFriendsCount = (await _personRepository.GetNewFriends(uid)).Count;
+			return model;
+		}
 	}
 }

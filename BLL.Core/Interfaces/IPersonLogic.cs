@@ -19,5 +19,6 @@ namespace BLL.Core.Interfaces
 		Task<PersonModel> GetRandomPerson(RandomPersonFilter randomPersonFilter, Guid uid);
 		Task AddPersonSwipeHistory(Guid eventUid, Guid personUid);
 		Task ConfirmFriend(Guid uid, Guid friendGuid);
+		Task<PersonNotificationsModel> GetPersonNotifications(Guid uid);
 	}
 }

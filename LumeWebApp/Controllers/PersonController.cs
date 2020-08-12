@@ -93,7 +93,8 @@ namespace LumeWebApp.Controllers
 		[Route("get-person-notifications")]
 		public async Task<ActionResult<PersonNotificationsModel>> GetPersonNotifications()
 		{
-
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			return await _personLogic.GetPersonNotifications(uid);
 		}
 
 		[HttpPost]

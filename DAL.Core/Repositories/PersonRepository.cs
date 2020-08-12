@@ -241,5 +241,17 @@ namespace DAL.Core.Repositories
 				}
 			}
 		}
+
+		public async Task<List<PersonEntity>> GetNewFriends(Guid uid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonFriendListEntities
+					.Include(x => x.Person)
+					.Where(x => x.Person.PersonUid == uid && !x.IsApproved)
+					.Select(x => x.Person)
+					.ToListAsync();
+			}
+		}
 	}
 }

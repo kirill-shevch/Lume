@@ -3,6 +3,6 @@
 	public class PersonNotificationsModel
 	{
 		public int NewFriendsCount { get; set; }
-		public int NewEventInvittionsCount { get; set; }
+		public int NewEventInvitationsCount { get; set; }
 	}
 }
