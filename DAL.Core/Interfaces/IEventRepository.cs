@@ -24,5 +24,6 @@ namespace DAL.Core.Interfaces
 		Task AddEventSwipeHistoryRecord(EventSwipeHistoryEntity entity);
 		Task TransferEventsStatuses(CancellationToken cancellationToken = default);
 		Task RemoveEventTypes(long eventId);
+		Task RemoveOutdatedParticipants(CancellationToken cancellationToken = default);
 	}
 }

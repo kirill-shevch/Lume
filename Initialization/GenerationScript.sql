@@ -192,7 +192,7 @@ INSERT INTO LumeDB.dbo.EventStatus (EventStatusName)
 VALUES ('Preparing'),('InProgress'),('Ended'),('Canceled');  
 
 INSERT INTO LumeDB.dbo.ParticipantStatus (ParticipantStatusName)
-VALUES ('WaitingForApproveFromUser'),('WaitingForApproveFromEvent'),('Active');  
+VALUES ('WaitingForApproveFromUser'),('WaitingForApproveFromEvent'),('Active'),('Rejected');  
 
 INSERT INTO LumeDB.dbo.City (CityName)
 VALUES 
