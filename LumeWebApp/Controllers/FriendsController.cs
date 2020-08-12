@@ -30,7 +30,7 @@ namespace LumeWebApp.Controllers
         {
             var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 
-            var validationResult = _friendValidation.ValidateAddFriend(uid, friendGuid);
+            var validationResult = _friendValidation.ValidateLackOfFriendship(uid, friendGuid);
 
             if (!validationResult.ValidationResult)
             {
@@ -42,13 +42,31 @@ namespace LumeWebApp.Controllers
             return Ok(Messages.GetMessageJson(MessageTitles.FriendAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
         }
 
+        [HttpPost]
+        [Route("confirm-friend")]
+        public async Task<ActionResult> ConfirmFriend(Guid friendGuid)
+        {
+            var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+
+            var validationResult = _friendValidation.ValidateFriendship(uid, friendGuid);
+
+            if (!validationResult.ValidationResult)
+            {
+                return BadRequest(validationResult.ValidationMessage);
+            }
+
+            await _personLogic.ConfirmFriend(uid, friendGuid);
+
+            return Ok(Messages.GetMessageJson(MessageTitles.FriendConfirmed, CultureParser.GetCultureFromHttpContext(HttpContext)));
+        }
+
         [HttpDelete]
         [Route("remove-friend")]
         public async Task<ActionResult> RemoveFriend(Guid friendGuid)
         {
             var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 
-            var validationResult = _friendValidation.ValidateRemoveFriend(uid, friendGuid);
+            var validationResult = _friendValidation.ValidateFriendship(uid, friendGuid);
 
             if (!validationResult.ValidationResult)
             {

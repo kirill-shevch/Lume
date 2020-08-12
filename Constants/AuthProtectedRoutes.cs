@@ -32,6 +32,7 @@ namespace Constants
              "/api/friends/add-friend",
              "/api/friends/remove-friend",
              "​/api​/friends​/get-friends",
+             "​/api​/friends​/confirm-friend",
 
              "/api/chat/get-chat",
              "/api/chat/get-person-chat",

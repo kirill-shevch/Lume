@@ -227,5 +227,19 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task ConfirmFriend(Guid uid, Guid friendGuid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var entity = await context.PersonFriendListEntities.Include(x => x.Person).Include(x => x.Friend).SingleOrDefaultAsync(x => x.Person.PersonUid == uid && x.Friend.PersonUid == friendGuid);
+				if (entity != null)
+				{
+					entity.IsApproved = true;
+					context.Update(entity);
+					await context.SaveChangesAsync();
+				}
+			}
+		}
 	}
 }

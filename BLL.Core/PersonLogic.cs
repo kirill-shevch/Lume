@@ -162,5 +162,10 @@ namespace BLL.Core
 			var personEntity = await _personRepository.GetPerson(personUid);
 			await _personRepository.AddPersonSwipeHistoryRecord(new PersonSwipeHistoryEntity { PersonId = personEntity.PersonId, EventId = eventEntity.EventId });
 		}
+
+		public async Task ConfirmFriend(Guid uid, Guid friendGuid)
+		{
+			await _personRepository.ConfirmFriend(uid, friendGuid);
+		}
 	}
 }

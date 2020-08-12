@@ -16,7 +16,7 @@ namespace BLL.Core
             _personRepository = personRepository;
         } 
 
-        public (bool ValidationResult, string ValidationMessage) ValidateAddFriend(Guid personUid, Guid friendUid)
+        public (bool ValidationResult, string ValidationMessage) ValidateLackOfFriendship(Guid personUid, Guid friendUid)
         {
             var isFriendExists = _personRepository.GetPerson(friendUid).Result != null;
 
@@ -32,7 +32,7 @@ namespace BLL.Core
             return (true, string.Empty);
         }
 
-        public (bool ValidationResult, string ValidationMessage) ValidateRemoveFriend(Guid personUid, Guid friendUid)
+        public (bool ValidationResult, string ValidationMessage) ValidateFriendship(Guid personUid, Guid friendUid)
         {
             var isFriendExists = _personRepository.GetPerson(friendUid).Result != null;
 
