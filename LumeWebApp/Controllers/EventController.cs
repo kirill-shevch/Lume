@@ -77,15 +77,15 @@ namespace LumeWebApp.Controllers
 
 		[HttpPost]
 		[Route("add-event-participant")]
-		public async Task<ActionResult> AddEventParticipant(EventParticipantModel request)
+		public async Task<ActionResult<GetEventModel>> AddEventParticipant(EventParticipantModel request)
 		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			var validationResult = _eventValidation.ValidateAddParticipantModel(request);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			await _eventLogic.AddParticipant(request);
-			return Ok(Messages.GetMessageJson(MessageTitles.ParticipantCreated, CultureParser.GetCultureFromHttpContext(HttpContext)));
+			return await _eventLogic.AddParticipant(request, uid);
 		}
 
 		[HttpPost]
@@ -148,12 +148,13 @@ namespace LumeWebApp.Controllers
 		[Route("accept-random-event")]
 		public async Task<ActionResult> AcceptRandomEvent(EventParticipantModel request)
 		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			var validationResult = _eventValidation.ValidateAddParticipantModel(request);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			await _eventLogic.AddParticipant(request);
+			await _eventLogic.AddParticipant(request, uid);
 			await _personLogic.AddPersonSwipeHistory(request.EventUid, request.PersonUid);
 			return Ok(Messages.GetMessageJson(MessageTitles.RandomEventAccepted, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
