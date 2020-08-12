@@ -68,7 +68,7 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task AddFriendToPerson(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default)
+		public async Task AddFriendToPerson(Guid personUid, Guid friendUid, bool isApproved, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
@@ -78,7 +78,7 @@ namespace DAL.Core.Repositories
 				var friend = await context.PersonEntities
 					.FirstOrDefaultAsync(p => p.PersonUid == friendUid);
 
-				var personToFriendEntity = new PersonFriendListEntity { PersonId = person.PersonId, FriendId = friend.PersonId };
+				var personToFriendEntity = new PersonFriendListEntity { PersonId = person.PersonId, FriendId = friend.PersonId, IsApproved = isApproved };
 
 				await context.AddAsync(personToFriendEntity);
 
