@@ -68,7 +68,7 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task AddFriendToPerson(Guid personUid, Guid friendUid, CancellationToken cancellationToken = default)
+		public async Task AddFriendToPerson(Guid personUid, Guid friendUid, bool isApproved, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
@@ -78,7 +78,7 @@ namespace DAL.Core.Repositories
 				var friend = await context.PersonEntities
 					.FirstOrDefaultAsync(p => p.PersonUid == friendUid);
 
-				var personToFriendEntity = new PersonFriendListEntity { PersonId = person.PersonId, FriendId = friend.PersonId };
+				var personToFriendEntity = new PersonFriendListEntity { PersonId = person.PersonId, FriendId = friend.PersonId, IsApproved = isApproved };
 
 				await context.AddAsync(personToFriendEntity);
 
@@ -225,6 +225,32 @@ namespace DAL.Core.Repositories
 			{
 				context.PersonImageContentEntities.Remove(entity);
 				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task ConfirmFriend(Guid uid, Guid friendGuid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var entity = await context.PersonFriendListEntities.Include(x => x.Person).Include(x => x.Friend).SingleOrDefaultAsync(x => x.Person.PersonUid == uid && x.Friend.PersonUid == friendGuid);
+				if (entity != null)
+				{
+					entity.IsApproved = true;
+					context.Update(entity);
+					await context.SaveChangesAsync();
+				}
+			}
+		}
+
+		public async Task<List<PersonEntity>> GetNewFriends(Guid uid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonFriendListEntities
+					.Include(x => x.Person)
+					.Where(x => x.Person.PersonUid == uid && !x.IsApproved)
+					.Select(x => x.Friend)
+					.ToListAsync();
 			}
 		}
 	}

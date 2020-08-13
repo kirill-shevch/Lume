@@ -6,6 +6,7 @@ namespace Constants
 	{
 		UpdateSuccess,
 		FriendAdded,
+		FriendConfirmed,
 		FriendRemoved,
 		ParticipantCreated,
 		RandomEventAccepted,
@@ -24,6 +25,8 @@ namespace Constants
 			[(MessageTitles.UpdateSuccess, "ru-RU")] = "Обновление завершено",
 			[(MessageTitles.FriendAdded, "en-US")] = "Friend has been succesfully added!",
 			[(MessageTitles.FriendAdded, "ru-RU")] = "Друг успешно добавлен!",
+			[(MessageTitles.FriendConfirmed, "en-US")] = "Friend has been succesfully confirmed!",
+			[(MessageTitles.FriendConfirmed, "ru-RU")] = "Друг успешно подтверждён!",
 			[(MessageTitles.FriendRemoved, "en-US")] = "Friend has been succesfully removed!",
 			[(MessageTitles.FriendRemoved, "ru-RU")] = "Друг успешно удалён!",
 			[(MessageTitles.ParticipantCreated, "en-US")] = "Participant has been succesfully created!",

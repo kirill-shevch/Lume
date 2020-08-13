@@ -25,5 +25,6 @@ namespace DAL.Core.Interfaces
 		Task TransferEventsStatuses(CancellationToken cancellationToken = default);
 		Task RemoveEventTypes(long eventId);
 		Task RemoveOutdatedParticipants(CancellationToken cancellationToken = default);
+		Task<List<EventEntity>> GetPersonInvitations(Guid uid);
 	}
 }

@@ -302,5 +302,18 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task<List<EventEntity>> GetPersonInvitations(Guid uid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonToEventEntities
+					.Include(x => x.Event)
+					.Include(x => x.Person)
+					.Where(x => x.ParticipantStatusId == (long)ParticipantStatus.WaitingForApproveFromUser && x.Person.PersonUid == uid)
+					.Select(x => x.Event)
+					.ToListAsync();
+			}
+		}
 	}
 }

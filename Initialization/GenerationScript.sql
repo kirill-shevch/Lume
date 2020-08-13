@@ -180,6 +180,7 @@ CREATE TABLE LumeDB.dbo.PersonToChat (
 CREATE TABLE LumeDB.dbo.PersonFriendList (
 	PersonId bigint,
   	FriendId bigint,
+	IsApproved bit NOT NULL DEFAULT 0,
   	CONSTRAINT PK_Person_Friend PRIMARY KEY (PersonId, FriendId),
   	CONSTRAINT FK_Person_PersonFriendList FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
   	CONSTRAINT FK_Friend_PersonFriendList FOREIGN KEY (FriendId) REFERENCES LumeDB.dbo.Person (PersonId)

@@ -105,7 +105,11 @@ namespace BLL.Core
 
 		public async Task AddFriendToPerson(Guid personUid, Guid friendUid)
 		{
-			await _personRepository.AddFriendToPerson(personUid, friendUid);
+			await _personRepository.AddFriendToPerson(personUid, friendUid, true);
+			if (!(await _personRepository.CheckPersonFriendExistence(friendUid, personUid)))
+			{
+				await _personRepository.AddFriendToPerson(friendUid, personUid, false);
+			}
 		}
 
 		public async Task RemoveFriendFromPerson(Guid personUid, Guid friendUid)
@@ -133,10 +137,11 @@ namespace BLL.Core
 		public async Task<List<PersonModel>> GetAllPersonFriends(Guid personUid)
 		{
 			var entities = await _personRepository.GetAllPersonFriends(personUid);
+			var notApprovedFriends = await _personRepository.GetNewFriends(personUid);
 			var models = _mapper.Map<List<PersonModel>>(entities);
 			foreach (var model in models)
 			{
-				model.IsFriend = true;
+				model.IsFriend = !notApprovedFriends.Any(x => x.PersonUid == model.PersonUid);
 			}
 			return models;
 		}
@@ -157,6 +162,19 @@ namespace BLL.Core
 			var eventEntity = await _eventRepository.GetEvent(eventUid);
 			var personEntity = await _personRepository.GetPerson(personUid);
 			await _personRepository.AddPersonSwipeHistoryRecord(new PersonSwipeHistoryEntity { PersonId = personEntity.PersonId, EventId = eventEntity.EventId });
+		}
+
+		public async Task ConfirmFriend(Guid uid, Guid friendGuid)
+		{
+			await _personRepository.ConfirmFriend(uid, friendGuid);
+		}
+
+		public async Task<PersonNotificationsModel> GetPersonNotifications(Guid uid)
+		{
+			var model = new PersonNotificationsModel();
+			model.NewEventInvitationsCount = (await _eventRepository.GetPersonInvitations(uid)).Count;
+			model.NewFriendsCount = (await _personRepository.GetNewFriends(uid)).Count;
+			return model;
 		}
 	}
 }

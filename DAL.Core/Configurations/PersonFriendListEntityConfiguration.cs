@@ -12,9 +12,9 @@ namespace DAL.Core.Configurations
 			builder.HasKey(t => new { t.PersonId, t.FriendId });
 			builder.Property(t => t.PersonId);
 			builder.Property(t => t.FriendId);
+			builder.Property(t => t.IsApproved);
 			builder.HasOne(t => t.Person).WithMany(x => x.FriendList).HasForeignKey(x => x.PersonId);
 			builder.HasOne(t => t.Friend).WithMany().HasForeignKey(x => x.FriendId);
-
 		}
 	}
 }

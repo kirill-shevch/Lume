@@ -5,6 +5,7 @@
 		public const string TableName = "PersonFriendList";
 		public long PersonId { get; set; }
 		public long FriendId { get; set; }
+		public bool IsApproved { get; set; }
 		public PersonEntity Person { get; set; }
 		public PersonEntity Friend { get; set; }
 	}

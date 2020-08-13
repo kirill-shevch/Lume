@@ -16,6 +16,7 @@ namespace Constants
              "/api/person/get-random-person",
              "/api/person/accept-random-person",
              "/api/person/reject-random-person",
+             "/api/person/get-person-notifications",
 
              "/api/event/add-event",
              "/api/event/get-event",
@@ -32,6 +33,7 @@ namespace Constants
              "/api/friends/add-friend",
              "/api/friends/remove-friend",
              "​/api​/friends​/get-friends",
+             "​/api​/friends​/confirm-friend",
 
              "/api/chat/get-chat",
              "/api/chat/get-person-chat",

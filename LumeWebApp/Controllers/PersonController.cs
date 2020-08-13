@@ -90,6 +90,14 @@ namespace LumeWebApp.Controllers
 		}
 
 		[HttpPost]
+		[Route("get-person-notifications")]
+		public async Task<ActionResult<PersonNotificationsModel>> GetPersonNotifications()
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			return await _personLogic.GetPersonNotifications(uid);
+		}
+
+		[HttpPost]
 		[Route("get-random-person")]
 		public async Task<ActionResult<PersonModel>> GetRandomPerson(RandomPersonFilter randomPersonFilter)
 		{
