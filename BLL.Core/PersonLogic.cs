@@ -128,7 +128,7 @@ namespace BLL.Core
 				personModel.FriendshipApprovalRequired = notApprovedFriends.Any(x => x.PersonUid == personModel.PersonUid);
 				personModel.IsFriend = await _personRepository.CheckPersonFriendExistence(personUid, personModel.PersonUid);
 			}
-			return personModels;
+			return personModels.OrderByDescending(x => x.FriendshipApprovalRequired).ThenByDescending(x => x.IsFriend);
 		}
 
 		public async Task<bool> CheckFriendship(Guid personUid, Guid friendUid)
@@ -146,7 +146,7 @@ namespace BLL.Core
 				model.IsFriend = true;
 				model.FriendshipApprovalRequired = notApprovedFriends.Any(x => x.PersonUid == model.PersonUid);
 			}
-			return models;
+			return models.OrderByDescending(x => x.FriendshipApprovalRequired).ToList();
 		}
 
 		public async Task<PersonModel> GetRandomPerson(RandomPersonFilter randomPersonFilter, Guid uid)
@@ -177,6 +177,18 @@ namespace BLL.Core
 			var model = new PersonNotificationsModel();
 			model.NewEventInvitationsCount = (await _eventRepository.GetPersonInvitations(uid)).Count;
 			model.NewFriendsCount = (await _personRepository.GetNewFriends(uid)).Count;
+			return model;
+		}
+
+		public async Task<PersonModel> RemovePersonToken(Guid uid)
+		{
+			var entity = await _personRepository.GetPerson(uid);
+			var model = _mapper.Map<PersonModel>(entity);
+			entity.PersonImageContentEntity = null;
+			entity.FriendList = null;
+			entity.City = null;
+			entity.SwipeHistory = null;
+			await _personRepository.UpdatePerson(entity);
 			return model;
 		}
 	}

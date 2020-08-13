@@ -76,6 +76,14 @@ namespace LumeWebApp.Controllers
 		}
 
 		[HttpPost]
+		[Route("remove-person-token")]
+		public async Task<ActionResult<PersonModel>> RemovePersonToken()
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			return await _personLogic.RemovePersonToken(uid);
+		}
+
+		[HttpPost]
 		[Route("get-person-list")]
 		public async Task<ActionResult<List<PersonModel>>> GetPersonListByPage(GetPersonListFilter request)
 		{
