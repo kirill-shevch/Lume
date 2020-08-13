@@ -65,8 +65,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.FirstPerson)
 					.Include(x => x.SecondPerson)
 					.Include(x => x.Chat)
-						.Where(x => (x.FirstPerson.PersonUid == userUid || x.FirstPerson.PersonUid == friendUid) &&
-						(x.SecondPerson.PersonUid == userUid || x.SecondPerson.PersonUid == friendUid))
+						.Where(x => x.FirstPerson.PersonUid == userUid || x.SecondPerson.PersonUid == friendUid)
 					.SingleOrDefaultAsync();
 				return personToChat?.Chat;
 			}
@@ -79,7 +78,7 @@ namespace DAL.Core.Repositories
 				var personToChat = await context.PersonToChatEntities
 					.Include(x => x.FirstPerson)
 					.Include(x => x.SecondPerson)
-					.SingleOrDefaultAsync(x => x.ChatId == chatId && (x.FirstPersonId == personId || x.SecondPersonId == personId));
+					.SingleOrDefaultAsync(x => x.ChatId == chatId && x.FirstPersonId == personId);
 				if (personToChat == null)
 				{
 					return string.Empty;
@@ -98,6 +97,7 @@ namespace DAL.Core.Repositories
 				var chat = new ChatEntity { ChatUid = chatUid, IsGroupChat = false };
 				await context.ChatEntities.AddAsync(chat);
 				await context.PersonToChatEntities.AddAsync(new PersonToChatEntity { FirstPerson = firstPerson, SecondPerson = secondPerson, Chat = chat });
+				await context.PersonToChatEntities.AddAsync(new PersonToChatEntity { FirstPerson = secondPerson, SecondPerson = firstPerson, Chat = chat });
 				await context.SaveChangesAsync();
 				return chatUid;
 			}
@@ -113,7 +113,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.SecondPerson)
 						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Chat)
-					.Where(x => x.FirstPerson.PersonUid == uid || x.SecondPerson.PersonUid == uid)
+					.Where(x => x.FirstPerson.PersonUid == uid)
 					.ToListAsync();
 				return entities;
 
@@ -158,6 +158,56 @@ namespace DAL.Core.Repositories
 				entity.ChatMessageId = chatMessageEntity.ChatMessageId;
 				await context.AddAsync(entity);
 				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task AddLastReadChatMessage(ChatEntity chatEntity, Guid personUid, long messageId)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				if (chatEntity.IsGroupChat.HasValue && chatEntity.IsGroupChat.Value)
+				{
+					var entity = await context.PersonToEventEntities
+						.Include(x => x.Event)
+						.Include(x => x.Person)
+						.SingleOrDefaultAsync(x => x.Person.PersonUid == personUid && x.Event.ChatId == chatEntity.ChatId);
+					if (!entity.LastReadChatMessageId.HasValue || entity.LastReadChatMessageId < messageId)
+					{
+						entity.LastReadChatMessageId = messageId;
+						context.PersonToEventEntities.Update(entity);
+						await context.SaveChangesAsync();
+					}
+				}
+				else if (chatEntity.IsGroupChat.HasValue && !chatEntity.IsGroupChat.Value)
+				{
+					var entity = await context.PersonToChatEntities
+						.Include(x => x.FirstPerson)
+						.SingleOrDefaultAsync(x => x.ChatId == chatEntity.ChatId && x.FirstPerson.PersonUid == personUid);
+					if (!entity.LastReadChatMessageId.HasValue || entity.LastReadChatMessageId < messageId)
+					{
+						entity.LastReadChatMessageId = messageId;
+						context.PersonToChatEntities.Update(entity);
+						await context.SaveChangesAsync();
+					}
+				}
+			}
+		}
+
+		public async Task<bool> CheckPersonForNewChatMessages(Guid personUid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var personEvents = await context.PersonToEventEntities
+					.Include(x => x.Event)
+						.ThenInclude(x => x.Chat)
+							.ThenInclude(x => x.ChatMessageEntities)
+					.AnyAsync(x => x.LastReadChatMessageId < x.Event.Chat.ChatMessageEntities.Max(x => x.ChatMessageId));
+				var personalChats = await context.PersonToChatEntities
+					.Include(x => x.Chat)
+						.ThenInclude(x => x.ChatMessageEntities)
+					.AnyAsync(x => x.LastReadChatMessageId < x.Chat.ChatMessageEntities.Max(x => x.ChatMessageId));
+				return personalChats || personEvents;
+				
 			}
 		}
 	}

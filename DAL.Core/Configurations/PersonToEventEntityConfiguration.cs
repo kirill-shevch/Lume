@@ -13,6 +13,7 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.PersonId);
 			builder.Property(t => t.EventId);
 			builder.Property(t => t.ParticipantStatusId);
+			builder.Property(t => t.LastReadChatMessageId);
 
 			builder.HasOne(ptc => ptc.Event)
 				.WithMany(c => c.Participants)
