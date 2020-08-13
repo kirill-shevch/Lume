@@ -179,5 +179,17 @@ namespace BLL.Core
 			model.NewFriendsCount = (await _personRepository.GetNewFriends(uid)).Count;
 			return model;
 		}
+
+		public async Task<PersonModel> RemovePersonToken(Guid uid)
+		{
+			var entity = await _personRepository.GetPerson(uid);
+			var model = _mapper.Map<PersonModel>(entity);
+			entity.PersonImageContentEntity = null;
+			entity.FriendList = null;
+			entity.City = null;
+			entity.SwipeHistory = null;
+			await _personRepository.UpdatePerson(entity);
+			return model;
+		}
 	}
 }

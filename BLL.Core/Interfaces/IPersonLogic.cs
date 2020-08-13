@@ -20,5 +20,6 @@ namespace BLL.Core.Interfaces
 		Task AddPersonSwipeHistory(Guid eventUid, Guid personUid);
 		Task ConfirmFriend(Guid uid, Guid friendGuid);
 		Task<PersonNotificationsModel> GetPersonNotifications(Guid uid);
+		Task<PersonModel> RemovePersonToken(Guid uid);
 	}
 }
