@@ -249,7 +249,7 @@ namespace DAL.Core.Repositories
 				return await context.PersonFriendListEntities
 					.Include(x => x.Person)
 					.Where(x => x.Person.PersonUid == uid && !x.IsApproved)
-					.Select(x => x.Person)
+					.Select(x => x.Friend)
 					.ToListAsync();
 			}
 		}
