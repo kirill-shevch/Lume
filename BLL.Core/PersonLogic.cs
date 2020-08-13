@@ -128,7 +128,7 @@ namespace BLL.Core
 				personModel.FriendshipApprovalRequired = notApprovedFriends.Any(x => x.PersonUid == personModel.PersonUid);
 				personModel.IsFriend = await _personRepository.CheckPersonFriendExistence(personUid, personModel.PersonUid);
 			}
-			return personModels;
+			return personModels.OrderByDescending(x => x.FriendshipApprovalRequired).ThenByDescending(x => x.IsFriend);
 		}
 
 		public async Task<bool> CheckFriendship(Guid personUid, Guid friendUid)
@@ -146,7 +146,7 @@ namespace BLL.Core
 				model.IsFriend = true;
 				model.FriendshipApprovalRequired = notApprovedFriends.Any(x => x.PersonUid == model.PersonUid);
 			}
-			return models;
+			return models.OrderByDescending(x => x.FriendshipApprovalRequired).ToList();
 		}
 
 		public async Task<PersonModel> GetRandomPerson(RandomPersonFilter randomPersonFilter, Guid uid)
