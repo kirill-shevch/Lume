@@ -113,7 +113,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.SecondPerson)
 						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Chat)
-					.Where(x => x.FirstPerson.PersonUid == uid || x.SecondPerson.PersonUid == uid)
+					.Where(x => x.FirstPerson.PersonUid == uid)
 					.ToListAsync();
 				return entities;
 
@@ -190,6 +190,24 @@ namespace DAL.Core.Repositories
 						await context.SaveChangesAsync();
 					}
 				}
+			}
+		}
+
+		public async Task<bool> CheckPersonForNewChatMessages(Guid personUid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var personEvents = await context.PersonToEventEntities
+					.Include(x => x.Event)
+						.ThenInclude(x => x.Chat)
+							.ThenInclude(x => x.ChatMessageEntities)
+					.AnyAsync(x => x.LastReadChatMessageId < x.Event.Chat.ChatMessageEntities.Max(x => x.ChatMessageId));
+				var personalChats = await context.PersonToChatEntities
+					.Include(x => x.Chat)
+						.ThenInclude(x => x.ChatMessageEntities)
+					.AnyAsync(x => x.LastReadChatMessageId < x.Chat.ChatMessageEntities.Max(x => x.ChatMessageId));
+				return personalChats || personEvents;
+				
 			}
 		}
 	}

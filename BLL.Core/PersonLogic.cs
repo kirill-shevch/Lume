@@ -15,6 +15,7 @@ namespace BLL.Core
 	{
 		private readonly IPersonRepository _personRepository;
 		private readonly IEventRepository _eventRepository;
+		private readonly IChatRepository _chatRepository;
 		private readonly IImageLogic _imageLogic;
 		private readonly IMapper _mapper;
 
@@ -22,11 +23,13 @@ namespace BLL.Core
 
 		public PersonLogic(IPersonRepository personRepository,
 			IEventRepository eventRepository,
+			IChatRepository chatRepository,
 			IImageLogic imageLogic,
 			IMapper mapper)
 		{
 			_personRepository = personRepository;
 			_eventRepository = eventRepository;
+			_chatRepository = chatRepository;
 			_imageLogic = imageLogic;
 			_mapper = mapper;
 		}
@@ -177,6 +180,7 @@ namespace BLL.Core
 			var model = new PersonNotificationsModel();
 			model.NewEventInvitationsCount = (await _eventRepository.GetPersonInvitations(uid)).Count;
 			model.NewFriendsCount = (await _personRepository.GetNewFriends(uid)).Count;
+			model.AnyNewChatMessages = await _chatRepository.CheckPersonForNewChatMessages(uid);
 			return model;
 		}
 
