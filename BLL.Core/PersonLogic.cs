@@ -121,9 +121,11 @@ namespace BLL.Core
 		{
 			var filter = _mapper.Map<RepositoryGetPersonListFilter>(model);
 			var persons = await _personRepository.GetPersonListByPage(personUid, filter);
+			var notApprovedFriends = await _personRepository.GetNewFriends(personUid);
 			var personModels = _mapper.Map<IEnumerable<PersonModel>>(persons);
 			foreach (var personModel in personModels)
 			{
+				personModel.FriendshipApprovalRequired = notApprovedFriends.Any(x => x.PersonUid == personModel.PersonUid);
 				personModel.IsFriend = await _personRepository.CheckPersonFriendExistence(personUid, personModel.PersonUid);
 			}
 			return personModels;
@@ -141,7 +143,8 @@ namespace BLL.Core
 			var models = _mapper.Map<List<PersonModel>>(entities);
 			foreach (var model in models)
 			{
-				model.IsFriend = !notApprovedFriends.Any(x => x.PersonUid == model.PersonUid);
+				model.IsFriend = true;
+				model.FriendshipApprovalRequired = notApprovedFriends.Any(x => x.PersonUid == model.PersonUid);
 			}
 			return models;
 		}
