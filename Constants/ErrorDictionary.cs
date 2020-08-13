@@ -8,7 +8,7 @@ namespace Constants
 		{
 			[(1, "en-US")] = "Person already exists in the database.",							[(1, "ru-RU")] = "Пользователь уже существует.",
 			[(2, "en-US")] = "Person is not exist in the database.",							[(2, "ru-RU")] = "Указанного пользователя не существует.",
-			[(3, "en-US")] = "SMS code is not correct.",										[(3, "ru-RU")] = "Неверный код из СМС.",
+			[(3, "en-US")] = "Code is not correct.",											[(3, "ru-RU")] = "Неверный код.",
 			[(4, "en-US")] = "Refresh token is invalid.",										[(4, "ru-RU")] = "Неверный рефреш-токен.",
 			[(5, "en-US")] = "Authorization failed.",											[(5, "ru-RU")] = "Ошибка авторизации.",
 			[(6, "en-US")] = "Phone number format is not correct.",								[(6, "ru-RU")] = "Неверный формат номера телефона.",
