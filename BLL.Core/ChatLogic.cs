@@ -37,13 +37,15 @@ namespace BLL.Core
 			var personEntity = await _personRepository.GetPerson(personUid);
 			var chatMessageUid = Guid.NewGuid();
 			var date = DateTime.UtcNow;
-			await _chatRepository.AddChatMessage(new ChatMessageEntity {
+			var messageEntity = new ChatMessageEntity
+			{
 				ChatMessageUid = chatMessageUid,
 				Content = request.Content,
 				MessageTime = date,
 				ChatId = chatEntity.ChatId,
 				AuthorId = personEntity.PersonId
-			});
+			};
+			await _chatRepository.AddChatMessage(messageEntity);
 			var chatImageUids = new List<Guid>();
 			foreach (var image in request.Images)
 			{
@@ -51,6 +53,7 @@ namespace BLL.Core
 				await _chatRepository.SaveChatImage(chatMessageUid, new ChatImageContentEntity { ChatImageContentUid = chatImageUid });
 				chatImageUids.Add(chatImageUid);
 			}
+			await _chatRepository.AddLastReadChatMessage(chatEntity, personUid, messageEntity.ChatMessageId);
 			return new ChatMessageModel 
 			{ 
 				Images = chatImageUids,
@@ -83,6 +86,10 @@ namespace BLL.Core
 				chatModel.PersonUid = personEntity.PersonUid;
 				chatModel.PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid;
 			}
+			if (chatMessageEntities.Any())
+			{
+				await _chatRepository.AddLastReadChatMessage(chatEntity, personUid, chatMessageEntities.Max(x => x.ChatMessageId));
+			}
 			return chatModel;
 		}
 
@@ -103,6 +110,7 @@ namespace BLL.Core
 				var messageEntities = await _chatRepository.GetNewChatMessages(chatEntity.ChatId, chatMessageId, personEntity.PersonId);
 				if (messageEntities != null && messageEntities.Any())
 				{
+					await _chatRepository.AddLastReadChatMessage(chatEntity, personUid, messageEntities.Max(x => x.ChatMessageId));
 					return _mapper.Map<List<ChatMessageModel>>(messageEntities);
 				}
 				Thread.Sleep(waitingInterval);
@@ -130,6 +138,10 @@ namespace BLL.Core
 			chatModel.PersonUid = personEntity.PersonUid;
 			chatModel.PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid;
 			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, 1, pageSize);
+			if (chatMessageEntities.Any())
+			{
+				await _chatRepository.AddLastReadChatMessage(chatEntity, uid, chatMessageEntities.Max(x => x.ChatMessageId));
+			}
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
 			return chatModel;
 		}

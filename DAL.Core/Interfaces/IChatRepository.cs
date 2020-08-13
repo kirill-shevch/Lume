@@ -20,5 +20,6 @@ namespace DAL.Core.Interfaces
 		Task<ChatMessageEntity> GetChatMessage(Guid uid);
 		Task<List<ChatMessageEntity>> GetNewChatMessages(long chatId, long lastmessageId, long personId);
 		Task SaveChatImage(Guid chatMessageUid, ChatImageContentEntity entity);
+		Task AddLastReadChatMessage(ChatEntity chatEntity, Guid personUid, long messageId);
 	}
 }
