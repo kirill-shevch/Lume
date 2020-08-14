@@ -192,6 +192,7 @@ namespace BLL.Core
 			entity.FriendList = null;
 			entity.City = null;
 			entity.SwipeHistory = null;
+			entity.Token = null;
 			await _personRepository.UpdatePerson(entity);
 			return model;
 		}
