@@ -157,6 +157,7 @@ namespace BLL.Core
 				var lastGroupChatMessageEntity = await _chatRepository.GetChatMessages(eventEntity.ChatId, 1, 1);
 				groupChatModel.LastMessage = _mapper.Map<ChatMessageModel>(lastGroupChatMessageEntity.SingleOrDefault());
 				groupChatModel.EventImageUid = eventEntity.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value)?.EventImageContentUid;
+				groupChatModel.UnreadMessagesCount = await _chatRepository.GetChatUnreadMessagesCount(eventEntity.Chat, uid);
 				chatModels.Add(groupChatModel);
 			}
 			var personToChatEntities = await _chatRepository.GetPersonChats(uid);
@@ -168,6 +169,7 @@ namespace BLL.Core
 				personalChatModel.PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid;
 				var lastPersonalChatMessageEntity = await _chatRepository.GetChatMessages(entity.ChatId, 1, 1);
 				personalChatModel.LastMessage = _mapper.Map<ChatMessageModel>(lastPersonalChatMessageEntity.SingleOrDefault());
+				personalChatModel.UnreadMessagesCount = await _chatRepository.GetChatUnreadMessagesCount(entity.Chat, uid);
 				chatModels.Add(personalChatModel);
 			}
 			return chatModels;

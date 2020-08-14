@@ -198,16 +198,41 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				var personEvents = await context.PersonToEventEntities
+					.Include(x => x.Person)
 					.Include(x => x.Event)
 						.ThenInclude(x => x.Chat)
 							.ThenInclude(x => x.ChatMessageEntities)
-					.AnyAsync(x => x.LastReadChatMessageId < x.Event.Chat.ChatMessageEntities.Max(x => x.ChatMessageId));
+					.AnyAsync(x => x.LastReadChatMessageId < x.Event.Chat.ChatMessageEntities.Max(x => x.ChatMessageId) && x.Person.PersonUid == personUid);
 				var personalChats = await context.PersonToChatEntities
+					.Include(x => x.FirstPerson)
 					.Include(x => x.Chat)
 						.ThenInclude(x => x.ChatMessageEntities)
-					.AnyAsync(x => x.LastReadChatMessageId < x.Chat.ChatMessageEntities.Max(x => x.ChatMessageId));
+					.AnyAsync(x => x.LastReadChatMessageId < x.Chat.ChatMessageEntities.Max(x => x.ChatMessageId) && x.FirstPerson.PersonUid == personUid);
 				return personalChats || personEvents;
 				
+			}
+		}
+
+		public async Task<int> GetChatUnreadMessagesCount(ChatEntity chat, Guid uid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				if (chat.IsGroupChat.HasValue && chat.IsGroupChat.Value)
+				{
+					var personToEventEntity = await context.PersonToEventEntities
+						.Include(x => x.Person)
+						.Include(x => x.Event)
+						.SingleAsync(x => x.Event.ChatId == chat.ChatId && x.Person.PersonUid == uid);
+					return await context.ChatMessageEntities.Where(x => x.ChatId == chat.ChatId).CountAsync(x => x.ChatMessageId > personToEventEntity.LastReadChatMessageId);
+				}
+				else if (chat.IsGroupChat.HasValue && !chat.IsGroupChat.Value)
+				{
+					var personToChatEntity = await context.PersonToChatEntities
+					.Include(x => x.FirstPerson)
+					.SingleAsync(x => x.ChatId == chat.ChatId && x.FirstPerson.PersonUid == uid);
+					return await context.ChatMessageEntities.Where(x => x.ChatId == chat.ChatId).CountAsync(x => x.ChatMessageId > personToChatEntity.LastReadChatMessageId);
+				}
+				return 0;
 			}
 		}
 	}

@@ -10,5 +10,6 @@ namespace BLL.Core.Models.Chat
 		public ChatMessageModel LastMessage { get; set; }
 		public Guid? PersonImageUid { get; set; }
 		public Guid? EventImageUid { get; set; }
+		public int UnreadMessagesCount { get; set; }
 	}
 }
