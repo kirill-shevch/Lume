@@ -37,6 +37,7 @@ namespace DAL.Core.Repositories
 					.OrderByDescending(x => x.ChatMessageId)
 					.Skip(pageSize * (pageNumber - 1))
 					.Take(pageSize)
+					.OrderBy(x => x.ChatMessageId)
 					.ToListAsync(cancellationToken);
 			}
 		}
@@ -145,7 +146,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.Author)
 						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.ChatImageContentEntities)
-					.OrderByDescending(x => x.ChatMessageId)
+					.OrderBy(x => x.ChatMessageId)
 					.ToListAsync();
 			}
 		}
