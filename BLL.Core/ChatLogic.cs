@@ -172,7 +172,7 @@ namespace BLL.Core
 				personalChatModel.UnreadMessagesCount = await _chatRepository.GetChatUnreadMessagesCount(entity.Chat, uid);
 				chatModels.Add(personalChatModel);
 			}
-			return chatModels;
+			return chatModels.OrderByDescending(x => x.LastMessage?.MessageTime).ToList();
 		}
 	}
 }
