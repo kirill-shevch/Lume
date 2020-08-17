@@ -4,6 +4,7 @@ using BLL.Core.Models.Person;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using DAL.Core.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -195,6 +196,26 @@ namespace BLL.Core
 			entity.Token = null;
 			await _personRepository.UpdatePerson(entity);
 			return model;
+		}
+
+		public async Task AddFeedback(FeedbackModel model, Guid uid)
+		{
+			var entity = _mapper.Map<FeedbackEntity>(model);
+			var personEntity = await _personRepository.GetPerson(uid);
+			entity.PersonId = personEntity.PersonId;
+			entity.FeedbackTime = DateTime.UtcNow;
+			entity.FeedbackUid = Guid.NewGuid();
+			if (model.Images != null)
+			{
+				var images = new List<FeedbackImageContentEntity>();
+				foreach (var image in model.Images)
+				{
+					var imageUid = await _imageLogic.SaveImage(image);
+					images.Add(new FeedbackImageContentEntity { FeedbackImageContentUid = imageUid });
+				}
+				entity.FeedbackImageContentEntities = images;
+			}
+			await _personRepository.AddFeedback(entity);
 		}
 	}
 }

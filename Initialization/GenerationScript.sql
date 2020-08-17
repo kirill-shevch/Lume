@@ -194,7 +194,7 @@ CREATE TABLE LumeDB.dbo.Feedback (
 	FeedbackId bigint IDENTITY(1,1) NOT NULL UNIQUE,
 	PersonId bigint,
 	FeedbackUid uniqueidentifier NOT NULL UNIQUE,
-	Text nvarchar NULL,
+	Text nvarchar(MAX) NULL,
 	OperatingSystem nvarchar(400) NULL,
 	PhoneModel nvarchar(800) NULL,
 	ApplicationVersion nvarchar(400) NULL,

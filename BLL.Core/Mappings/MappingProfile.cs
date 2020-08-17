@@ -74,6 +74,8 @@ namespace BLL.Core.Mappings
 			CreateMap<ChatEntity, ChatModel>();
 
 			CreateMap<ChatEntity, ChatListModel>();
+
+			CreateMap<FeedbackModel, FeedbackEntity>();
 		}
 	}
 }

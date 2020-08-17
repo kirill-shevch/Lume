@@ -253,5 +253,14 @@ namespace DAL.Core.Repositories
 					.ToListAsync();
 			}
 		}
+
+		public async Task AddFeedback(FeedbackEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.FeedbackEntities.AddAsync(entity);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }
