@@ -97,7 +97,7 @@ namespace LumeWebApp.Controllers
 			return models.ToList();
 		}
 
-		[HttpPost]
+		[HttpGet]
 		[Route("get-person-notifications")]
 		public async Task<ActionResult<PersonNotificationsModel>> GetPersonNotifications()
 		{

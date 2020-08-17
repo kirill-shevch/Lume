@@ -37,6 +37,7 @@ namespace DAL.Core.Repositories
 					.OrderByDescending(x => x.ChatMessageId)
 					.Skip(pageSize * (pageNumber - 1))
 					.Take(pageSize)
+					.OrderBy(x => x.ChatMessageId)
 					.ToListAsync(cancellationToken);
 			}
 		}
@@ -65,7 +66,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.FirstPerson)
 					.Include(x => x.SecondPerson)
 					.Include(x => x.Chat)
-						.Where(x => x.FirstPerson.PersonUid == userUid || x.SecondPerson.PersonUid == friendUid)
+						.Where(x => x.FirstPerson.PersonUid == userUid && x.SecondPerson.PersonUid == friendUid)
 					.SingleOrDefaultAsync();
 				return personToChat?.Chat;
 			}
@@ -145,7 +146,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.Author)
 						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.ChatImageContentEntities)
-					.OrderByDescending(x => x.ChatMessageId)
+					.OrderBy(x => x.ChatMessageId)
 					.ToListAsync();
 			}
 		}
@@ -198,16 +199,51 @@ namespace DAL.Core.Repositories
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				var personEvents = await context.PersonToEventEntities
+					.Include(x => x.Person)
 					.Include(x => x.Event)
 						.ThenInclude(x => x.Chat)
 							.ThenInclude(x => x.ChatMessageEntities)
-					.AnyAsync(x => x.LastReadChatMessageId < x.Event.Chat.ChatMessageEntities.Max(x => x.ChatMessageId));
+					.AnyAsync(x => ((!x.LastReadChatMessageId.HasValue && x.Event.Chat.ChatMessageEntities.Any()) || (x.LastReadChatMessageId < x.Event.Chat.ChatMessageEntities.Max(x => x.ChatMessageId))) 
+						&& x.Person.PersonUid == personUid);
 				var personalChats = await context.PersonToChatEntities
+					.Include(x => x.FirstPerson)
 					.Include(x => x.Chat)
 						.ThenInclude(x => x.ChatMessageEntities)
-					.AnyAsync(x => x.LastReadChatMessageId < x.Chat.ChatMessageEntities.Max(x => x.ChatMessageId));
+					.AnyAsync(x => ((!x.LastReadChatMessageId.HasValue && x.Chat.ChatMessageEntities.Any()) || (x.LastReadChatMessageId < x.Chat.ChatMessageEntities.Max(x => x.ChatMessageId)))
+						&& x.FirstPerson.PersonUid == personUid);
 				return personalChats || personEvents;
 				
+			}
+		}
+
+		public async Task<int> GetChatUnreadMessagesCount(ChatEntity chat, Guid uid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				if (chat.IsGroupChat.HasValue && chat.IsGroupChat.Value)
+				{
+					var personToEventEntity = await context.PersonToEventEntities
+						.Include(x => x.Person)
+						.Include(x => x.Event)
+						.SingleAsync(x => x.Event.ChatId == chat.ChatId && x.Person.PersonUid == uid);
+					if (!personToEventEntity.LastReadChatMessageId.HasValue)
+					{
+						return await context.ChatMessageEntities.Where(x => x.ChatId == chat.ChatId).CountAsync();
+					}
+					return await context.ChatMessageEntities.Where(x => x.ChatId == chat.ChatId).CountAsync(x => x.ChatMessageId > personToEventEntity.LastReadChatMessageId);
+				}
+				else if (chat.IsGroupChat.HasValue && !chat.IsGroupChat.Value)
+				{
+					var personToChatEntity = await context.PersonToChatEntities
+					.Include(x => x.FirstPerson)
+					.SingleAsync(x => x.ChatId == chat.ChatId && x.FirstPerson.PersonUid == uid);
+					if (!personToChatEntity.LastReadChatMessageId.HasValue)
+					{
+						return await context.ChatMessageEntities.Where(x => x.ChatId == chat.ChatId).CountAsync();
+					}
+					return await context.ChatMessageEntities.Where(x => x.ChatId == chat.ChatId).CountAsync(x => x.ChatMessageId > personToChatEntity.LastReadChatMessageId);
+				}
+				return 0;
 			}
 		}
 	}

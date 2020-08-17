@@ -60,7 +60,8 @@ namespace BLL.Core.Mappings
 				.ForMember(dest => dest.EventPrimaryImageContentUid,
 				opt => opt.MapFrom(src => src.EventImageContentEntities == null ? (Guid?)null : src.EventImageContentEntities.SingleOrDefault(x => x.IsPrimary.HasValue && x.IsPrimary.Value).EventImageContentUid))
 				.ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.City == null ? (long?)null : src.City.CityId))
-				.ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City == null ? string.Empty : src.City.CityName));
+				.ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City == null ? string.Empty : src.City.CityName))
+				.ForMember(dest => dest.ChatUid, opt => opt.MapFrom(src => src.Chat.ChatUid));
 
 			CreateMap<ChatMessageEntity, ChatMessageModel>()
 				.ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.ChatImageContentEntities.Select(x => x.ChatImageContentUid)))

@@ -23,5 +23,6 @@ namespace BLL.Core.Models.Event
 		public bool IsOnline { get; set; }
 		public long? CityId { get; set; }
 		public string CityName { get; set; }
+		public Guid ChatUid { get; set; }
 	}
 }
