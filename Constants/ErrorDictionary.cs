@@ -43,6 +43,7 @@ namespace Constants
 			[(35, "en-US")] = "Event can have maximum 3 types",									[(35, "ru-RU")] = "У события не может быть больше 3-х типов",
 			[(36, "en-US")] = "At least 1 event type is required",								[(36, "ru-RU")] = "Необходимо указать хотя бы 1 тип события",
 			[(37, "en-US")] = "Envent types should be distinct",								[(37, "ru-RU")] = "Типы события не должны повторяться",
+			[(38, "en-US")] = "Token is required",												[(38, "ru-RU")] = "Необходимо указать токен",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";

@@ -79,7 +79,7 @@ namespace BLL.Authorization
 			}
 			if (string.IsNullOrWhiteSpace(token))
 			{
-				return (false, ErrorDictionary.GetErrorMessage(6, _culture));
+				return (false, ErrorDictionary.GetErrorMessage(38, _culture));
 			}
 			return (true, string.Empty);
 		}
