@@ -97,6 +97,13 @@ namespace LumeWebApp.Controllers
 			return models.ToList();
 		}
 
+		[HttpPost]
+		[Route("add-feedback")]
+		public async Task<ActionResult> AddFeedback(FeedbackModel model)
+		{
+			return Ok(Messages.GetMessageJson(MessageTitles.FeedbackAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
+		}
+
 		[HttpGet]
 		[Route("get-person-notifications")]
 		public async Task<ActionResult<PersonNotificationsModel>> GetPersonNotifications()
