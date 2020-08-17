@@ -1,4 +1,6 @@
 DROP TABLE IF EXISTS LumeDB.dbo.PersonAuth; 
+DROP TABLE IF EXISTS LumeDB.dbo.FeedbackImageContent; 
+DROP TABLE IF EXISTS LumeDB.dbo.Feedback; 
 DROP TABLE IF EXISTS LumeDB.dbo.PersonFriendList;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToEvent;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToChat;
@@ -186,6 +188,27 @@ CREATE TABLE LumeDB.dbo.PersonFriendList (
   	CONSTRAINT PK_Person_Friend PRIMARY KEY (PersonId, FriendId),
   	CONSTRAINT FK_Person_PersonFriendList FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
   	CONSTRAINT FK_Friend_PersonFriendList FOREIGN KEY (FriendId) REFERENCES LumeDB.dbo.Person (PersonId)
+);
+
+CREATE TABLE LumeDB.dbo.Feedback (
+	FeedbackId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	PersonId bigint,
+	FeedbackUid uniqueidentifier NOT NULL UNIQUE,
+	Text nvarchar NULL,
+	OperatingSystem nvarchar(400) NULL,
+	PhoneModel nvarchar(800) NULL,
+	ApplicationVersion nvarchar(400) NULL,
+	FeedbackTime datetime2(7) NULL,
+	CONSTRAINT FK_Feedback_Person FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
+	CONSTRAINT PK_FeedbackId PRIMARY KEY CLUSTERED (FeedbackId)
+);
+
+CREATE TABLE LumeDB.dbo.FeedbackImageContent (
+	FeedbackImageContentId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	FeedbackImageContentUid uniqueidentifier NOT NULL UNIQUE,
+	FeedbackId bigint NULL,
+	CONSTRAINT PK_FeedbackImageContentId PRIMARY KEY CLUSTERED (FeedbackImageContentId),
+	CONSTRAINT FK_FeedbackImageContent_Feedback FOREIGN KEY (FeedbackId) REFERENCES LumeDB.dbo.Feedback (FeedbackId)
 );
 
 INSERT INTO LumeDB.dbo.EventType (EventTypeName)  
