@@ -93,7 +93,7 @@ namespace BLL.Core
 				model.ParticipantStatus = (ParticipantStatus)status;
 				model.AnyPersonWaitingForApprove = model.IsAdministrator.Value && entity.Participants.Any(x => x.ParticipantStatusId == (long)ParticipantStatus.WaitingForApproveFromEvent);
 				return model;
-			}).ToList();
+			}).Where(x => x.ParticipantStatus != ParticipantStatus.Rejected).ToList();
 		}
 		public async Task UpdateEvent(UpdateEventModel updateEventModel)
 		{
