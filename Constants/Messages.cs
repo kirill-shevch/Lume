@@ -15,6 +15,7 @@ namespace Constants
 		RandomPersonRejected,
 		PushNotificationMessage,
 		AddParticipantNotificationMessage,
+		FeedbackAdded
 	}
 
 	public static class Messages
@@ -42,7 +43,9 @@ namespace Constants
 			[(MessageTitles.PushNotificationMessage, "en-US")] = "Authorization code: {0}",
 			[(MessageTitles.PushNotificationMessage, "ru-RU")] = "Код авторизации: {0}",
 			[(MessageTitles.AddParticipantNotificationMessage, "en-US")] = @"You were invited to the event ""{0}""",
-			[(MessageTitles.AddParticipantNotificationMessage, "ru-RU")] = @"Вас пригласили на событие ""{0}"""
+			[(MessageTitles.AddParticipantNotificationMessage, "ru-RU")] = @"Вас пригласили на событие ""{0}""",
+			[(MessageTitles.FeedbackAdded, "en-US")] = "Feedback added!",
+			[(MessageTitles.FeedbackAdded, "ru-RU")] = "Отзыв добавлен!"
 		};
 
 		public static string GetMessageJson(MessageTitles title, string culture) => $"{{ \"data\":\"{MessageContent[(title, culture)]}\" }}";

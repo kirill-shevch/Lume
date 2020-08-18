@@ -31,6 +31,8 @@ namespace DAL.Core
 			builder.ApplyConfiguration(new EventSwipeHistoryEntityConfiguration());
 			builder.ApplyConfiguration(new PersonSwipeHistoryEntityConfiguration());
 			builder.ApplyConfiguration(new EventTypeToEventEntityConfiguration());
+			builder.ApplyConfiguration(new FeedbackEntityConfiguration());
+			builder.ApplyConfiguration(new FeedbackImageContentEntityConfiguration());
 		}
 
 		public DbSet<ChatEntity> ChatEntities { get; set; }
@@ -50,5 +52,7 @@ namespace DAL.Core
 		public DbSet<PersonSwipeHistoryEntity> PersonSwipeHistoryEntities { get; set; }
 		public DbSet<EventSwipeHistoryEntity> EventSwipeHistoryEntities { get; set; }
 		public DbSet<EventTypeToEventEntity> EventTypeToEventEntities { get; set; }
+		public DbSet<FeedbackEntity> FeedbackEntities { get; set; }
+		public DbSet<FeedbackImageContentEntity> FeedbackImageContentEntities { get; set; }
 	}
 }

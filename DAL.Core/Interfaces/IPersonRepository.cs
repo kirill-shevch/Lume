@@ -24,5 +24,6 @@ namespace DAL.Core.Interfaces
 		Task RemovePersonImage(PersonImageContentEntity entity);
 		Task ConfirmFriend(Guid uid, Guid friendGuid);
 		Task<List<PersonEntity>> GetNewFriends(Guid uid);
+		Task AddFeedback(FeedbackEntity entity);
 	}
 }
