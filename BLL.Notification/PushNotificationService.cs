@@ -5,6 +5,9 @@ using FirebaseAdmin.Messaging;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Utils;
 
@@ -21,7 +24,7 @@ namespace BLL.Notification
 			_configuration = configuration;
 		}
 
-		public async Task SendPushNotification(string token, MessageTitles messageTitle, params string[] args)
+		public async Task SendPushNotification(string token, MessageTitles messageTitle, Dictionary<FirebaseNotificationKeys, string> data,  params string[] args)
 		{
 			var key = _configuration.GetValue<string>(ConfigurationKeys.FirebaseKey);
 			if (!string.IsNullOrEmpty(key))
@@ -41,7 +44,17 @@ namespace BLL.Notification
 					},
 					Token = token
 				};
-				await FirebaseMessaging.DefaultInstance.SendAsync(message);
+				if (data != null && data.Any())
+				{
+					message.Data = data.ToDictionary(x => x.Key.ToString(), x => x.Value);
+				}
+				try
+				{
+					await FirebaseMessaging.DefaultInstance.SendAsync(message);
+				}
+				catch
+				{
+				}
 			}
 		}
 	}

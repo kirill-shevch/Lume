@@ -93,7 +93,7 @@ namespace BLL.Core
 				model.ParticipantStatus = (ParticipantStatus)status;
 				model.AnyPersonWaitingForApprove = model.IsAdministrator.Value && entity.Participants.Any(x => x.ParticipantStatusId == (long)ParticipantStatus.WaitingForApproveFromEvent);
 				return model;
-			}).ToList();
+			}).Where(x => x.ParticipantStatus != ParticipantStatus.Rejected).ToList();
 		}
 		public async Task UpdateEvent(UpdateEventModel updateEventModel)
 		{
@@ -147,10 +147,13 @@ namespace BLL.Core
 			var entity = await CreateParticipantEntity(eventParticipantModel);
 			await _eventRepository.AddParticipant(entity);
 			var person = await _personRepository.GetPerson(eventParticipantModel.PersonUid);
-			if (!string.IsNullOrEmpty(person.Token) &&eventParticipantModel.PersonUid != personUid)
+			if (!string.IsNullOrEmpty(person.Token) && eventParticipantModel.PersonUid != personUid)
 			{
 				var eventEntity = await _eventRepository.GetEvent(eventParticipantModel.EventUid);
-				await _pushNotificationService.SendPushNotification(person.Token, MessageTitles.AddParticipantNotificationMessage, eventEntity.Name);
+				await _pushNotificationService.SendPushNotification(person.Token, 
+					MessageTitles.AddParticipantNotificationMessage, 
+					new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.UrlTemplate, eventEntity.EventUid) }, 
+					eventEntity.Name);
 			}
 			return await GetEvent(eventParticipantModel.EventUid);
 		}
