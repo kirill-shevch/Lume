@@ -48,7 +48,13 @@ namespace BLL.Notification
 				{
 					message.Data = data.ToDictionary(x => x.Key.ToString(), x => x.Value);
 				}
-				await FirebaseMessaging.DefaultInstance.SendAsync(message);
+				try
+				{
+					await FirebaseMessaging.DefaultInstance.SendAsync(message);
+				}
+				catch
+				{
+				}
 			}
 		}
 	}
