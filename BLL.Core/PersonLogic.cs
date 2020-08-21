@@ -217,5 +217,25 @@ namespace BLL.Core
 			}
 			await _personRepository.AddFeedback(entity);
 		}
+
+		public async Task<List<PersonModel>> GetPersonList(List<Guid> personUids, Guid personUid)
+		{
+			var personEntities = await _personRepository.GetPersonList(personUids);
+			var personModels = _mapper.Map<List<PersonModel>>(personEntities);
+			var personFriends = await _personRepository.GetAllPersonFriends(personUid);
+			var notApprovedFriends = await _personRepository.GetNewFriends(personUid);
+			var currentPersonModel = personModels.SingleOrDefault(x => x.PersonUid == personUid);
+			if (currentPersonModel != null)
+			{
+				personModels.Remove(currentPersonModel);
+			}
+			foreach (var model in personModels)
+			{
+				model.IsFriend = personFriends.Any(x => x.PersonUid == model.PersonUid);
+				model.FriendshipApprovalRequired = notApprovedFriends.Any(x => x.PersonUid == model.PersonUid);
+			}
+
+			return personModels;
+		}
 	}
 }
