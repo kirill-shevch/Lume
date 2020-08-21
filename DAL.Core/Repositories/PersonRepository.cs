@@ -278,5 +278,14 @@ namespace DAL.Core.Repositories
 					.ToListAsync();
 			}
 		}
+
+		public async Task<PersonEntity> GetPersonByToken(string token)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonEntities
+					.SingleOrDefaultAsync(x => x.Token == token);
+			}
+		}
 	}
 }

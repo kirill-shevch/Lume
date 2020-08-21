@@ -26,5 +26,6 @@ namespace DAL.Core.Interfaces
 		Task<List<PersonEntity>> GetNewFriends(Guid uid);
 		Task AddFeedback(FeedbackEntity entity);
 		Task<List<PersonEntity>> GetPersonList(List<Guid> personUids);
+		Task<PersonEntity> GetPersonByToken(string token);
 	}
 }

@@ -2,6 +2,8 @@
 using BLL.Authorization.Models;
 using BLL.Core;
 using Constants;
+using DAL.Authorization;
+using DAL.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 
@@ -9,9 +11,16 @@ namespace BLL.Authorization
 {
 	public class AuthorizationValidation : BaseValidator, IAuthorizationValidation
 	{
-		public AuthorizationValidation(IHttpContextAccessor contextAccessor) : base(contextAccessor)
+		private readonly IAuthorizationRepository _authorizationRepository;
+		private readonly IPersonRepository _personRepository;
+		public AuthorizationValidation(IHttpContextAccessor contextAccessor, 
+			IAuthorizationRepository authorizationRepository,
+			IPersonRepository personRepository) : base(contextAccessor)
 		{
+			_authorizationRepository = authorizationRepository;
+			_personRepository = personRepository;
 		}
+
 		public (bool ValidationResult, string ValidationMessage) ValidateGetCode(string phoneNumber)
 		{
 			if (string.IsNullOrWhiteSpace(phoneNumber))
@@ -80,6 +89,12 @@ namespace BLL.Authorization
 			if (string.IsNullOrWhiteSpace(token))
 			{
 				return (false, ErrorDictionary.GetErrorMessage(38, _culture));
+			}
+			var authPerson = _authorizationRepository.GetPerson(phoneNumber).Result;
+			var corePerson = _personRepository.GetPersonByToken(token).Result;
+			if (authPerson == null || corePerson == null || authPerson.PersonUid != corePerson.PersonUid)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(41, _culture));
 			}
 			return (true, string.Empty);
 		}
