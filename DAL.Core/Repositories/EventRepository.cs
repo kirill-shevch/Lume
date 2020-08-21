@@ -159,6 +159,7 @@ namespace DAL.Core.Repositories
 					!x.Participants.Any(x => x.Person.PersonUid == filter.PersonUid) &&
 					(!x.MinAge.HasValue || x.MinAge <= filter.Age) &&
 					(!x.MaxAge.HasValue || x.MaxAge >= filter.Age) &&
+					(x.EventStatusId == (long)EventStatus.Preparing || x.EventStatusId == (long)EventStatus.InProgress) &&
 					!filter.IgnoringEventList.Contains(x.EventId));
 
 				if (filter.PersonXCoordinate.HasValue && filter.PersonYCoordinate.HasValue && filter.Distance.HasValue)
