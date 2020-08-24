@@ -287,5 +287,22 @@ namespace DAL.Core.Repositories
 					.SingleOrDefaultAsync(x => x.Token == token);
 			}
 		}
+
+		public async Task RemoveTokenForEveryPerson(string token)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var entities = context.PersonEntities.Where(x => x.Token == token);
+				if (await entities.AnyAsync())
+				{
+					foreach (var entity in entities)
+					{
+						entity.Token = null;
+					}
+					context.UpdateRange(entities);
+					await context.SaveChangesAsync();
+				}
+			}
+		}
 	}
 }

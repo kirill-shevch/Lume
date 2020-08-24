@@ -70,7 +70,10 @@ namespace BLL.Core
 			if (!string.IsNullOrEmpty(updatePersonModel.Login))
 				entity.Login = updatePersonModel.Login;
 			if (!string.IsNullOrEmpty(updatePersonModel.Token))
+			{
 				entity.Token = updatePersonModel.Token;
+				await _personRepository.RemoveTokenForEveryPerson(updatePersonModel.Token);
+			}
 			var deleteOldImage = false;
 			var imageToDelete = entity.PersonImageContentEntity;
 			if (updatePersonModel.Image != null)
