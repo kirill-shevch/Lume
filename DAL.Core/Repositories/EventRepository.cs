@@ -185,6 +185,14 @@ namespace DAL.Core.Repositories
 				{
 					query = query.Where(x => x.IsOnline == filter.IsOnline);
 				}
+				if (filter.MinimalStartTime.HasValue)
+				{
+					query = query.Where(x => x.StartTime >= filter.MinimalStartTime);
+				}
+				if (filter.MaximalEndTime.HasValue)
+				{
+					query = query.Where(x => x.EndTime <= filter.MaximalEndTime);
+				}
 				var random = new Random();
 
 				var events = await query.Select(x => x.EventId).ToListAsync();

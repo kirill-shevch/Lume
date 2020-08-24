@@ -1,5 +1,4 @@
-﻿using Constants;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace DAL.Core.Models
@@ -16,5 +15,7 @@ namespace DAL.Core.Models
 		public bool? IsOnline { get; set; }
 		public List<long> IgnoringEventList { get; set; }
 		public List<long> EventTypes { get; set; }
+		public DateTime? MinimalStartTime { get; set; }
+		public DateTime? MaximalEndTime { get; set; }
 	}
 }
