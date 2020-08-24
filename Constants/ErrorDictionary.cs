@@ -46,6 +46,7 @@ namespace Constants
 			[(38, "en-US")] = "Token is required",												[(38, "ru-RU")] = "Необходимо указать токен",
 			[(39, "en-US")] = "Feedback text should not be empty",								[(39, "ru-RU")] = "Необходимо ввести текст отзыва",
 			[(40, "en-US")] = "Images count should be less than 10",							[(40, "ru-RU")] = "Количество картинок должно быть менее 10",
+			[(41, "en-US")] = "Token has no match with the phone",								[(41, "ru-RU")] = "Токен не связан с телефоном",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";

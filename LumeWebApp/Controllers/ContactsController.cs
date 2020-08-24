@@ -1,8 +1,11 @@
 ﻿using BLL.Authorization.Interfaces;
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Person;
+using Constants;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LumeWebApp.Controllers
@@ -24,13 +27,9 @@ namespace LumeWebApp.Controllers
 		[Route("get-person-list-by-contacts")]
 		public async Task<ActionResult<List<PersonModel>>> GetPersonListByContacts(List<string> phoneNumbers)
 		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
 			var personUids = await _authorizationLogic.GetPersonListByContacts(phoneNumbers);
-			var personModelList = new List<PersonModel>();
-			foreach (var uid in personUids)
-			{
-				var model = await _personLogic.GetPerson(uid);
-				personModelList.Add(model);
-			}
+			var personModelList = await _personLogic.GetPersonList(personUids, uid);
 			return personModelList;
 		}
 	}

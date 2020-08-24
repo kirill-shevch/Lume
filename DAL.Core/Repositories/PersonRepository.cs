@@ -262,5 +262,30 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task<List<PersonEntity>> GetPersonList(List<Guid> personUids)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonEntities
+					.Include(x => x.PersonImageContentEntity)
+					.Include(x => x.FriendList)
+						.ThenInclude(x => x.Friend)
+							.ThenInclude(x => x.PersonImageContentEntity)
+					.Include(x => x.City)
+					.Include(x => x.SwipeHistory)
+					.Where(x => personUids.Contains(x.PersonUid))
+					.ToListAsync();
+			}
+		}
+
+		public async Task<PersonEntity> GetPersonByToken(string token)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonEntities
+					.SingleOrDefaultAsync(x => x.Token == token);
+			}
+		}
 	}
 }

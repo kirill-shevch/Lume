@@ -25,5 +25,7 @@ namespace DAL.Core.Interfaces
 		Task ConfirmFriend(Guid uid, Guid friendGuid);
 		Task<List<PersonEntity>> GetNewFriends(Guid uid);
 		Task AddFeedback(FeedbackEntity entity);
+		Task<List<PersonEntity>> GetPersonList(List<Guid> personUids);
+		Task<PersonEntity> GetPersonByToken(string token);
 	}
 }
