@@ -27,5 +27,6 @@ namespace DAL.Core.Interfaces
 		Task AddFeedback(FeedbackEntity entity);
 		Task<List<PersonEntity>> GetPersonList(List<Guid> personUids);
 		Task<PersonEntity> GetPersonByToken(string token);
+		Task RemoveTokenForEveryPerson(string token);
 	}
 }
