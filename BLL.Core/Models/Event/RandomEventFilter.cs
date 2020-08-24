@@ -1,4 +1,5 @@
 ﻿using Constants;
+using System;
 using System.Collections.Generic;
 
 namespace BLL.Core.Models.Event
@@ -12,5 +13,7 @@ namespace BLL.Core.Models.Event
 		public List<EventType> EventTypes { get; set; }
 		public bool? IsOpenForInvitations { get; set; }
 		public bool? IsOnline { get; set; }
+		public DateTime? MinimalStartTime { get; set; }
+		public DateTime? MaximalEndTime { get; set; }
 	}
 }
