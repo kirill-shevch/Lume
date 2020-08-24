@@ -90,6 +90,7 @@ namespace BLL.Core
 			{
 				await _chatRepository.AddLastReadChatMessage(chatEntity, personUid, chatMessageEntities.Max(x => x.ChatMessageId));
 			}
+			chatModel.UnreadMessagesCount = await _chatRepository.GetChatUnreadMessagesCount(chatEntity, personUid);
 			return chatModel;
 		}
 
@@ -143,6 +144,7 @@ namespace BLL.Core
 				await _chatRepository.AddLastReadChatMessage(chatEntity, uid, chatMessageEntities.Max(x => x.ChatMessageId));
 			}
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
+			chatModel.UnreadMessagesCount = await _chatRepository.GetChatUnreadMessagesCount(chatEntity, uid);
 			return chatModel;
 		}
 
