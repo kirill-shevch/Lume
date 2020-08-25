@@ -279,7 +279,7 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task TransferEventsStatuses(CancellationToken cancellationToken = default)
+		public async Task<List<EventEntity>> TransferEventsStatuses(CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
@@ -289,6 +289,13 @@ namespace DAL.Core.Repositories
 				var endedEvents = context.EventEntities.Where(x => x.EndTime < date && (x.EventStatusId == (long)EventStatus.InProgress || x.EventStatusId == (long)EventStatus.Preparing));
 				await endedEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.Ended, cancellationToken);
 				await context.SaveChangesAsync(cancellationToken);
+				return await endedEvents
+					.Include(x => x.Administrator)
+						.ThenInclude(x => x.Badges)
+					.Include(x => x.Participants)
+						.ThenInclude(x => x.Person)
+							.ThenInclude(x => x.Badges)
+					.ToListAsync();
 			}
 		}
 

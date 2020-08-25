@@ -18,16 +18,12 @@ namespace DAL.Core.Repositories
 			_dbContextFactory = dbContextFactory;
 		}
 
-		public async Task AddBadgeToPerson(Guid personUid, BadgeNames name)
+		public async Task AddBadgeToPerson(PersonEntity person, BadgeNames name)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				var personEntity = await context.PersonEntities.Include(x => x.Badges).SingleAsync(x => x.PersonUid == personUid);
-				if (personEntity != null && personEntity.Badges != null && !personEntity.Badges.Any(x => x.BadgeId == (long)name))
-				{
-					await context.PersonToBadgeEntities.AddAsync(new PersonToBadgeEntity { PersonId = personEntity.PersonId, BadgeId = (long)name, IsViewed = false });
-					await context.SaveChangesAsync();
-				}
+				await context.PersonToBadgeEntities.AddAsync(new PersonToBadgeEntity { PersonId = person.PersonId, BadgeId = (long)name, IsViewed = false });
+				await context.SaveChangesAsync();
 			}
 		}
 
