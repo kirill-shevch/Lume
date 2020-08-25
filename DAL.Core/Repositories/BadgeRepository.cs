@@ -22,8 +22,12 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				await context.PersonToBadgeEntities.AddAsync(new PersonToBadgeEntity { PersonId = person.PersonId, BadgeId = (long)name, IsViewed = false });
-				await context.SaveChangesAsync();
+				var badge = await context.Badges.SingleOrDefaultAsync(x => x.BadgeId == (long)name);
+				if (badge != null)
+				{
+					await context.PersonToBadgeEntities.AddAsync(new PersonToBadgeEntity { PersonId = person.PersonId, Badge = badge, IsViewed = false });
+					await context.SaveChangesAsync();
+				}
 			}
 		}
 

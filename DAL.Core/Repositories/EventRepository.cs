@@ -288,14 +288,16 @@ namespace DAL.Core.Repositories
 				await inProgressEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.InProgress, cancellationToken);
 				var endedEvents = context.EventEntities.Where(x => x.EndTime < date && (x.EventStatusId == (long)EventStatus.InProgress || x.EventStatusId == (long)EventStatus.Preparing));
 				await endedEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.Ended, cancellationToken);
-				await context.SaveChangesAsync(cancellationToken);
-				return await endedEvents
+				var listOfEvents = await endedEvents
 					.Include(x => x.Administrator)
 						.ThenInclude(x => x.Badges)
 					.Include(x => x.Participants)
 						.ThenInclude(x => x.Person)
 							.ThenInclude(x => x.Badges)
+					.Include(x => x.EventTypes)
 					.ToListAsync();
+				await context.SaveChangesAsync(cancellationToken);
+				return listOfEvents;
 			}
 		}
 

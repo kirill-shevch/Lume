@@ -22,9 +22,9 @@ namespace BLL.Core
 
         private void DoWork(object state)
         {
-           var closedEvents = _eventRepository.TransferEventsStatuses();
+           var closedEvents = _eventRepository.TransferEventsStatuses().Result;
             _eventRepository.RemoveOutdatedParticipants();
-            _badgeLogic.AddBadges(closedEvents.Result);
+            _badgeLogic.AddBadges(closedEvents);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

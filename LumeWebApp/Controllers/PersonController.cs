@@ -171,10 +171,14 @@ namespace LumeWebApp.Controllers
 
 		[HttpGet]
 		[Route("get-badges")]
-		public async Task<ActionResult<List<BadgeModel>>> GetBadges()
+		public async Task<ActionResult<List<BadgeModel>>> GetBadges(Guid personUid)
 		{
-			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
-			return await _badgeLogic.GetBadges(uid);
+			var validationResult = _personValidation.ValidateGetPerson(personUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			return await _badgeLogic.GetBadges(personUid);
 		}
 	}
 }

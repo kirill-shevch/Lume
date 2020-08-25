@@ -19,6 +19,7 @@ namespace Constants
              "/api/person/get-person-notifications",
              "/api/person/remove-person-token",
              "/api/person/add-feedback",
+             "/api/person/get-badges",
 
              "/api/event/add-event",
              "/api/event/get-event",
