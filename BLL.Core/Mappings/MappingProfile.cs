@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BLL.Core.Models.Badge;
 using BLL.Core.Models.Chat;
 using BLL.Core.Models.City;
 using BLL.Core.Models.Event;
@@ -76,6 +77,10 @@ namespace BLL.Core.Mappings
 			CreateMap<ChatEntity, ChatListModel>();
 
 			CreateMap<FeedbackModel, FeedbackEntity>();
+
+			CreateMap<PersonToBadgeEntity, BadgeModel>()
+				.ForMember(dest => dest.BadgeUid, opt => opt.MapFrom(src => src.Badge.BadgeUid))
+				.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Badge.Name));
 		}
 	}
 }

@@ -14,6 +14,6 @@ namespace DAL.Core.Interfaces
 
 		Task SetPersonBadgesViewed(Guid personUid);
 
-		Task<List<BadgeEntity>> GetBadges(Guid personUid);
+		Task<List<PersonToBadgeEntity>> GetBadges(Guid personUid);
 	}
 }
