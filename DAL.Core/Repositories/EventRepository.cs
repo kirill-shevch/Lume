@@ -96,11 +96,14 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				foreach (var type in eventEntity.EventTypes)
+				if (eventEntity.EventTypes != null)
 				{
-					type.EventType = await context.EventTypeEntities.SingleAsync(x => x.EventTypeId == type.EventTypeId);
+					foreach (var type in eventEntity.EventTypes)
+					{
+						type.EventType = await context.EventTypeEntities.SingleAsync(x => x.EventTypeId == type.EventTypeId);
+					}
+					await context.AddRangeAsync(eventEntity.EventTypes);
 				}
-				await context.AddRangeAsync(eventEntity.EventTypes);
 				context.Update(eventEntity);
 				await context.SaveChangesAsync(cancellationToken);
 			}

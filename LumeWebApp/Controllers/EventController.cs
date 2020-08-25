@@ -64,15 +64,14 @@ namespace LumeWebApp.Controllers
 
 		[HttpPost]
 		[Route("update-event")]
-		public async Task<ActionResult> UpdateEvent(UpdateEventModel request)
+		public async Task<ActionResult<GetEventModel>> UpdateEvent(UpdateEventModel request)
 		{
 			var validationResult = _eventValidation.ValidateUpdateEvent(request);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
 			}
-			await _eventLogic.UpdateEvent(request);
-			return Ok(Messages.GetMessageJson(MessageTitles.UpdateSuccess, CultureParser.GetCultureFromHttpContext(HttpContext)));
+			return await _eventLogic.UpdateEvent(request);
 		}
 
 		[HttpPost]
