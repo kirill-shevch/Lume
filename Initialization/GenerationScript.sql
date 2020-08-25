@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS LumeDB.dbo.Feedback;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonFriendList;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToEvent;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToChat;
+DROP TABLE IF EXISTS LumeDB.dbo.PersonToBadge;
 DROP TABLE IF EXISTS LumeDB.dbo.EventImageContent;
 DROP TABLE IF EXISTS LumeDB.dbo.EventSwipeHistory;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonSwipeHistory;
@@ -18,6 +19,7 @@ DROP TABLE IF EXISTS LumeDB.dbo.Chat;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonImageContent;
 DROP TABLE IF EXISTS LumeDB.dbo.ParticipantStatus;
 DROP TABLE IF EXISTS LumeDB.dbo.City;
+DROP TABLE IF EXISTS LumeDB.dbo.Badge;
 
 CREATE TABLE LumeDB.dbo.PersonAuth (
 	PersonAuthId bigint IDENTITY(1,1) NOT NULL UNIQUE,
@@ -28,6 +30,13 @@ CREATE TABLE LumeDB.dbo.PersonAuth (
 	TemporaryCode nvarchar(6) NULL,
 	PhoneNumber nvarchar(20) NOT NULL UNIQUE,
 	CONSTRAINT PK_PersonAuthId PRIMARY KEY CLUSTERED (PersonAuthId)
+);
+
+CREATE TABLE LumeDB.dbo.Badge (
+	BadgeId bigint IDENTITY(0,1) NOT NULL UNIQUE,
+	BadgeUid uniqueidentifier NOT NULL UNIQUE,
+	Name nvarchar(200) NULL,
+	CONSTRAINT PK_BadgeId PRIMARY KEY CLUSTERED (BadgeId)
 );
 
 CREATE TABLE LumeDB.dbo.PersonImageContent (
@@ -190,6 +199,15 @@ CREATE TABLE LumeDB.dbo.PersonFriendList (
   	CONSTRAINT FK_Friend_PersonFriendList FOREIGN KEY (FriendId) REFERENCES LumeDB.dbo.Person (PersonId)
 );
 
+CREATE TABLE LumeDB.dbo.PersonToBadge (
+	PersonId bigint,
+  	BadgeId bigint,
+	IsViewed bit NOT NULL DEFAULT 0,
+  	CONSTRAINT PK_Person_Badge PRIMARY KEY (PersonId, BadgeId),
+  	CONSTRAINT FK_Person_PersonToBadge FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
+  	CONSTRAINT FK_Badge_PersonToBadge FOREIGN KEY (BadgeId) REFERENCES LumeDB.dbo.Badge (BadgeId)
+);
+
 CREATE TABLE LumeDB.dbo.Feedback (
 	FeedbackId bigint IDENTITY(1,1) NOT NULL UNIQUE,
 	PersonId bigint,
@@ -219,6 +237,20 @@ VALUES ('Preparing'),('InProgress'),('Ended'),('Canceled');
 
 INSERT INTO LumeDB.dbo.ParticipantStatus (ParticipantStatusName)
 VALUES ('WaitingForApproveFromUser'),('WaitingForApproveFromEvent'),('Active'),('Rejected');  
+
+INSERT INTO LumeDB.dbo.Badge (BadgeUid, Name)
+VALUES ('9158DEB3-CCAE-4AB8-B1E1-F8E851CDDF40', 'ParticipatedInEvent'),
+('BA315E67-BD8C-46E0-926D-CE178A2F74E1', 'CreatedEvent'),
+('FF81A639-3E48-47CB-8793-7130C6307690', 'ParticipatedInParty'),
+('144A65A7-5750-4569-8CCB-48B20E7BF8C7', 'ParticipatedInCulture'),
+('394A7F8C-70A6-40F0-A449-B9D719D0A73C', 'ParticipatedInSport'),
+('BC4FFDC6-A163-459D-97B8-2AF218617B73', 'ParticipatedInNature'),
+('AA4BB776-BE42-4DEB-9442-91204DDEAB02', 'ParticipatedInCommunication'),
+('62D80F76-F1D6-42C7-B88F-A5D1F7C7637C', 'ParticipatedInGame'),
+('6C1AD5E2-6032-4ADB-9B6F-6D9EFD9B6831', 'ParticipatedInStudy'),
+('60AE2D1F-B135-48E3-91F7-58D66A5E53DE', 'ParticipatedInFood'),
+('9CA275AD-611B-4289-81D0-D4B8493BB71B', 'ParticipatedInConcert'),
+('B51B6E85-56EB-4C59-A121-828F5077BF94', 'ParticipatedInTravel');  
 
 INSERT INTO LumeDB.dbo.City (CityName)
 VALUES 

@@ -33,6 +33,8 @@ namespace DAL.Core
 			builder.ApplyConfiguration(new EventTypeToEventEntityConfiguration());
 			builder.ApplyConfiguration(new FeedbackEntityConfiguration());
 			builder.ApplyConfiguration(new FeedbackImageContentEntityConfiguration());
+			builder.ApplyConfiguration(new BadgeEntityConfiguration());
+			builder.ApplyConfiguration(new PersonToBadgeEntityConfiguration());
 		}
 
 		public DbSet<ChatEntity> ChatEntities { get; set; }
@@ -54,5 +56,7 @@ namespace DAL.Core
 		public DbSet<EventTypeToEventEntity> EventTypeToEventEntities { get; set; }
 		public DbSet<FeedbackEntity> FeedbackEntities { get; set; }
 		public DbSet<FeedbackImageContentEntity> FeedbackImageContentEntities { get; set; }
+		public DbSet<BadgeEntity> Badges { get; set; }
+		public DbSet<PersonToBadgeEntity> PersonToBadgeEntities { get; set; }
 	}
 }

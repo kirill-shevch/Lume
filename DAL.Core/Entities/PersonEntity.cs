@@ -20,6 +20,7 @@ namespace DAL.Core.Entities
 		public IEnumerable<PersonSwipeHistoryEntity> SwipeHistory { get; set; }
 		public IEnumerable<PersonToEventEntity> Events { get; set; }
 		public IEnumerable<FeedbackEntity> Feedbacks { get; set; }
+		public IEnumerable<PersonToBadgeEntity> Badges { get; set; }
 		public CityEntity City { get; set; }
 	}
 }
