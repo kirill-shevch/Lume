@@ -64,7 +64,7 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task<List<BadgeEntity>> GetBadges()
+		public async Task<List<BadgeEntity>> GetAllBadges()
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
