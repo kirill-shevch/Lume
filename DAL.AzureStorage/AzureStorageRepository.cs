@@ -18,8 +18,27 @@ namespace DAL.AzureStorage
 			_configuration = configuration;
 			_connectionString = _configuration.GetValue<string>(ConfigurationKeys.AzureStorageConnectionString) ?? _configuration.GetValue<string>(ConfigurationKeys.LocalAzureStorageConnectionString);
 			_blobContainerName = _configuration.GetValue<string>(ConfigurationKeys.AzureStorageBlobContainerName);
+			InitializeContainer().Wait();
+		}
+
+		private async Task InitializeContainer()
+		{
 			var blobContainer = new BlobContainerClient(_connectionString, _blobContainerName);
 			blobContainer.CreateIfNotExists();
+
+			var directory = new DirectoryInfo("Resources");
+			var files = directory.GetFiles();
+			foreach (var file in files)
+			{
+				var name = Path.GetFileNameWithoutExtension(file.Name).ToLower();
+				if (!await CheckImageExistance(name))
+				{
+					using (var stream = file.OpenRead())
+					{
+						await blobContainer.UploadBlobAsync(name, stream);
+					}
+				}
+			}
 		}
 
 		public async Task AddImage(string name, byte[] content)

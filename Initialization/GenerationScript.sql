@@ -34,7 +34,7 @@ CREATE TABLE LumeDB.dbo.PersonAuth (
 
 CREATE TABLE LumeDB.dbo.Badge (
 	BadgeId bigint IDENTITY(0,1) NOT NULL UNIQUE,
-	BadgeUid uniqueidentifier NOT NULL UNIQUE,
+	BadgeImageUid uniqueidentifier NOT NULL UNIQUE,
 	Name nvarchar(200) NULL,
 	CONSTRAINT PK_BadgeId PRIMARY KEY CLUSTERED (BadgeId)
 );
@@ -238,19 +238,19 @@ VALUES ('Preparing'),('InProgress'),('Ended'),('Canceled');
 INSERT INTO LumeDB.dbo.ParticipantStatus (ParticipantStatusName)
 VALUES ('WaitingForApproveFromUser'),('WaitingForApproveFromEvent'),('Active'),('Rejected');  
 
-INSERT INTO LumeDB.dbo.Badge (BadgeUid, Name)
-VALUES ('9158DEB3-CCAE-4AB8-B1E1-F8E851CDDF40', 'ParticipatedInEvent'),
-('BA315E67-BD8C-46E0-926D-CE178A2F74E1', 'CreatedEvent'),
-('FF81A639-3E48-47CB-8793-7130C6307690', 'ParticipatedInParty'),
-('144A65A7-5750-4569-8CCB-48B20E7BF8C7', 'ParticipatedInCulture'),
-('394A7F8C-70A6-40F0-A449-B9D719D0A73C', 'ParticipatedInSport'),
-('BC4FFDC6-A163-459D-97B8-2AF218617B73', 'ParticipatedInNature'),
-('AA4BB776-BE42-4DEB-9442-91204DDEAB02', 'ParticipatedInCommunication'),
-('62D80F76-F1D6-42C7-B88F-A5D1F7C7637C', 'ParticipatedInGame'),
-('6C1AD5E2-6032-4ADB-9B6F-6D9EFD9B6831', 'ParticipatedInStudy'),
-('60AE2D1F-B135-48E3-91F7-58D66A5E53DE', 'ParticipatedInFood'),
-('9CA275AD-611B-4289-81D0-D4B8493BB71B', 'ParticipatedInConcert'),
-('B51B6E85-56EB-4C59-A121-828F5077BF94', 'ParticipatedInTravel');  
+INSERT INTO LumeDB.dbo.Badge (BadgeImageUid, Name)
+VALUES ('9158deb3-ccae-4ab8-b1e1-f8e851cddf40', 'ParticipatedInEvent'),
+('ba315e67-bd8c-46e0-926d-ce178a2f74e1', 'CreatedEvent'),
+('ff81a639-3e48-47cb-8793-7130c6307690', 'ParticipatedInParty'),
+('144a65a7-5750-4569-8ccb-48b20e7bf8c7', 'ParticipatedInCulture'),
+('394a7f8c-70a6-40f0-a449-b9d719d0a73c', 'ParticipatedInSport'),
+('bc4ffdc6-a163-459d-97b8-2af218617b73', 'ParticipatedInNature'),
+('aa4bb776-be42-4deb-9442-91204ddeab02', 'ParticipatedInCommunication'),
+('62d80f76-f1d6-42c7-b88f-a5d1f7c7637c', 'ParticipatedInGame'),
+('6c1ad5e2-6032-4adb-9b6f-6d9efd9b6831', 'ParticipatedInStudy'),
+('60ae2d1f-b135-48e3-91f7-58d66a5e53de', 'ParticipatedInFood'),
+('9ca275ad-611b-4289-81d0-d4b8493bb71b', 'ParticipatedInConcert'),
+('b51b6e85-56eb-4c59-a121-828f5077bf94', 'ParticipatedInTravel');  
 
 INSERT INTO LumeDB.dbo.City (CityName)
 VALUES 

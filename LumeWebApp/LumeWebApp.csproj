@@ -21,5 +21,9 @@
     <ProjectReference Include="..\Lume.DI\Lume.DI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="$(SolutionDir)\LumeWebApp\Resources\**"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
 </Project>

@@ -4,30 +4,44 @@ using BLL.Core.Models.Badge;
 using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Utils;
 
 namespace BLL.Core
 {
 	public class BadgeLogic : IBadgeLogic
 	{
+		protected readonly IHttpContextAccessor _contextAccessor;
 		private readonly IBadgeRepository _badgeRepository;
 		private readonly IMapper _mapper;
 		public BadgeLogic(IBadgeRepository badgeRepository,
-			IMapper mapper)
+			IMapper mapper,
+			IHttpContextAccessor contextAccessor)
 		{
 			_badgeRepository = badgeRepository;
 			_mapper = mapper;
+			_contextAccessor = contextAccessor;
 		}
 
 		public async Task<List<BadgeModel>> GetBadges(Guid personUid)
 		{
 			var personToBadgeEntities = await _badgeRepository.GetBadges(personUid);
-			var models = _mapper.Map<List<BadgeModel>>(personToBadgeEntities);
-			if (models.Any(x => !x.IsViewed))
+			var badges = await _badgeRepository.GetAllBadges();
+			var models = _mapper.Map<List<BadgeModel>>(badges);
+			var httpContext = _contextAccessor.HttpContext;
+			var culture = CultureParser.GetCultureFromHttpContext(httpContext);
+			foreach (var model in models)
+			{
+				model.Name = BadgeText.GetBadgeText(model.BadgeName, BadgeTextType.Name, culture);
+				model.Description = BadgeText.GetBadgeText(model.BadgeName, BadgeTextType.Description, culture);
+				model.Received = personToBadgeEntities.Any(x => x.BadgeId == (long)model.BadgeName);
+			}
+			if (personToBadgeEntities.Any(x => !x.IsViewed))
 			{
 				await _badgeRepository.SetPersonBadgesViewed(personUid);
 			}
@@ -41,7 +55,7 @@ namespace BLL.Core
 				if (!eventEntity.Administrator.Badges.Any(x => x.BadgeId == (long)BadgeNames.CreatedEvent))
 					await _badgeRepository.AddBadgeToPerson(eventEntity.Administrator, BadgeNames.CreatedEvent);
 
-				foreach (var participant in eventEntity.Participants)
+				foreach (var participant in eventEntity.Participants.Where(x => x.ParticipantStatusId == (long)ParticipantStatus.Active))
 				{
 					if (!participant.Person.Badges.Any(x => x.BadgeId == (long)BadgeNames.ParticipatedInEvent))
 						await _badgeRepository.AddBadgeToPerson(participant.Person, BadgeNames.ParticipatedInEvent);
