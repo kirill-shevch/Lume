@@ -41,6 +41,10 @@ namespace BLL.Core
 				model.Description = BadgeText.GetBadgeText(model.BadgeName, BadgeTextType.Description, culture);
 				model.Received = personToBadgeEntities.Any(x => x.BadgeId == (long)model.BadgeName);
 			}
+			if (personToBadgeEntities.Any(x => !x.IsViewed))
+			{
+				await _badgeRepository.SetPersonBadgesViewed(personUid);
+			}
 			return models;
 		}
 
@@ -51,7 +55,7 @@ namespace BLL.Core
 				if (!eventEntity.Administrator.Badges.Any(x => x.BadgeId == (long)BadgeNames.CreatedEvent))
 					await _badgeRepository.AddBadgeToPerson(eventEntity.Administrator, BadgeNames.CreatedEvent);
 
-				foreach (var participant in eventEntity.Participants)
+				foreach (var participant in eventEntity.Participants.Where(x => x.ParticipantStatusId == (long)ParticipantStatus.Active))
 				{
 					if (!participant.Person.Badges.Any(x => x.BadgeId == (long)BadgeNames.ParticipatedInEvent))
 						await _badgeRepository.AddBadgeToPerson(participant.Person, BadgeNames.ParticipatedInEvent);

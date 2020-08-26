@@ -30,7 +30,7 @@ namespace DAL.AzureStorage
 			var files = directory.GetFiles();
 			foreach (var file in files)
 			{
-				var name = Path.GetFileNameWithoutExtension(file.Name);
+				var name = Path.GetFileNameWithoutExtension(file.Name).ToLower();
 				if (!await CheckImageExistance(name))
 				{
 					using (var stream = file.OpenRead())
