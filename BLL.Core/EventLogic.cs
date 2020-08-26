@@ -95,7 +95,7 @@ namespace BLL.Core
 				return model;
 			}).Where(x => x.ParticipantStatus != ParticipantStatus.Rejected).ToList();
 		}
-		public async Task UpdateEvent(UpdateEventModel updateEventModel)
+		public async Task<GetEventModel> UpdateEvent(UpdateEventModel updateEventModel)
 		{
 			var eventEntity = await _eventRepository.GetEvent(updateEventModel.EventUid);
 			if (!string.IsNullOrEmpty(updateEventModel.Name))
@@ -140,6 +140,7 @@ namespace BLL.Core
 			eventEntity.Chat = null;
 			eventEntity.SwipeHistory = null;
 			await _eventRepository.UpdateEvent(eventEntity);
+			return await GetEvent(eventEntity.EventUid);
 		}
 
 		public async Task<GetEventModel> AddParticipant(EventParticipantModel eventParticipantModel, Guid personUid)

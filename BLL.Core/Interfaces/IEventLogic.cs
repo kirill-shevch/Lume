@@ -10,7 +10,7 @@ namespace BLL.Core.Interfaces
 		Task<Guid> AddEvent(AddEventModel addEventModel, Guid personUid);
 		Task<GetEventModel> GetEvent(Guid eventUid);
 		Task<List<GetEventListModel>> GetEventList(Guid personUid);
-		Task UpdateEvent(UpdateEventModel updateEventModel);
+		Task<GetEventModel> UpdateEvent(UpdateEventModel updateEventModel);
 		Task<GetEventModel> AddParticipant(EventParticipantModel eventParticipantModel, Guid personUid);
 		Task UpdateParticipant(EventParticipantModel eventParticipantModel);
 		Task RemoveParticipant(Guid personUid, Guid eventUid);

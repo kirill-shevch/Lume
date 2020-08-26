@@ -1,4 +1,5 @@
-﻿using DAL.Core.Interfaces;
+﻿using BLL.Core.Interfaces;
+using DAL.Core.Interfaces;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
@@ -9,17 +10,21 @@ namespace BLL.Core
 	public class BackgroundJobService : IHostedService
     {
         private readonly IEventRepository _eventRepository;
+        private readonly IBadgeLogic _badgeLogic;
         private Timer _timer;
 
-        public BackgroundJobService(IEventRepository eventRepository)
+        public BackgroundJobService(IEventRepository eventRepository,
+            IBadgeLogic badgeLogic)
 		{
             _eventRepository = eventRepository;
-		}
+            _badgeLogic = badgeLogic;
+        }
 
         private void DoWork(object state)
         {
-            _eventRepository.TransferEventsStatuses();
+           var closedEvents = _eventRepository.TransferEventsStatuses().Result;
             _eventRepository.RemoveOutdatedParticipants();
+            _badgeLogic.AddBadges(closedEvents);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

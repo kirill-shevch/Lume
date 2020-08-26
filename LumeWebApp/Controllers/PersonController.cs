@@ -1,4 +1,5 @@
 ﻿using BLL.Core.Interfaces;
+using BLL.Core.Models.Badge;
 using BLL.Core.Models.Event;
 using BLL.Core.Models.Person;
 using Constants;
@@ -20,15 +21,18 @@ namespace LumeWebApp.Controllers
 		private readonly IPersonValidation _personValidation;
 		private readonly IEventValidation _eventValidation;
 		private readonly IEventLogic _eventLogic;
+		private readonly IBadgeLogic _badgeLogic;
 		public PersonController(IPersonLogic personLogic,
 			IPersonValidation personValidation,
 			IEventValidation eventValidation,
-			IEventLogic eventLogic)
+			IEventLogic eventLogic,
+			IBadgeLogic badgeLogic)
 		{
 			_personLogic = personLogic;
 			_personValidation = personValidation;
 			_eventValidation = eventValidation;
 			_eventLogic = eventLogic;
+			_badgeLogic = badgeLogic;
 		}
 
 		[HttpGet]
@@ -163,6 +167,18 @@ namespace LumeWebApp.Controllers
 			}
 			await _eventLogic.AddEventSwipeHistory(personUid, eventUid);
 			return Ok(Messages.GetMessageJson(MessageTitles.RandomPersonRejected, CultureParser.GetCultureFromHttpContext(HttpContext)));
+		}
+
+		[HttpGet]
+		[Route("get-badges")]
+		public async Task<ActionResult<List<BadgeModel>>> GetBadges(Guid personUid)
+		{
+			var validationResult = _personValidation.ValidateGetPerson(personUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			return await _badgeLogic.GetBadges(personUid);
 		}
 	}
 }

@@ -69,6 +69,7 @@ namespace BLL.Core
 		public async Task<ChatModel> GetChat(Guid chatUid, int pageNumber, int pageSize, Guid personUid)
 		{
 			var chatEntity = await _chatRepository.GetChat(chatUid);
+			var unreadMessagesCount = await _chatRepository.GetChatUnreadMessagesCount(chatEntity, personUid);
 			var chatModel = _mapper.Map<ChatModel>(chatEntity);
 			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, pageNumber, pageSize);
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
@@ -90,6 +91,7 @@ namespace BLL.Core
 			{
 				await _chatRepository.AddLastReadChatMessage(chatEntity, personUid, chatMessageEntities.Max(x => x.ChatMessageId));
 			}
+			chatModel.UnreadMessagesCount = unreadMessagesCount;
 			return chatModel;
 		}
 
@@ -121,6 +123,7 @@ namespace BLL.Core
 		public async Task<ChatModel> GetPersonChat(Guid uid, Guid personUid, int pageSize)
 		{
 			var chatEntity = await _chatRepository.GetPersonChat(uid, personUid);
+			var unreadMessagesCount = await _chatRepository.GetChatUnreadMessagesCount(chatEntity, uid);
 			var personEntity = await _personRepository.GetPerson(personUid);
 			if (chatEntity == null)
 			{
@@ -143,6 +146,7 @@ namespace BLL.Core
 				await _chatRepository.AddLastReadChatMessage(chatEntity, uid, chatMessageEntities.Max(x => x.ChatMessageId));
 			}
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
+			chatModel.UnreadMessagesCount = unreadMessagesCount;
 			return chatModel;
 		}
 

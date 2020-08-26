@@ -25,6 +25,7 @@ namespace Lume.DI
             services.AddSingleton<IChatLogic, ChatLogic>();
             services.AddSingleton<ICityLogic, CityLogic>();
             services.AddSingleton<IPushNotificationService, PushNotificationService>();
+            services.AddSingleton<IBadgeLogic, BadgeLogic>();
         }
 
         public static void RegisterRepositories(this IServiceCollection services)
@@ -35,6 +36,7 @@ namespace Lume.DI
             services.AddSingleton<IEventRepository, EventRepository>();
             services.AddSingleton<ICityRepository, CityRepository>();
             services.AddSingleton<IAzureStorageRepository, AzureStorageRepository>();
+            services.AddSingleton<IBadgeRepository, BadgeRepository>();
         }
 
         public static void RegisterFactories(this IServiceCollection services)

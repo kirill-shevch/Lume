@@ -96,11 +96,14 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				foreach (var type in eventEntity.EventTypes)
+				if (eventEntity.EventTypes != null)
 				{
-					type.EventType = await context.EventTypeEntities.SingleAsync(x => x.EventTypeId == type.EventTypeId);
+					foreach (var type in eventEntity.EventTypes)
+					{
+						type.EventType = await context.EventTypeEntities.SingleAsync(x => x.EventTypeId == type.EventTypeId);
+					}
+					await context.AddRangeAsync(eventEntity.EventTypes);
 				}
-				await context.AddRangeAsync(eventEntity.EventTypes);
 				context.Update(eventEntity);
 				await context.SaveChangesAsync(cancellationToken);
 			}
@@ -187,11 +190,11 @@ namespace DAL.Core.Repositories
 				}
 				if (filter.MinimalStartTime.HasValue)
 				{
-					query = query.Where(x => x.StartTime >= filter.MinimalStartTime);
+					query = query.Where(x => x.StartTime.HasValue && x.StartTime.Value.Date >= filter.MinimalStartTime.Value.Date);
 				}
 				if (filter.MaximalEndTime.HasValue)
 				{
-					query = query.Where(x => x.EndTime <= filter.MaximalEndTime);
+					query = query.Where(x => x.EndTime.HasValue && x.EndTime.Value.Date <= filter.MaximalEndTime.Value.Date);
 				}
 				var random = new Random();
 
@@ -276,7 +279,7 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task TransferEventsStatuses(CancellationToken cancellationToken = default)
+		public async Task<List<EventEntity>> TransferEventsStatuses(CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
@@ -285,7 +288,16 @@ namespace DAL.Core.Repositories
 				await inProgressEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.InProgress, cancellationToken);
 				var endedEvents = context.EventEntities.Where(x => x.EndTime < date && (x.EventStatusId == (long)EventStatus.InProgress || x.EventStatusId == (long)EventStatus.Preparing));
 				await endedEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.Ended, cancellationToken);
+				var listOfEvents = await endedEvents
+					.Include(x => x.Administrator)
+						.ThenInclude(x => x.Badges)
+					.Include(x => x.Participants)
+						.ThenInclude(x => x.Person)
+							.ThenInclude(x => x.Badges)
+					.Include(x => x.EventTypes)
+					.ToListAsync();
 				await context.SaveChangesAsync(cancellationToken);
+				return listOfEvents;
 			}
 		}
 

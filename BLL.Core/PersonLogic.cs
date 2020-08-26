@@ -4,7 +4,6 @@ using BLL.Core.Models.Person;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using DAL.Core.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +16,7 @@ namespace BLL.Core
 		private readonly IPersonRepository _personRepository;
 		private readonly IEventRepository _eventRepository;
 		private readonly IChatRepository _chatRepository;
+		private readonly IBadgeRepository _badgeRepository;
 		private readonly IImageLogic _imageLogic;
 		private readonly IMapper _mapper;
 
@@ -25,12 +25,14 @@ namespace BLL.Core
 		public PersonLogic(IPersonRepository personRepository,
 			IEventRepository eventRepository,
 			IChatRepository chatRepository,
+			IBadgeRepository badgeRepository,
 			IImageLogic imageLogic,
 			IMapper mapper)
 		{
 			_personRepository = personRepository;
 			_eventRepository = eventRepository;
 			_chatRepository = chatRepository;
+			_badgeRepository = badgeRepository;
 			_imageLogic = imageLogic;
 			_mapper = mapper;
 		}
@@ -185,6 +187,7 @@ namespace BLL.Core
 			model.NewEventInvitationsCount = (await _eventRepository.GetPersonInvitations(uid)).Count;
 			model.NewFriendsCount = (await _personRepository.GetNewFriends(uid)).Count;
 			model.AnyNewChatMessages = await _chatRepository.CheckPersonForNewChatMessages(uid);
+			model.AnyNewBadges = await _badgeRepository.AnyPersonUnviewedBadges(uid);
 			return model;
 		}
 
