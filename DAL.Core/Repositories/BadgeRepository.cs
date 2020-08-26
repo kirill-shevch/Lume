@@ -63,5 +63,13 @@ namespace DAL.Core.Repositories
 				return await context.PersonToBadgeEntities.Include(x => x.Person).Include(x => x.Badge).Where(x => x.Person.PersonUid == personUid).ToListAsync();
 			}
 		}
+
+		public async Task<List<BadgeEntity>> GetBadges()
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.Badges.ToListAsync();
+			}
+		}
 	}
 }

@@ -10,7 +10,7 @@ namespace DAL.Core.Configurations
 		{
 			builder.ToTable(BadgeEntity.TableName);
 			builder.HasKey(t => t.BadgeId);
-			builder.Property(t => t.BadgeUid);
+			builder.Property(t => t.BadgeImageUid);
 			builder.Property(t => t.Name);
 		}
 	}

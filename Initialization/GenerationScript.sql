@@ -34,7 +34,7 @@ CREATE TABLE LumeDB.dbo.PersonAuth (
 
 CREATE TABLE LumeDB.dbo.Badge (
 	BadgeId bigint IDENTITY(0,1) NOT NULL UNIQUE,
-	BadgeUid uniqueidentifier NOT NULL UNIQUE,
+	BadgeImageUid uniqueidentifier NOT NULL UNIQUE,
 	Name nvarchar(200) NULL,
 	CONSTRAINT PK_BadgeId PRIMARY KEY CLUSTERED (BadgeId)
 );
@@ -238,7 +238,7 @@ VALUES ('Preparing'),('InProgress'),('Ended'),('Canceled');
 INSERT INTO LumeDB.dbo.ParticipantStatus (ParticipantStatusName)
 VALUES ('WaitingForApproveFromUser'),('WaitingForApproveFromEvent'),('Active'),('Rejected');  
 
-INSERT INTO LumeDB.dbo.Badge (BadgeUid, Name)
+INSERT INTO LumeDB.dbo.Badge (BadgeImageUid, Name)
 VALUES ('9158DEB3-CCAE-4AB8-B1E1-F8E851CDDF40', 'ParticipatedInEvent'),
 ('BA315E67-BD8C-46E0-926D-CE178A2F74E1', 'CreatedEvent'),
 ('FF81A639-3E48-47CB-8793-7130C6307690', 'ParticipatedInParty'),

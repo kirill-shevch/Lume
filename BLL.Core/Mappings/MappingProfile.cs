@@ -79,7 +79,7 @@ namespace BLL.Core.Mappings
 			CreateMap<FeedbackModel, FeedbackEntity>();
 
 			CreateMap<PersonToBadgeEntity, BadgeModel>()
-				.ForMember(dest => dest.BadgeUid, opt => opt.MapFrom(src => src.Badge.BadgeUid))
+				.ForMember(dest => dest.BadgeImageUid, opt => opt.MapFrom(src => src.Badge.BadgeImageUid))
 				.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Badge.Name));
 		}
 	}
