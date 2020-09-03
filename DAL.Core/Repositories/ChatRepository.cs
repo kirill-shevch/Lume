@@ -220,6 +220,8 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
+				if (chat == null)
+					return 0;
 				if (chat.IsGroupChat.HasValue && chat.IsGroupChat.Value)
 				{
 					var personToEventEntity = await context.PersonToEventEntities
