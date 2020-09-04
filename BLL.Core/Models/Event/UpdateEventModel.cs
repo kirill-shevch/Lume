@@ -20,5 +20,6 @@ namespace BLL.Core.Models.Event
 		public EventStatus? Status { get; set; }
 		public List<EventType> Types { get; set; }
 		public long? CityId { get; set; }
+		public List<byte[]> ExtraImages { get; set; }
 	}
 }

@@ -120,6 +120,23 @@ namespace BLL.Core
 				eventEntity.IsOnline = updateEventModel.IsOnline;
 			if (updateEventModel.CityId.HasValue)
 				eventEntity.CityId = updateEventModel.CityId;
+
+			eventEntity.EventImageContentEntities = null;
+			if (updateEventModel.ExtraImages != null && updateEventModel.ExtraImages.Any())
+			{
+				var images = new List<EventImageContentEntity>();
+				foreach (var image in updateEventModel.ExtraImages)
+				{
+					var eventImageContentUid = await _imageLogic.SaveImage(image);
+					images.Add(new EventImageContentEntity
+					{
+						EventImageContentUid = eventImageContentUid,
+						IsPrimary = false
+					});
+				}
+				eventEntity.EventImageContentEntities = images;
+			}
+
 			if (updateEventModel.Types != null && updateEventModel.Types.Any())
 			{
 				await _eventRepository.RemoveEventTypes(eventEntity.EventId);
@@ -134,7 +151,6 @@ namespace BLL.Core
 				eventEntity.EventStatusId = (long)updateEventModel.Status;
 			eventEntity.EventStatus = null;
 			eventEntity.City = null;
-			eventEntity.EventImageContentEntities = null;
 			eventEntity.Administrator = null;
 			eventEntity.Participants = null;
 			eventEntity.Chat = null;
