@@ -41,7 +41,8 @@ namespace LumeWebApp.Controllers
             var person = await _authorizationLogic.GetPerson(phoneNumber);
             var random = new Random();
             string code;
-			if (_configuration.GetValue<bool>(ConfigurationKeys.EnableSmsService))
+            var enableSmsService = _configuration.GetValue<bool?>(ConfigurationKeys.AzureEnableSmsService) ?? _configuration.GetValue<bool>(ConfigurationKeys.EnableSmsService);
+            if (enableSmsService)
 			{
                 code = random.Next(0, 999999).ToString("d6");
                 await _authorizationLogic.SendCodeToPhone(code, phoneNumber);

@@ -1,3 +1,5 @@
+This is list of commands to create local development environment
+
 docker pull mcr.microsoft.com/mssql/server:latest
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Passw0rd" -p 1433:1433 --name LumeDataBase -d mcr.microsoft.com/mssql/server:latest
 
@@ -9,3 +11,27 @@ EXIT
 docker pull mcr.microsoft.com/azure-storage/azurite
 
 docker run -p 10000:10000 -p 10001:10001 mcr.microsoft.com/azure-storage/azurite
+
+
+
+For creating an remote production environment you should create azure services. Here is the list of services:
+* App service (for ASP.NET Core application)
+* SQL server and SQl Database in it
+* Application insights
+* Azure storage account
+
+And you will need sms-service! Right now application use smsgorod.ru
+
+After creating them you will need to create configurations in your app service:
+* APPINSIGHTS_INSTRUMENTATIONKEY (there will be a GUID inside with your application insights instrumation key)
+* AZURE_ENABLESMSSERVICE (bool flag to enable or disable SMS service)
+* AZURESTORAGE_CONNECTIONSTRING (connection string to your Azure storage account)
+* FIREBASE_KEY (create your application account on google firebase services and copy this key here)
+* SMSSENDING_APIKEY (ApiKey for sms)
+* WEBSITE_HTTPLOGGING_RETENTION_DAYS (number of days, I use 10)
+* WEBSITE_WEBDEPLOY_USE_SCM (false by default)
+
+And add connection string to your database:
+* AZURESQLCONNSTR_CONNECTIONSTRING
+
+After everything don't forget to add IP of your app service to sql server firewall whitelist!
