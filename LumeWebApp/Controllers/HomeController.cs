@@ -3,10 +3,11 @@
 namespace LumeWebApp.Controllers
 {
 	[ApiController]
-    [Route("home")]
+    [Route("")]
     public class HomeController : ControllerBase
     {
         [HttpGet]
+        [Route("")]
         public ActionResult<string> Get()
         {
             return "LumeApp";
