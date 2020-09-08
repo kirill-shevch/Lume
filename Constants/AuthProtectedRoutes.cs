@@ -6,7 +6,7 @@ namespace Constants
     {
         public static readonly List<string> ProtectedRoutes = new List<string>
         {
-             "/home/secure",
+             "/secure",
 
              "/api/person/get-profile",
              "/api/person/get-person",
