@@ -47,6 +47,8 @@ namespace Constants
 			[(39, "en-US")] = "Feedback text should not be empty",								[(39, "ru-RU")] = "Необходимо ввести текст отзыва",
 			[(40, "en-US")] = "Images count should be less than 10",							[(40, "ru-RU")] = "Количество картинок должно быть менее 10",
 			[(41, "en-US")] = "Token has no match with the phone",								[(41, "ru-RU")] = "Токен не связан с телефоном",
+			[(42, "en-US")] = "Event start time should be less then event end time",			[(42, "ru-RU")] = "Время начала события должно быть меньше времени оконания события",
+			[(43, "en-US")] = "Minimal age - 14 years",											[(43, "ru-RU")] = "Минимальный возраст - 14 лет",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";
