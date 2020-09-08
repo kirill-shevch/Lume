@@ -119,9 +119,9 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(33, _culture));
 			}
-			if (model.Age.HasValue && model.Age.Value < 0)
+			if (model.Age.HasValue && model.Age.Value < 14)
 			{
-				return (false, ErrorDictionary.GetErrorMessage(22, _culture));
+				return (false, ErrorDictionary.GetErrorMessage(43, _culture));
 			}
 			if (model.CityId.HasValue)
 			{

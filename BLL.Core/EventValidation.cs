@@ -55,6 +55,10 @@ namespace BLL.Core
 					}
 				}
 			}
+			if (model.StartTime > model.EndTime)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(42, _culture));
+			}
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(15, _culture));
@@ -210,6 +214,10 @@ namespace BLL.Core
 			if (model.MinAge.HasValue && model.MaxAge.HasValue && model.MinAge > model.MaxAge)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(15, _culture));
+			}
+			if (model.StartTime.HasValue && model.EndTime.HasValue && model.StartTime > model.EndTime)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(42, _culture));
 			}
 			if (model.CityId.HasValue)
 			{
