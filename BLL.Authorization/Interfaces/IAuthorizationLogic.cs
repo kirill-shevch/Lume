@@ -19,5 +19,6 @@ namespace BLL.Authorization.Interfaces
 		Task SendCodeToPhone(string code, string phoneNumber, CancellationToken cancellationToken = default);
 		(string AccessToken, string RefreshToken) GetTokens();
 		Task SendPushNotification(string code, string token);
+		Task<bool> CheckThatPersonIsBlocked(Guid personUid);
 	}
 }
