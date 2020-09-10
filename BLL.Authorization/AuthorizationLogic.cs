@@ -82,6 +82,12 @@ namespace BLL.Authorization
 			await _authorizationRepository.UpdatePerson(dalPerson, cancellationToken);
 		}
 
+		public async Task<bool> CheckThatPersonIsBlocked(Guid personUid)
+		{
+			var personEntity = await _authorizationRepository.GetPerson(personUid);
+			return personEntity.IsBlocked;
+		}
+
 		public async Task<bool> CheckAccessKey(Guid personUid, string accessKey, CancellationToken cancellationToken = default)
 		{
 			var dalPerson = await _authorizationRepository.GetPerson(personUid, cancellationToken);

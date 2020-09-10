@@ -32,6 +32,12 @@ namespace LumeWebApp.Middleware
 			if (httpContext.Request.Headers.TryGetValue(AuthorizationHeaders.PersonUid, out personUid) &&
 				httpContext.Request.Headers.TryGetValue(AuthorizationHeaders.AccessToken, out accessToken))
 			{
+				if (_authorizationLogic.CheckThatPersonIsBlocked(new Guid(personUid.FirstOrDefault())).Result)
+				{
+					httpContext.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+					httpContext.Response.ContentType = "application/json";
+					return httpContext.Response.WriteAsync(ErrorDictionary.GetErrorMessage(44, CultureParser.GetCultureFromHttpContext(httpContext)));
+				}
 				if (!_authorizationLogic.CheckAccessKey(new Guid(personUid.FirstOrDefault()), accessToken.FirstOrDefault()).Result)
 				{
 					httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
