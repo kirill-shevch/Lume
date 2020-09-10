@@ -4,7 +4,7 @@ namespace LumeWebApp.Controllers
 {
 	[ApiController]
     [Route("")]
-    public class HomeController : ControllerBase
+    public class HomeController : Controller
     {
         [HttpGet]
         [Route("")]
@@ -18,6 +18,13 @@ namespace LumeWebApp.Controllers
         public ActionResult<string> SecureGet()
         {
             return "LumeApp";
+        }
+
+        [HttpGet]
+        [Route("license")]
+        public ActionResult<string> License()
+        {
+            return View();
         }
     }
 }
