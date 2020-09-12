@@ -85,7 +85,7 @@ namespace BLL.Authorization
 		public async Task<bool> CheckThatPersonIsBlocked(Guid personUid)
 		{
 			var personEntity = await _authorizationRepository.GetPerson(personUid);
-			return personEntity.IsBlocked;
+			return personEntity == null ? false : personEntity.IsBlocked;
 		}
 
 		public async Task<bool> CheckAccessKey(Guid personUid, string accessKey, CancellationToken cancellationToken = default)
