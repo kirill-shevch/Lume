@@ -15,6 +15,7 @@ namespace DAL.Authorization.Entities
 		public string RefreshKey { get; set; }
 		public DateTime? ExpirationTime { get; set; }
 		public string TemporaryCode { get; set; }
+		public DateTime? TemporaryCodeTime { get; set; }
 		public bool IsBlocked { get; set; }
 	}
 }
