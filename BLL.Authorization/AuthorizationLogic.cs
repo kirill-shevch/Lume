@@ -44,6 +44,7 @@ namespace BLL.Authorization
 			{
 				PersonUid = uid,
 				TemporaryCode = code,
+				TemporaryCodeTime = DateTime.UtcNow,
 				PhoneNumber = phoneNumber
 			});
 			return uid;
@@ -79,6 +80,7 @@ namespace BLL.Authorization
 		{
 			var dalPerson = await _authorizationRepository.GetPerson(phoneNumber, cancellationToken);
 			dalPerson.TemporaryCode = code;
+			dalPerson.TemporaryCodeTime = DateTime.UtcNow;
 			await _authorizationRepository.UpdatePerson(dalPerson, cancellationToken);
 		}
 
