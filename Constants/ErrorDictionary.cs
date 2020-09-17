@@ -50,6 +50,7 @@ namespace Constants
 			[(42, "en-US")] = "Event start time should be less then event end time",			[(42, "ru-RU")] = "Время начала события должно быть меньше времени оконания события",
 			[(43, "en-US")] = "Minimal age - 14 years",											[(43, "ru-RU")] = "Минимальный возраст - 14 лет",
 			[(44, "en-US")] = "Person blocked",													[(44, "ru-RU")] = "Пользователь заблокирован",
+			[(45, "en-US")] = "You cannot receive SMS more than once every 30 seconds",			[(45, "ru-RU")] = "Нельзя получать SMS чаще, чем раз в 30 секунд",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";

@@ -5,6 +5,7 @@ using Constants;
 using DAL.Authorization;
 using DAL.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Text.RegularExpressions;
 
 namespace BLL.Authorization
@@ -31,7 +32,15 @@ namespace BLL.Authorization
 			{
 				return (false, ErrorDictionary.GetErrorMessage(6, _culture));
 			}
-
+			var person = _authorizationRepository.GetPerson(phoneNumber).Result;
+			if (person != null && person.TemporaryCodeTime.HasValue)
+			{
+				var timeDifference = (DateTime.UtcNow - person.TemporaryCodeTime.Value).TotalSeconds;
+				if (timeDifference < 30)
+				{
+					return (false, ErrorDictionary.GetErrorMessage(45, _culture));
+				}
+			}
 			return (true, string.Empty);
 		}
 
