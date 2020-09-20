@@ -227,6 +227,14 @@ namespace BLL.Core
 					return (false, ErrorDictionary.GetErrorMessage(30, _culture));
 				}
 			}
+			if (model.PrimaryImage != null && model.PrimaryImage.Any())
+			{
+				var eventModel = _eventRepository.GetEvent(model.EventUid).Result;
+				if (eventModel.EventImageContentEntities.Any(x => x.IsPrimary.HasValue && x.IsPrimary.Value))
+				{
+					return (false, ErrorDictionary.GetErrorMessage(46, _culture));
+				}
+			}
 			return (true, string.Empty);
 		}
 

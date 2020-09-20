@@ -121,10 +121,9 @@ namespace BLL.Core
 			if (updateEventModel.CityId.HasValue)
 				eventEntity.CityId = updateEventModel.CityId;
 
-			eventEntity.EventImageContentEntities = null;
+			var images = new List<EventImageContentEntity>();
 			if (updateEventModel.ExtraImages != null && updateEventModel.ExtraImages.Any())
 			{
-				var images = new List<EventImageContentEntity>();
 				foreach (var image in updateEventModel.ExtraImages)
 				{
 					var eventImageContentUid = await _imageLogic.SaveImage(image);
@@ -136,6 +135,16 @@ namespace BLL.Core
 				}
 				eventEntity.EventImageContentEntities = images;
 			}
+			if (updateEventModel.PrimaryImage != null && updateEventModel.PrimaryImage.Any())
+			{
+				var eventImageContentUid = await _imageLogic.SaveImage(updateEventModel.PrimaryImage);
+				images.Add(new EventImageContentEntity
+				{
+					EventImageContentUid = eventImageContentUid,
+					IsPrimary = true
+				});
+			}
+			eventEntity.EventImageContentEntities = images;
 
 			if (updateEventModel.Types != null && updateEventModel.Types.Any())
 			{
