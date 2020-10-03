@@ -12,5 +12,7 @@
 		public const string AzureStorageConnectionString = "AZURESTORAGE_CONNECTIONSTRING";
 		public const string LocalAzureStorageConnectionString = "LocalAzureStorageConnectionString";
 		public const string AzureStorageBlobContainerName = "AzureStorageBlobContainerName";
+		public const string IsEventPromoRewardEnabled = "IsEventPromoRewardEnabled";
+		public const string AzureIsEventPromoRewardEnabled = "AZURE_ISEVENTPROMOREWARDENABLED";
 	}
 }

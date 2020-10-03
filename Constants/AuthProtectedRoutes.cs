@@ -29,9 +29,10 @@ namespace Constants
              "/api/event/update-event-participant",
              "/api/event/remove-event-participant",
              "/api/event/get-random-event",
-             "/api/evemt/search-for-event",
-             "/api/evemt/accept-random-event",
-             "/api/evemt/reject-random-event",
+             "/api/event/search-for-event",
+             "/api/event/accept-random-event",
+             "/api/event/reject-random-event",
+             "/api/event/add-promo-reward-request",
 
              "/api/friends/add-friend",
              "/api/friends/remove-friend",
@@ -45,6 +46,9 @@ namespace Constants
              "/api/chat/get-new-chat-messages",
 
              "/api/city/get-cities",
+             "/api/city/check-city-for-promo-reward",
+
+             "/api/promo/get-promo",
 
              "/api/contacts/get-person-list-by-contacts"
         };
