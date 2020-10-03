@@ -35,6 +35,8 @@ namespace DAL.Core
 			builder.ApplyConfiguration(new FeedbackImageContentEntityConfiguration());
 			builder.ApplyConfiguration(new BadgeEntityConfiguration());
 			builder.ApplyConfiguration(new PersonToBadgeEntityConfiguration());
+			builder.ApplyConfiguration(new PromoRewardRequestEntityConfiguration());
+			builder.ApplyConfiguration(new PromoRewardRequestImageContentEntityConfiguration());
 		}
 
 		public DbSet<ChatEntity> ChatEntities { get; set; }
@@ -58,5 +60,7 @@ namespace DAL.Core
 		public DbSet<FeedbackImageContentEntity> FeedbackImageContentEntities { get; set; }
 		public DbSet<BadgeEntity> Badges { get; set; }
 		public DbSet<PersonToBadgeEntity> PersonToBadgeEntities { get; set; }
+		public DbSet<PromoRewardRequestEntity> PromoRewardRequestEntities { get; set; }
+		public DbSet<PromoRewardRequestImageContentEntity> PromoRewardRequestImageContentEntities { get; set; }
 	}
 }
