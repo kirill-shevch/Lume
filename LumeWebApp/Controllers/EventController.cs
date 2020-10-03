@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Event;
 using Constants;
+using DAL.Core.Entities;
 using LumeWebApp.Responses.Event;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -72,6 +73,19 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			return await _eventLogic.UpdateEvent(request);
+		}
+
+		[HttpPost]
+		[Route("add-promo-reward-request")]
+		public async Task<ActionResult> AddPromoRewardRequest(PromoRewardRequestModel request)
+		{
+			var validationResult = _eventValidation.ValidateAddPromoRewardRequest(request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.AddPromoRewardRequest(request);
+			return Ok(Messages.GetMessageJson(MessageTitles.PromoRewardRequestAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
 
 		[HttpPost]

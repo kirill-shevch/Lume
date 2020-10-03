@@ -17,5 +17,6 @@ namespace BLL.Core.Interfaces
 		Task<GetEventModel> GetRandomEvent(RandomEventFilter filter, Guid personUid);
 		Task<List<GetEventListModel>> SearchForEvent(EventSearchFilter filter);
 		Task AddEventSwipeHistory(Guid personUid, Guid eventUid);
+		Task AddPromoRewardRequest(PromoRewardRequestModel request);
 	}
 }
