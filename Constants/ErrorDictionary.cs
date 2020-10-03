@@ -52,6 +52,10 @@ namespace Constants
 			[(44, "en-US")] = "Person blocked",													[(44, "ru-RU")] = "Пользователь заблокирован",
 			[(45, "en-US")] = "You cannot receive SMS more than once every 30 seconds",			[(45, "ru-RU")] = "Нельзя получать SMS чаще, чем раз в 30 секунд",
 			[(46, "en-US")] = "Event already have primary image",								[(46, "ru-RU")] = "У события уже установлено изображение по умолчанию",
+			[(47, "en-US")] = "Images count shlould be from 1 to 2",							[(47, "ru-RU")] = "Количество изображений должно быть 1 или 2",
+			[(48, "en-US")] = "Card number should not be empty",								[(48, "ru-RU")] = "Номер карты не должен быть пустым",
+			[(49, "en-US")] = "The event must be over",											[(49, "ru-RU")] = "Событие должно быть закончившимся",
+			[(50, "en-US")] = "You cannot chat with yourself",									[(50, "ru-RU")] = "Вы не можете переписываться с самим собой",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";

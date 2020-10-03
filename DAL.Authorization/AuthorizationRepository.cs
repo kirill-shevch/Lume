@@ -48,7 +48,7 @@ namespace DAL.Authorization
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				return await context.PersonAuthEntities.Where(x => phoneNumbers.Contains(x.PhoneNumber)).Select(x => x.PersonUid).ToListAsync();
+				return await context.PersonAuthEntities.Where(x => phoneNumbers.Contains(x.PhoneNumber) && !x.IsBlocked).Select(x => x.PersonUid).ToListAsync();
 			}
 		}
 

@@ -22,5 +22,12 @@ namespace LumeWebApp.Controllers
 		{
 			return await _cityLogic.GetCities();
 		}
+
+		[HttpGet]
+		[Route("check-city-for-promo-reward")]
+		public async Task<ActionResult<CityPromoRewardModel>> CheckCityForPromoReward(long cityId)
+		{
+			return await _cityLogic.CheckCityForPromoReward(cityId);
+		}
 	}
 }

@@ -41,7 +41,7 @@ namespace LumeWebApp.Controllers
 		public async Task<ActionResult<ChatModel>> GetPersonChat(Guid personUid, uint pageSize)
 		{
 			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
-			var validationResult = _chatValidation.ValidateGetPersonChat(personUid);
+			var validationResult = _chatValidation.ValidateGetPersonChat(uid, personUid);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);

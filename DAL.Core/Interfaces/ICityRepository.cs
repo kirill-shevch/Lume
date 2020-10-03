@@ -7,5 +7,7 @@ namespace DAL.Core.Interfaces
 	public interface ICityRepository
 	{
 		Task<List<CityEntity>> GetCities();
+		Task<CityEntity> GetCity(long cityId);
+		Task<int> EventsInTheCityCount(long cityId);
 	}
 }

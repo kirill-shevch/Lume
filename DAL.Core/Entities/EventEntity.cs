@@ -29,6 +29,7 @@ namespace DAL.Core.Entities
 		public IEnumerable<PersonToEventEntity> Participants { get; set; }
 		public IEnumerable<EventSwipeHistoryEntity> SwipeHistory { get; set; }
 		public IEnumerable<EventTypeToEventEntity> EventTypes { get; set; }
+		public IEnumerable<PromoRewardRequestEntity> PromoRewardRequests { get; set; }
 		public CityEntity City { get; set; }
 	}
 }

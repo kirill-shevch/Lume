@@ -259,5 +259,27 @@ namespace BLL.Core
 			}
 			return (true, string.Empty);
 		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateAddPromoRewardRequest(PromoRewardRequestModel request)
+		{
+			if (request.Images == null || request.Images.Count < 1 || request.Images.Count > 2)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(47, _culture));
+			}
+			if (string.IsNullOrWhiteSpace(request.AccountingNumber))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(48, _culture));
+			}
+			var eventEntity = _eventRepository.GetEvent(request.EventUid).Result;
+			if (eventEntity == null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
+			}
+			if (eventEntity.EventStatusId != (long)EventStatus.Ended)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(49, _culture));
+			}
+			return (true, string.Empty);
+		}
 	}
 }

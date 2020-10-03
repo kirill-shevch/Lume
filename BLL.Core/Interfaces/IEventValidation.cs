@@ -13,5 +13,6 @@ namespace BLL.Core.Interfaces
 		(bool ValidationResult, string ValidationMessage) ValidateGetRandomEvent(RandomEventFilter filter);
 		(bool ValidationResult, string ValidationMessage) ValidateSearchForEvent(EventSearchFilter eventSearchFilter);
 		(bool ValidationResult, string ValidationMessage) ValidateAddParticipantModel(EventParticipantModel request);
+		(bool ValidationResult, string ValidationMessage) ValidateAddPromoRewardRequest(PromoRewardRequestModel request);
 	}
 }

@@ -76,11 +76,15 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateGetPersonChat(Guid personUid)
+		public (bool ValidationResult, string ValidationMessage) ValidateGetPersonChat(Guid userUid, Guid personUid)
 		{
 			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
+			}
+			if (userUid == personUid)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(50, _culture));
 			}
 			return (true, string.Empty);
 		}

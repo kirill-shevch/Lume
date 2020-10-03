@@ -341,5 +341,14 @@ namespace DAL.Core.Repositories
 					.ToListAsync();
 			}
 		}
+
+		public async Task AddPromoRewardRequest(PromoRewardRequestEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.AddAsync(entity);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

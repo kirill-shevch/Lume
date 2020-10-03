@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS LumeDB.dbo.PersonAuth; 
 DROP TABLE IF EXISTS LumeDB.dbo.FeedbackImageContent; 
 DROP TABLE IF EXISTS LumeDB.dbo.Feedback; 
+DROP TABLE IF EXISTS LumeDB.dbo.PromoRewardRequestImageContent; 
+DROP TABLE IF EXISTS LumeDB.dbo.PromoRewardRequest; 
 DROP TABLE IF EXISTS LumeDB.dbo.PersonFriendList;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToEvent;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToChat;
@@ -229,6 +231,24 @@ CREATE TABLE LumeDB.dbo.FeedbackImageContent (
 	FeedbackId bigint NULL,
 	CONSTRAINT PK_FeedbackImageContentId PRIMARY KEY CLUSTERED (FeedbackImageContentId),
 	CONSTRAINT FK_FeedbackImageContent_Feedback FOREIGN KEY (FeedbackId) REFERENCES LumeDB.dbo.Feedback (FeedbackId)
+);
+
+CREATE TABLE LumeDB.dbo.PromoRewardRequest (
+	PromoRewardRequestId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	EventId bigint,
+	PromoRewardRequestUid uniqueidentifier NOT NULL UNIQUE,
+	AccountingNumber nvarchar(150) NULL,
+	PromoRewardRequestTime datetime2(7) NULL,
+	CONSTRAINT FK_PromoRewardRequest_Event FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId),
+	CONSTRAINT PK_PromoRewardRequestId PRIMARY KEY CLUSTERED (PromoRewardRequestId)
+);
+
+CREATE TABLE LumeDB.dbo.PromoRewardRequestImageContent (
+	PromoRewardRequestImageContentId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	PromoRewardRequestImageContentUid uniqueidentifier NOT NULL UNIQUE,
+	PromoRewardRequestId bigint NULL,
+	CONSTRAINT PK_PromoRewardRequestImageContentId PRIMARY KEY CLUSTERED (PromoRewardRequestImageContentId),
+	CONSTRAINT FK_PromoRewardRequestImageContent_PromoRewardRequest FOREIGN KEY (PromoRewardRequestId) REFERENCES LumeDB.dbo.PromoRewardRequest (PromoRewardRequestId)
 );
 
 INSERT INTO LumeDB.dbo.EventType (EventTypeName)  

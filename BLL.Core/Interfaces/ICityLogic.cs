@@ -7,5 +7,6 @@ namespace BLL.Core.Interfaces
 	public interface ICityLogic
 	{
 		Task<List<CityModel>> GetCities();
+		Task<CityPromoRewardModel> CheckCityForPromoReward(long cityId);
 	}
 }

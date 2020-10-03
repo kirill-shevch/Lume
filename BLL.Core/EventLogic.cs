@@ -232,5 +232,26 @@ namespace BLL.Core
 			var personEntity = await _personRepository.GetPerson(personUid);
 			await _eventRepository.AddEventSwipeHistoryRecord(new EventSwipeHistoryEntity { EventId = eventEntity.EventId, PersonId = personEntity.PersonId });
 		}
+
+		public async Task AddPromoRewardRequest(PromoRewardRequestModel request)
+		{
+			var eventEntity = await _eventRepository.GetEvent(request.EventUid);
+			var entity = new PromoRewardRequestEntity();
+			entity.AccountingNumber = request.AccountingNumber;
+			entity.PromoRewardRequestUid = Guid.NewGuid();
+			entity.PromoRewardRequestTime = DateTime.UtcNow;
+			entity.EventId = eventEntity.EventId;
+			if (request.Images != null)
+			{
+				var images = new List<PromoRewardRequestImageContentEntity>();
+				foreach (var image in request.Images)
+				{
+					var imageUid = await _imageLogic.SaveImage(image);
+					images.Add(new PromoRewardRequestImageContentEntity { PromoRewardRequestImageContentUid = imageUid });
+				}
+				entity.Images = images;
+			}
+			await _eventRepository.AddPromoRewardRequest(entity);
+		}
 	}
 }
