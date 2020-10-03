@@ -48,8 +48,6 @@ namespace Constants
              "/api/city/get-cities",
              "/api/city/check-city-for-promo-reward",
 
-             "/api/promo/get-promo",
-
              "/api/contacts/get-person-list-by-contacts"
         };
     }

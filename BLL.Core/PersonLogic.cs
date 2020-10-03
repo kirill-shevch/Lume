@@ -227,7 +227,7 @@ namespace BLL.Core
 		public async Task<List<PersonModel>> GetPersonList(List<Guid> personUids, Guid personUid)
 		{
 			var personEntities = await _personRepository.GetPersonList(personUids);
-			var personModels = _mapper.Map<List<PersonModel>>(personEntities);
+			var personModels = _mapper.Map<List<PersonModel>>(personEntities.Where(x => !string.IsNullOrEmpty(x.Login)));
 			var personFriends = await _personRepository.GetAllPersonFriends(personUid);
 			var notApprovedFriends = await _personRepository.GetNewFriends(personUid);
 			var currentPersonModel = personModels.SingleOrDefault(x => x.PersonUid == personUid);
