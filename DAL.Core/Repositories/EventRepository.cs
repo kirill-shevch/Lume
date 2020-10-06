@@ -195,11 +195,11 @@ namespace DAL.Core.Repositories
 				}
 				if (filter.MinimalStartTime.HasValue)
 				{
-					query = query.Where(x => x.StartTime.HasValue && x.StartTime.Value.Date >= filter.MinimalStartTime.Value.Date);
+					query = query.Where(x => x.StartTime.HasValue && x.StartTime.Value >= filter.MinimalStartTime.Value);
 				}
 				if (filter.MaximalEndTime.HasValue)
 				{
-					query = query.Where(x => x.EndTime.HasValue && x.EndTime.Value.Date <= filter.MaximalEndTime.Value.Date);
+					query = query.Where(x => x.EndTime.HasValue && x.EndTime.Value <= filter.MaximalEndTime.Value);
 				}
 				var random = new Random();
 
