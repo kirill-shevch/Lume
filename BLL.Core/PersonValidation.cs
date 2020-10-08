@@ -26,7 +26,7 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateFeedback(FeedbackModel model)
 		{
-			if (string.IsNullOrEmpty(model.Text))
+			if (string.IsNullOrWhiteSpace(model.Text))
 			{
 				return (false, ErrorDictionary.GetErrorMessage(39, _culture));
 			}
@@ -111,6 +111,10 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateUpdatePerson(UpdatePersonModel model, Guid personUid)
 		{
+			if (model.Name != null && string.IsNullOrWhiteSpace(model.Name))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(51, _culture));
+			}
 			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2, _culture));

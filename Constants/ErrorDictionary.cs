@@ -56,6 +56,7 @@ namespace Constants
 			[(48, "en-US")] = "Card number should not be empty",								[(48, "ru-RU")] = "Номер карты не должен быть пустым",
 			[(49, "en-US")] = "The event must be over",											[(49, "ru-RU")] = "Событие должно быть закончившимся",
 			[(50, "en-US")] = "You cannot chat with yourself",									[(50, "ru-RU")] = "Вы не можете переписываться с самим собой",
+			[(51, "en-US")] = "Name of the person should not be whitespace",					[(51, "ru-RU")] = "Имя пользователя не должно состоять только из пробелов",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";

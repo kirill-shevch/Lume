@@ -25,7 +25,7 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateAddEvent(AddEventModel model)
 		{
-			if (string.IsNullOrEmpty(model.Name))
+			if (string.IsNullOrWhiteSpace(model.Name))
 			{
 				return (false, ErrorDictionary.GetErrorMessage(16, _culture));
 			}
