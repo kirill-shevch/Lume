@@ -15,11 +15,11 @@ namespace DAL.Core.Repositories
 			_dbContextFactory = dbContextFactory;
 		}
 
-		public async Task<int> EventsInTheCityCount(long cityId)
+		public async Task<int> EventsInTheCitiesCount(List<string> cityNames)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				return await context.EventEntities.Where(x => x.CityId == cityId).CountAsync();
+				return await context.EventEntities.Include(x => x.City).Where(x => x.City != null && cityNames.Contains(x.City.CityName)).CountAsync();
 			}
 		}
 
