@@ -29,16 +29,15 @@ namespace BLL.Core
 			{
 				case "Москва":
 				case "Санкт-Петербург":
-					{
-						var eventsCount = await _cityRepository.EventsInTheCityCount(cityId);
-						var numberOfCityPromoEvents = 200;
-						return new CityPromoRewardModel { IsCitySuitableForPromoReward = eventsCount < numberOfCityPromoEvents, NumberOfCityPromoEvents = numberOfCityPromoEvents };
-					}
 				case "Саратов":
 					{
-						var eventsCount = await _cityRepository.EventsInTheCityCount(cityId);
-						var numberOfCityPromoEvents = 100;
-						return new CityPromoRewardModel { IsCitySuitableForPromoReward = eventsCount < numberOfCityPromoEvents, NumberOfCityPromoEvents = numberOfCityPromoEvents };
+						var eventsCount = await _cityRepository.EventsInTheCitiesCount(new List<string> { "Москва", "Санкт-Петербург", "Саратов" });
+						var maxNumberOfCityPromoEvents = 500;
+						
+						return new CityPromoRewardModel { IsCitySuitableForPromoReward = eventsCount < maxNumberOfCityPromoEvents, 
+							NumberOfCityPromoEvents = eventsCount,
+							PromoEventsMaximum = maxNumberOfCityPromoEvents
+						};
 					}
 				default:
 					return new CityPromoRewardModel { IsCitySuitableForPromoReward = false };

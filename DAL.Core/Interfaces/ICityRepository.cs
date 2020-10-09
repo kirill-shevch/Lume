@@ -8,6 +8,6 @@ namespace DAL.Core.Interfaces
 	{
 		Task<List<CityEntity>> GetCities();
 		Task<CityEntity> GetCity(long cityId);
-		Task<int> EventsInTheCityCount(long cityId);
+		Task<int> EventsInTheCitiesCount(List<string> cityNames);
 	}
 }
