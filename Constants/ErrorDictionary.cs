@@ -57,6 +57,8 @@ namespace Constants
 			[(49, "en-US")] = "The event must be over",											[(49, "ru-RU")] = "Событие должно быть закончившимся",
 			[(50, "en-US")] = "You cannot chat with yourself",									[(50, "ru-RU")] = "Вы не можете переписываться с самим собой",
 			[(51, "en-US")] = "Name of the person should not be whitespace",					[(51, "ru-RU")] = "Имя пользователя не должно состоять только из пробелов",
+			[(52, "en-US")] = "The image must match the miniature",								[(52, "ru-RU")] = "Изображению должна соответствовать миниатюра",
+			[(53, "en-US")] = "Image do not have a miniature",									[(53, "ru-RU")] = "У изображения нет миниатюры",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";

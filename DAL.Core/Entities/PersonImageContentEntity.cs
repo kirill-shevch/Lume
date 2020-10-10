@@ -7,5 +7,6 @@ namespace DAL.Core.Entities
 		public const string TableName = "PersonImageContent";
 		public long PersonImageContentId { get; set; }
 		public Guid PersonImageContentUid { get; set; }
+		public Guid? PersonMiniatureImageContentUid { get; set; }
 	}
 }

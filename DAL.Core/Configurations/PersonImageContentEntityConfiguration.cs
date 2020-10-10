@@ -11,6 +11,7 @@ namespace DAL.Core.Configurations
 			builder.ToTable(PersonImageContentEntity.TableName);
 			builder.HasKey(t => t.PersonImageContentId);
 			builder.Property(t => t.PersonImageContentUid);
+			builder.Property(t => t.PersonMiniatureImageContentUid);
 		}
 	}
 }

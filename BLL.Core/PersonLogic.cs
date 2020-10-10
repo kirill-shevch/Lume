@@ -82,7 +82,8 @@ namespace BLL.Core
 			{
 				deleteOldImage = entity.PersonImageContentEntity != null;
 				var imageUid = await _imageLogic.SaveImage(updatePersonModel.Image);
-				entity.PersonImageContentEntity = new PersonImageContentEntity { PersonImageContentUid = imageUid };
+				var miniImageUid = await _imageLogic.SaveImage(updatePersonModel.MiniImage);
+				entity.PersonImageContentEntity = new PersonImageContentEntity { PersonImageContentUid = imageUid, PersonMiniatureImageContentUid = miniImageUid };
 			}
 			else
 			{
@@ -98,6 +99,10 @@ namespace BLL.Core
 			{
 				await _personRepository.RemovePersonImage(imageToDelete);
 				await _imageLogic.RemoveImage(imageToDelete.PersonImageContentUid);
+				if (imageToDelete.PersonMiniatureImageContentUid.HasValue)
+				{
+					await _imageLogic.RemoveImage(imageToDelete.PersonMiniatureImageContentUid.Value);
+				}
 			}
 			return model;
 		}

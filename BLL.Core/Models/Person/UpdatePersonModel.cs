@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BLL.Core.Models.Person
+﻿namespace BLL.Core.Models.Person
 {
 	public class UpdatePersonModel
 	{
@@ -11,5 +9,6 @@ namespace BLL.Core.Models.Person
 		public long? CityId { get; set; }
 		public string Token { get; set; }
 		public byte[] Image { get; set; }
+		public byte[] MiniImage { get; set; }
 	}
 }

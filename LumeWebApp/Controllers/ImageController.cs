@@ -21,7 +21,7 @@ namespace LumeWebApp.Controllers
 
 		[HttpGet]
 		[Route("get-image")]
-		public async Task<ActionResult> GetPersonImage(Guid imageUid)
+		public async Task<ActionResult> GetImage(Guid imageUid)
 		{
 			var validationResult = _imageValidation.ValidateGetImage(imageUid);
 			if (!validationResult.ValidationResult)
@@ -29,6 +29,19 @@ namespace LumeWebApp.Controllers
 				return BadRequest(validationResult.ValidationMessage);
 			}
 			var content = await _imageLogic.GetImage(imageUid);
+			return File(content, "image/jpeg");
+		}
+
+		[HttpGet]
+		[Route("get-miniature-image")]
+		public async Task<ActionResult> GetMiniatureImage(Guid imageUid)
+		{
+			var validationResult = _imageValidation.ValidateGetMiniatureImage(imageUid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			var content = await _imageLogic.GetMiniatureImage(imageUid);
 			return File(content, "image/jpeg");
 		}
 	}

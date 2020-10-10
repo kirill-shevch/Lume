@@ -18,3 +18,4 @@ appsettings.machine.json
 jre*
 *.class
 *maven*
+/LumeWebApp/Properties/ServiceDependencies/LumeProd - Web Deploy/profile.arm.json
