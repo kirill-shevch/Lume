@@ -44,7 +44,11 @@ namespace BLL.Core
 		public async Task<byte[]> GetMiniatureImage(Guid imageUid)
 		{
 			var imageEntity = await _personRepository.GetPersonImage(imageUid);
-			return await _imageRepository.GetImage(imageEntity.PersonMiniatureImageContentUid.ToString());
+			if (imageEntity.PersonMiniatureImageContentUid.HasValue)
+			{
+				return await _imageRepository.GetImage(imageEntity.PersonMiniatureImageContentUid.ToString());
+			}
+			return await _imageRepository.GetImage(imageUid.ToString());
 		}
 	}
 }

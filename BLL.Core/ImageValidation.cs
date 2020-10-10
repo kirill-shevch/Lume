@@ -33,13 +33,26 @@ namespace BLL.Core
 		public (bool ValidationResult, string ValidationMessage) ValidateGetMiniatureImage(Guid imageUid)
 		{
 			var imageEntity = _personRepository.GetPersonImage(imageUid).Result;
-			if (imageEntity == null || !imageEntity.PersonMiniatureImageContentUid.HasValue)
+			if (imageEntity == null)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(12, _culture));
 			}
-			if (!_imageRepository.CheckImageExistance(imageEntity.PersonMiniatureImageContentUid.ToString()).Result)
+			else
 			{
-				return (false, ErrorDictionary.GetErrorMessage(12, _culture));
+				if (imageEntity.PersonMiniatureImageContentUid.HasValue)
+				{
+					if (!_imageRepository.CheckImageExistance(imageEntity.PersonMiniatureImageContentUid.ToString()).Result)
+					{
+						return (false, ErrorDictionary.GetErrorMessage(12, _culture));
+					}
+				}
+				else
+				{
+					if (!_imageRepository.CheckImageExistance(imageUid.ToString()).Result)
+					{
+						return (false, ErrorDictionary.GetErrorMessage(12, _culture));
+					}
+				}
 			}
 			return (true, string.Empty);
 		}
