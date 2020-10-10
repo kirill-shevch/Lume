@@ -199,7 +199,7 @@ namespace DAL.Core.Repositories
 				}
 				if (filter.MaximalEndTime.HasValue)
 				{
-					query = query.Where(x => x.EndTime.HasValue && x.EndTime.Value <= filter.MaximalEndTime.Value);
+					query = query.Where(x => x.StartTime.HasValue && x.StartTime.Value <= filter.MaximalEndTime.Value);
 				}
 				var random = new Random();
 
