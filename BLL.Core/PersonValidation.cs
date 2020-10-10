@@ -135,6 +135,10 @@ namespace BLL.Core
 					return (false, ErrorDictionary.GetErrorMessage(30, _culture));
 				}
 			}
+			if (model.Image == null ^ model.MiniImage == null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(52, _culture));
+			}
 			return (true, string.Empty);
 		}
 	}
