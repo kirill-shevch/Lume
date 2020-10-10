@@ -46,7 +46,7 @@ CREATE TABLE LumeDB.dbo.Badge (
 CREATE TABLE LumeDB.dbo.PersonImageContent (
 	PersonImageContentId bigint IDENTITY(1,1) NOT NULL UNIQUE,
 	PersonImageContentUid uniqueidentifier NOT NULL UNIQUE,
-	PersonMiniatureImageContentUid uniqueidentifier NOT NULL UNIQUE,
+	PersonMiniatureImageContentUid uniqueidentifier NULL,
 	CONSTRAINT PK_PersonImageContentId PRIMARY KEY CLUSTERED (PersonImageContentId)
 );
 

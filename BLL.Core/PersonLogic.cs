@@ -99,7 +99,10 @@ namespace BLL.Core
 			{
 				await _personRepository.RemovePersonImage(imageToDelete);
 				await _imageLogic.RemoveImage(imageToDelete.PersonImageContentUid);
-				await _imageLogic.RemoveImage(imageToDelete.PersonMiniatureImageContentUid);
+				if (imageToDelete.PersonMiniatureImageContentUid.HasValue)
+				{
+					await _imageLogic.RemoveImage(imageToDelete.PersonMiniatureImageContentUid.Value);
+				}
 			}
 			return model;
 		}
