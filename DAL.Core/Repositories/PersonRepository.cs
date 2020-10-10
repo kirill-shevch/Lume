@@ -304,5 +304,13 @@ namespace DAL.Core.Repositories
 				}
 			}
 		}
+
+		public async Task<PersonImageContentEntity> GetPersonImage(Guid imageUid)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonImageContentEntities.SingleOrDefaultAsync(x => x.PersonImageContentUid == imageUid);
+			}
+		}
 	}
 }
