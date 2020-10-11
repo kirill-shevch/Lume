@@ -350,5 +350,14 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task RemoveEventImage(EventImageContentEntity entity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				context.Remove(entity);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

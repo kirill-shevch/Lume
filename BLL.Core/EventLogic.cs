@@ -253,5 +253,13 @@ namespace BLL.Core
 			}
 			await _eventRepository.AddPromoRewardRequest(entity);
 		}
+
+		public async Task RemoveEventImage(RemoveEventImageModel request)
+		{
+			var eventEntity = await _eventRepository.GetEvent(request.EventUid);
+			var imageEntity = eventEntity.EventImageContentEntities.Single(x => x.EventImageContentUid == request.ImageUid);
+			await _eventRepository.RemoveEventImage(imageEntity);
+			await _imageLogic.RemoveImage(request.ImageUid);
+		}
 	}
 }
