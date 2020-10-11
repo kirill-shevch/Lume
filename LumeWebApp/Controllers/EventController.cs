@@ -88,6 +88,20 @@ namespace LumeWebApp.Controllers
 			return Ok(Messages.GetMessageJson(MessageTitles.PromoRewardRequestAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
 
+		[HttpDelete]
+		[Route("remove-event-image")]
+		public async Task<ActionResult> RemoveEventImage(RemoveEventImageModel request)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _eventValidation.ValidateRemoveEventImage(uid, request);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.RemoveEventImage(request);
+			return Ok(Messages.GetMessageJson(MessageTitles.EventImageRemoved, CultureParser.GetCultureFromHttpContext(HttpContext)));
+		}
+
 		[HttpPost]
 		[Route("add-event-participant")]
 		public async Task<ActionResult<GetEventModel>> AddEventParticipant(EventParticipantModel request)

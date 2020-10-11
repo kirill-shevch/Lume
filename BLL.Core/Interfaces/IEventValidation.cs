@@ -14,5 +14,6 @@ namespace BLL.Core.Interfaces
 		(bool ValidationResult, string ValidationMessage) ValidateSearchForEvent(EventSearchFilter eventSearchFilter);
 		(bool ValidationResult, string ValidationMessage) ValidateAddParticipantModel(EventParticipantModel request);
 		(bool ValidationResult, string ValidationMessage) ValidateAddPromoRewardRequest(PromoRewardRequestModel request);
+		(bool ValidationResult, string ValidationMessage) ValidateRemoveEventImage(Guid personUid, RemoveEventImageModel request);
 	}
 }

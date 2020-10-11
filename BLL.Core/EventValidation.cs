@@ -285,5 +285,23 @@ namespace BLL.Core
 			}
 			return (true, string.Empty);
 		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateRemoveEventImage(Guid personUid, RemoveEventImageModel request)
+		{
+			var eventEntity = _eventRepository.GetEvent(request.EventUid).Result;
+			if (eventEntity == null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
+			}
+			if (eventEntity.Administrator.PersonUid != personUid)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(55, _culture));
+			}
+			if (!eventEntity.EventImageContentEntities.Any(x => x.EventImageContentUid == request.ImageUid))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(56, _culture));
+			}
+			return (true, string.Empty);
+		}
 	}
 }

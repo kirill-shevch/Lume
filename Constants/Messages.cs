@@ -16,7 +16,8 @@ namespace Constants
 		PushNotificationMessage,
 		AddParticipantNotificationMessage,
 		FeedbackAdded,
-		PromoRewardRequestAdded
+		PromoRewardRequestAdded,
+		EventImageRemoved
 	}
 
 	public static class Messages
@@ -48,7 +49,9 @@ namespace Constants
 			[(MessageTitles.FeedbackAdded, "en-US")] = "Feedback added!",
 			[(MessageTitles.FeedbackAdded, "ru-RU")] = "Отзыв добавлен!",
 			[(MessageTitles.PromoRewardRequestAdded, "en-US")] = "Reward request added!",
-			[(MessageTitles.PromoRewardRequestAdded, "ru-RU")] = "Запрос на полчение вознаграждения добавлен!"
+			[(MessageTitles.PromoRewardRequestAdded, "ru-RU")] = "Запрос на полчение вознаграждения добавлен!",
+			[(MessageTitles.EventImageRemoved, "en-US")] = "Event image removed!",
+			[(MessageTitles.EventImageRemoved, "ru-RU")] = "Изображение у события удалено!"
 		};
 
 		public static string GetMessageJson(MessageTitles title, string culture) => $"{{ \"data\":\"{MessageContent[(title, culture)]}\" }}";
