@@ -59,6 +59,7 @@ namespace Constants
 			[(51, "en-US")] = "Name of the person should not be whitespace",					[(51, "ru-RU")] = "Имя пользователя не должно состоять только из пробелов",
 			[(52, "en-US")] = "The image must match the miniature",								[(52, "ru-RU")] = "Изображению должна соответствовать миниатюра",
 			[(53, "en-US")] = "Image do not have a miniature",									[(53, "ru-RU")] = "У изображения нет миниатюры",
+      [(54, "en-US")] = "Promo request is already created",								[(54, "ru-RU")] = "Запрос на получение вознаграждения уже создан",
 			[(55, "en-US")] = "Person is not an event administrator",							[(55, "ru-RU")] = "Пользователь не является администратором события",
 			[(56, "en-US")] = "Event does not have such image",									[(56, "ru-RU")] = "У события нет такого изображения",
 		};

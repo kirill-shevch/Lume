@@ -74,6 +74,7 @@ namespace BLL.Core
 		{
 			var eventEntity = await _eventRepository.GetEvent(eventUid);
 			var eventModel = _mapper.Map<GetEventModel>(eventEntity);
+			eventModel.PromoRequestUid = eventEntity.PromoRewardRequests == null ? null : eventEntity.PromoRewardRequests.FirstOrDefault()?.PromoRewardRequestUid;
 			foreach (var participant in eventModel.Participants)
 			{
 				var status = eventEntity.Participants.Single(x => x.Person.PersonUid == participant.PersonUid).ParticipantStatusId;

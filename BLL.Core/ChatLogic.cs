@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Chat;
+using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using System;
@@ -152,7 +153,7 @@ namespace BLL.Core
 
 		public async Task<List<ChatListModel>> GetPersonChatList(Guid uid)
 		{
-			var events = await _eventRepository.GetEvents(uid);
+			var events = (await _eventRepository.GetEvents(uid)).Where(x => x.Participants.Single(x => x.Person.PersonUid == uid).ParticipantStatusId == (long)ParticipantStatus.Active);
 			var chatModels = new List<ChatListModel>();
 			foreach (var eventEntity in events)
 			{
