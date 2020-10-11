@@ -33,6 +33,7 @@ namespace Constants
              "/api/event/accept-random-event",
              "/api/event/reject-random-event",
              "/api/event/add-promo-reward-request",
+             "/api/event/remove-event-image",
 
              "/api/friends/add-friend",
              "/api/friends/remove-friend",
