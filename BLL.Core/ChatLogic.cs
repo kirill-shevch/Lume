@@ -84,9 +84,10 @@ namespace BLL.Core
 			else if (chatEntity.IsGroupChat.HasValue && !chatEntity.IsGroupChat.Value)
 			{
 				var personEntity = await _personRepository.GetPerson(personUid);
-				chatModel.ChatName = await _chatRepository.GetPersonalChatName(chatEntity.ChatId, personEntity.PersonId);
-				chatModel.PersonUid = personEntity.PersonUid;
-				chatModel.PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid;
+				var interlocutor = await _chatRepository.GetInterlocutor(chatEntity.ChatId, personEntity.PersonId);
+				chatModel.ChatName = interlocutor.Name;
+				chatModel.PersonUid = interlocutor.PersonUid;
+				chatModel.PersonImageUid = interlocutor.PersonImageContentEntity?.PersonImageContentUid;
 			}
 			if (chatMessageEntities.Any())
 			{
