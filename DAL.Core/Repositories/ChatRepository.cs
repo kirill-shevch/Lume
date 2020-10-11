@@ -72,19 +72,21 @@ namespace DAL.Core.Repositories
 			}
 		}
 
-		public async Task<string> GetPersonalChatName(long chatId, long personId)
+		public async Task<PersonEntity> GetInterlocutor(long chatId, long personId)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
 				var personToChat = await context.PersonToChatEntities
 					.Include(x => x.FirstPerson)
+						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.SecondPerson)
+						.ThenInclude(x => x.PersonImageContentEntity)
 					.SingleOrDefaultAsync(x => x.ChatId == chatId && x.FirstPersonId == personId);
 				if (personToChat == null)
 				{
-					return string.Empty;
+					return null;
 				}
-				return personToChat.FirstPersonId == personId ? personToChat.SecondPerson.Name : personToChat.FirstPerson.Name;
+				return personToChat.FirstPersonId == personId ? personToChat.SecondPerson : personToChat.FirstPerson;
 			}
 		}
 
