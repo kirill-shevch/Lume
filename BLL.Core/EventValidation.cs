@@ -279,6 +279,10 @@ namespace BLL.Core
 			{
 				return (false, ErrorDictionary.GetErrorMessage(49, _culture));
 			}
+			if (eventEntity.PromoRewardRequests.Any())
+			{
+				return (false, ErrorDictionary.GetErrorMessage(54, _culture));
+			}
 			return (true, string.Empty);
 		}
 	}
