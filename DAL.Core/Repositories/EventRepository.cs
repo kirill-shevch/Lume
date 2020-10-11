@@ -62,6 +62,7 @@ namespace DAL.Core.Repositories
 					.Include(x => x.Chat)
 					.Include(x => x.City)
 					.Include(x => x.SwipeHistory)
+					.Include(x => x.PromoRewardRequests)
 					.SingleOrDefaultAsync(x => x.EventUid == eventUid, cancellationToken);
 			}
 		}
