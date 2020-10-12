@@ -125,15 +125,20 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateUpdateParticipantModel(EventParticipantModel model)
 		{
+			var eventEntity = _eventRepository.GetEvent(model.EventUid).Result;
+			if (eventEntity == null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
+			}
+			if (eventEntity.EventStatusId == (long)EventStatus.Canceled || eventEntity.EventStatusId == (long)EventStatus.Ended)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(57, _culture));
+			}
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
-			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
-			{
-				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
-			}
-			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
+			var participant = eventEntity.Participants.SingleOrDefault(x => x.Person != null && x.Person.PersonUid == model.PersonUid);
 			if (participant == null)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(26, _culture));
@@ -240,15 +245,20 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateAddParticipantModel(EventParticipantModel model)
 		{
+			var eventEntity = _eventRepository.GetEvent(model.EventUid).Result;
+			if (eventEntity == null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
+			}
+			if (eventEntity.EventStatusId == (long)EventStatus.Canceled || eventEntity.EventStatusId == (long)EventStatus.Ended)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(57, _culture));
+			}
 			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
-			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
-			{
-				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
-			}
-			var participant = _eventRepository.GetParticipant(model.PersonUid, model.EventUid).Result;
+			var participant = eventEntity.Participants.SingleOrDefault(x => x.Person != null && x.Person.PersonUid == model.PersonUid);
 			if (participant != null)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(24, _culture));
