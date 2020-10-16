@@ -31,7 +31,7 @@ namespace BLL.Core
 				case "Санкт-Петербург":
 				case "Саратов":
 					{
-						var eventsCount = await _cityRepository.EventsInTheCitiesCount(new List<string> { "Москва", "Санкт-Петербург", "Саратов" });
+						var eventsCount = await _cityRepository.EventPromoInTheCitiesCount(new List<string> { "Москва", "Санкт-Петербург", "Саратов" });
 						var maxNumberOfCityPromoEvents = 500;
 						
 						return new CityPromoRewardModel { IsCitySuitableForPromoReward = eventsCount < maxNumberOfCityPromoEvents, 
