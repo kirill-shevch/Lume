@@ -71,7 +71,7 @@ namespace BLL.Core
 				entity.CityId = updatePersonModel.CityId;
 			if (!string.IsNullOrEmpty(updatePersonModel.Login))
 				entity.Login = updatePersonModel.Login;
-			if (!string.IsNullOrEmpty(updatePersonModel.Token))
+			if (updatePersonModel.Token != null)
 			{
 				entity.Token = updatePersonModel.Token;
 				await _personRepository.RemoveTokenForEveryPerson(updatePersonModel.Token);
