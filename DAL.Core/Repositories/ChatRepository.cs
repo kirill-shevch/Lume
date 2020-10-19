@@ -1,4 +1,5 @@
-﻿using DAL.Core.Entities;
+﻿using Constants;
+using DAL.Core.Entities;
 using DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -206,7 +207,7 @@ namespace DAL.Core.Repositories
 						.ThenInclude(x => x.Chat)
 							.ThenInclude(x => x.ChatMessageEntities)
 					.AnyAsync(x => ((!x.LastReadChatMessageId.HasValue && x.Event.Chat.ChatMessageEntities.Any()) || (x.LastReadChatMessageId < x.Event.Chat.ChatMessageEntities.Max(x => x.ChatMessageId))) 
-						&& x.Person.PersonUid == personUid);
+						&& x.Person.PersonUid == personUid && x.ParticipantStatusId == (long)ParticipantStatus.Active);
 				var personalChats = await context.PersonToChatEntities
 					.Include(x => x.FirstPerson)
 					.Include(x => x.Chat)
@@ -214,7 +215,6 @@ namespace DAL.Core.Repositories
 					.AnyAsync(x => ((!x.LastReadChatMessageId.HasValue && x.Chat.ChatMessageEntities.Any()) || (x.LastReadChatMessageId < x.Chat.ChatMessageEntities.Max(x => x.ChatMessageId)))
 						&& x.FirstPerson.PersonUid == personUid);
 				return personalChats || personEvents;
-				
 			}
 		}
 
