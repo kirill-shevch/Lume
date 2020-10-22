@@ -9,7 +9,7 @@ namespace BLL.Core.Interfaces
 		(bool ValidationResult, string ValidationMessage) ValidateGetEvent(Guid eventUid);
 		(bool ValidationResult, string ValidationMessage) ValidateUpdateEvent(UpdateEventModel model);
 		(bool ValidationResult, string ValidationMessage) ValidateUpdateParticipantModel(EventParticipantModel model);
-		(bool ValidationResult, string ValidationMessage) ValidateRemoveEventParticipant(Guid personUid, Guid eventUid);
+		(bool ValidationResult, string ValidationMessage) ValidateRemoveEventParticipant(Guid personUid, Guid eventUid, Guid currentPersonUid);
 		(bool ValidationResult, string ValidationMessage) ValidateGetRandomEvent(RandomEventFilter filter);
 		(bool ValidationResult, string ValidationMessage) ValidateSearchForEvent(EventSearchFilter eventSearchFilter);
 		(bool ValidationResult, string ValidationMessage) ValidateAddParticipantModel(EventParticipantModel request);

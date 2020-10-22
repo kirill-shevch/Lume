@@ -150,7 +150,7 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateRemoveEventParticipant(Guid personUid, Guid eventUid)
+		public (bool ValidationResult, string ValidationMessage) ValidateRemoveEventParticipant(Guid personUid, Guid eventUid, Guid currentPersonUid)
 		{
 			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
@@ -159,6 +159,10 @@ namespace BLL.Core
 			if (!_eventRepository.CheckEventExistence(eventUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
+			}
+			if (personUid == currentPersonUid)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(58, _culture));
 			}
 			return (true, string.Empty);
 		}

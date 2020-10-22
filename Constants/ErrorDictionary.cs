@@ -63,6 +63,7 @@ namespace Constants
 			[(55, "en-US")] = "Person is not an event administrator",							[(55, "ru-RU")] = "Пользователь не является администратором события",
 			[(56, "en-US")] = "Event does not have such image",									[(56, "ru-RU")] = "У события нет такого изображения",
 			[(57, "en-US")] = "You can not participate in closed event",						[(57, "ru-RU")] = "Вы не можете принять участие в завершённом событии",
+			[(58, "en-US")] = "You can not remove yourself",									[(58, "ru-RU")] = "Вы не можете удалить себя",
 		};
 
 		public static string GetErrorMessage(int code, string culture) => $"{{ \"errorCode\":{code}, \"message\":\"{Errors[(code, culture)]}\" }}";
