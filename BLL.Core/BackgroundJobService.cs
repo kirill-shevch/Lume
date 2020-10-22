@@ -1,5 +1,6 @@
 ﻿using BLL.Core.Interfaces;
 using BLL.Notification;
+using BLL.Notification.Interfaces;
 using Constants;
 using DAL.Core.Interfaces;
 using Microsoft.Extensions.Hosting;
@@ -15,14 +16,14 @@ namespace BLL.Core
     {
         private readonly IEventRepository _eventRepository;
         private readonly IBadgeLogic _badgeLogic;
-        private readonly PushNotificationService _pushNotificationService;
+        private readonly IPushNotificationService _pushNotificationService;
         private Timer _timer;
         private TimeSpan _borderTime = new TimeSpan(1, 0, 0);
 
 
         public BackgroundJobService(IEventRepository eventRepository,
             IBadgeLogic badgeLogic,
-            PushNotificationService pushNotificationService)
+            IPushNotificationService pushNotificationService)
 		{
             _eventRepository = eventRepository;
             _badgeLogic = badgeLogic;
@@ -31,10 +32,7 @@ namespace BLL.Core
 
         private void DoWork(object state)
         {
-            var closedEvents = _eventRepository.TransferEventsStatuses().Result;
             var prelaunchedEvents = _eventRepository.GetListOfLatestEvents(_borderTime).Result;
-            _eventRepository.RemoveOutdatedParticipants();
-            _badgeLogic.AddBadges(closedEvents);
             var prelaunchParticipants = prelaunchedEvents.SelectMany(x => x.Participants).Where(x => x.ParticipantStatusId == (long)ParticipantStatus.Active);
 			foreach (var participant in prelaunchParticipants)
 			{
@@ -46,11 +44,19 @@ namespace BLL.Core
 						participant.Event.Name);
                 }
             }
+			if (prelaunchedEvents.Any())
+			{
+                _eventRepository.SetPrelaunchNotificationsFlag(prelaunchedEvents).Wait();
+            }
+
+            var closedEvents = _eventRepository.TransferEventsStatuses().Result;
+            _eventRepository.RemoveOutdatedParticipants();
+            _badgeLogic.AddBadges(closedEvents);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(60));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(120));
             return Task.CompletedTask;
         }
 

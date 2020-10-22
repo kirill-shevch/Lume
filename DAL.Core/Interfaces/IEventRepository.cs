@@ -29,5 +29,6 @@ namespace DAL.Core.Interfaces
 		Task<List<EventEntity>> GetPersonInvitations(Guid uid);
 		Task AddPromoRewardRequest(PromoRewardRequestEntity entity);
 		Task RemoveEventImage(EventImageContentEntity entity);
+		Task SetPrelaunchNotificationsFlag(List<EventEntity> eventEntities, CancellationToken cancellationToken = default);
 	}
 }
