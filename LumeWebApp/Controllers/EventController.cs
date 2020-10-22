@@ -132,7 +132,8 @@ namespace LumeWebApp.Controllers
 		[Route("remove-event-participant")]
 		public async Task<ActionResult<GetEventModel>> RemoveEventParticipant(Guid personUid, Guid eventUid)
 		{
-			var validationResult = _eventValidation.ValidateRemoveEventParticipant(personUid, eventUid);
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _eventValidation.ValidateRemoveEventParticipant(personUid, eventUid, uid);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);

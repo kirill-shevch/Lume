@@ -182,7 +182,7 @@ namespace BLL.Core
 					new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.UrlTemplate, eventEntity.EventUid) }, 
 					eventEntity.Name);
 			}
-			if (eventEntity.Administrator != null && eventEntity.Administrator.Token != null)
+			if (eventEntity.Administrator != null && eventEntity.Administrator.Token != null && eventEntity.Administrator.PersonUid != personUid)
 			{
 				if (eventParticipantModel.ParticipantStatus == ParticipantStatus.WaitingForApproveFromEvent)
 				{
