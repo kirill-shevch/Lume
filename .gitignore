@@ -19,3 +19,4 @@ jre*
 *.class
 *maven*
 /LumeWebApp/Properties/ServiceDependencies/LumeProd - Web Deploy/profile.arm.json
+/LumeWebApp/Properties/ServiceDependencies/LumeWebApp - Web Deploy/profile.arm.json

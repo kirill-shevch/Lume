@@ -174,13 +174,30 @@ namespace BLL.Core
 			var entity = await CreateParticipantEntity(eventParticipantModel);
 			await _eventRepository.AddParticipant(entity);
 			var person = await _personRepository.GetPerson(eventParticipantModel.PersonUid);
+			var eventEntity = await _eventRepository.GetEvent(eventParticipantModel.EventUid);
 			if (!string.IsNullOrEmpty(person.Token) && eventParticipantModel.PersonUid != personUid)
 			{
-				var eventEntity = await _eventRepository.GetEvent(eventParticipantModel.EventUid);
 				await _pushNotificationService.SendPushNotification(person.Token, 
 					MessageTitles.AddParticipantNotificationMessage, 
 					new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.UrlTemplate, eventEntity.EventUid) }, 
 					eventEntity.Name);
+			}
+			if (eventEntity.Administrator != null && eventEntity.Administrator.Token != null)
+			{
+				if (eventParticipantModel.ParticipantStatus == ParticipantStatus.WaitingForApproveFromEvent)
+				{
+					await _pushNotificationService.SendPushNotification(eventEntity.Administrator.Token,
+						MessageTitles.ParticipantWaitingForApproval,
+						new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.UrlTemplate, eventEntity.EventUid) },
+						eventEntity.Name);
+				}
+				else if (eventParticipantModel.ParticipantStatus == ParticipantStatus.Active)
+				{
+					await _pushNotificationService.SendPushNotification(eventEntity.Administrator.Token,
+						MessageTitles.ParticipantJoinedTheEvent,
+						new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.UrlTemplate, eventEntity.EventUid) },
+						eventEntity.Name);
+				}
 			}
 			return await GetEvent(eventParticipantModel.EventUid);
 		}
