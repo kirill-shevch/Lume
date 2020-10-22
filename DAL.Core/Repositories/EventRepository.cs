@@ -360,5 +360,17 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task<List<EventEntity>> GetListOfLatestEvents(TimeSpan borderTime, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var date = DateTime.UtcNow + borderTime;
+				return await context.EventEntities
+					.Include(x => x.Participants)
+					.Where(x => x.StartTime < date && x.EventStatusId == (long)EventStatus.Preparing)
+					.ToListAsync();
+			}
+		}
 	}
 }
