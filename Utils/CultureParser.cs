@@ -16,5 +16,10 @@ namespace Utils
 				return "en-US";
 			}
 		}
+
+		public static string GetDefaultCulture()
+		{
+			return "ru-RU";
+		}
 	}
 }
