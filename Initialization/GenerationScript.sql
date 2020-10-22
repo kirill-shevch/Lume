@@ -113,6 +113,7 @@ CREATE TABLE LumeDB.dbo.Event (
 	AdministratorId bigint NULL,
 	ChatId bigint null,
 	CityId bigint null,
+	IsPrelaunchNotificationSent bit NOT NULL DEFAULT 0,
 	CONSTRAINT FK_Event_EventStatus FOREIGN KEY (EventStatusId) REFERENCES LumeDB.dbo.EventStatus (EventStatusId),
 	CONSTRAINT FK_Event_Person FOREIGN KEY (AdministratorId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT FK_Event_Chat FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId),

@@ -360,5 +360,32 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task<List<EventEntity>> GetListOfLatestEvents(TimeSpan borderTime, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var date = DateTime.UtcNow + borderTime;
+				return await context.EventEntities
+					.Include(x => x.Participants)
+					.Where(x => x.StartTime < date && 
+						x.EventStatusId == (long)EventStatus.Preparing && 
+						!x.IsPrelaunchNotificationSent)
+					.ToListAsync();
+			}
+		}
+
+		public async Task SetPrelaunchNotificationsFlag(List<EventEntity> eventEntities, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				foreach (var entity in eventEntities)
+				{
+					entity.IsPrelaunchNotificationSent = true;
+				}
+				context.UpdateRange(eventEntities);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

@@ -19,7 +19,8 @@ namespace Constants
 		PromoRewardRequestAdded,
 		EventImageRemoved,
 		ParticipantWaitingForApproval,
-		ParticipantJoinedTheEvent
+		ParticipantJoinedTheEvent,
+		EventPreLaunchNotification
 	}
 
 	public static class Messages
@@ -54,10 +55,12 @@ namespace Constants
 			[(MessageTitles.PromoRewardRequestAdded, "ru-RU")] = "Запрос на полчение вознаграждения добавлен!",
 			[(MessageTitles.EventImageRemoved, "en-US")] = "Event image removed!",
 			[(MessageTitles.EventImageRemoved, "ru-RU")] = "Изображение у события удалено!",
-			[(MessageTitles.ParticipantWaitingForApproval, "en-US")] = @"New member wants to join the event {0}",
-			[(MessageTitles.ParticipantWaitingForApproval, "ru-RU")] = @"Новый участник хочет присоединиться к событию {0} ",
-			[(MessageTitles.ParticipantJoinedTheEvent, "en-US")] = @"New member joined event {0}",
-			[(MessageTitles.ParticipantJoinedTheEvent, "ru-RU")] = @"Новый участник присоединился к событию {0}",
+			[(MessageTitles.ParticipantWaitingForApproval, "en-US")] = @"New member wants to join the event ""{0}""",
+			[(MessageTitles.ParticipantWaitingForApproval, "ru-RU")] = @"Новый участник хочет присоединиться к событию ""{0}"" ",
+			[(MessageTitles.ParticipantJoinedTheEvent, "en-US")] = @"New member joined event ""{0}""",
+			[(MessageTitles.ParticipantJoinedTheEvent, "ru-RU")] = @"Новый участник присоединился к событию ""{0}""",
+			[(MessageTitles.EventPreLaunchNotification, "en-US")] = @"The event ""{0}"" will start soon",
+			[(MessageTitles.EventPreLaunchNotification, "ru-RU")] = @"Скоро начнётся событие ""{0}""",
 		};
 
 		public static string GetMessageJson(MessageTitles title, string culture) => $"{{ \"data\":\"{MessageContent[(title, culture)]}\" }}";
