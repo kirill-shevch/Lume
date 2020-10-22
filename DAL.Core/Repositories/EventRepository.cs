@@ -368,6 +368,9 @@ namespace DAL.Core.Repositories
 				var date = DateTime.UtcNow + borderTime;
 				return await context.EventEntities
 					.Include(x => x.Participants)
+						.ThenInclude(x => x.Person)
+					.Include(x => x.Participants)
+						.ThenInclude(x => x.Event)
 					.Where(x => x.StartTime < date && 
 						x.EventStatusId == (long)EventStatus.Preparing && 
 						!x.IsPrelaunchNotificationSent)

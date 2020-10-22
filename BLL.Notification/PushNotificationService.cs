@@ -33,8 +33,8 @@ namespace BLL.Notification
 				{
 					FirebaseApp.Create(new AppOptions { Credential = GoogleCredential.FromJson(key) });
 				}
-				var httpContext = _contextAccessor.HttpContext;
-				var culture = CultureParser.GetCultureFromHttpContext(httpContext);
+				var httpContext = _contextAccessor?.HttpContext;
+				var culture = httpContext == null ? CultureParser.GetDefaultCulture() : CultureParser.GetCultureFromHttpContext(httpContext);
 				var message = new Message
 				{
 					Notification = new FirebaseAdmin.Messaging.Notification
