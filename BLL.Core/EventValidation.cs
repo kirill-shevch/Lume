@@ -152,15 +152,21 @@ namespace BLL.Core
 
 		public (bool ValidationResult, string ValidationMessage) ValidateRemoveEventParticipant(Guid personUid, Guid eventUid, Guid currentPersonUid)
 		{
+			var eventEntity = _eventRepository.GetEvent(eventUid).Result;
 			if (!_personRepository.CheckPersonExistence(personUid).Result)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
 			}
-			if (!_eventRepository.CheckEventExistence(eventUid).Result)
+			if (eventEntity == null)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
 			}
-			if (personUid == currentPersonUid)
+			var participantEntity = _eventRepository.GetParticipant(personUid, eventUid).Result;
+			if (participantEntity == null)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(59, _culture));
+			}
+			if (eventEntity.Administrator.PersonUid == currentPersonUid)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(58, _culture));
 			}
