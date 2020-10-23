@@ -90,14 +90,10 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				var person = await context.PersonEntities
-					.FirstOrDefaultAsync(p => p.PersonUid == personUid);
-
-				var friend = await context.PersonEntities
-					.FirstOrDefaultAsync(p => p.PersonUid == friendUid);
-
 				var personToFriendEntity = await context.PersonFriendListEntities
-					.FirstOrDefaultAsync(p => p.PersonId == person.PersonId);
+					.Include(x => x.Person)
+					.Include(x => x.Friend)
+					.SingleOrDefaultAsync(p => p.Person.PersonUid == personUid && p.Friend.PersonUid == friendUid);
 
 				context.Remove(personToFriendEntity);
 
