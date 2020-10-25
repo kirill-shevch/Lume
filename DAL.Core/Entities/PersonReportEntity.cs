@@ -12,5 +12,7 @@ namespace DAL.Core.Entities
 		public long PersonId { get; set; }
 		public PersonEntity Person { get; set; }
 		public bool IsProcessed { get; set; }
+		public long AuthorId { get; set; }
+		public PersonEntity Author { get; set; }
 	}
 }

@@ -15,7 +15,9 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.CreationTime);
 			builder.Property(t => t.IsProcessed);
 			builder.Property(t => t.EventId);
+			builder.Property(t => t.AuthorId);
 			builder.HasOne(t => t.Event).WithMany().HasForeignKey(x => x.EventId);
+			builder.HasOne(t => t.Author).WithMany().HasForeignKey(x => x.AuthorId);
 		}
 	}
 }

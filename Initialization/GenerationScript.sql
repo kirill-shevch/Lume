@@ -80,7 +80,9 @@ CREATE TABLE LumeDB.dbo.PersonReport (
 	CreationTime datetime2(7) NULL,
 	PersonId bigint,
 	IsProcessed bit NOT NULL DEFAULT 0,
+	AuthorId bigint,
 	CONSTRAINT FK_PersonReport_Person FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
+	CONSTRAINT FK_PersonReport_Author FOREIGN KEY (AuthorId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT PK_PersonReportId PRIMARY KEY CLUSTERED (PersonReportId)
 );
 
@@ -141,7 +143,9 @@ CREATE TABLE LumeDB.dbo.EventReport (
 	CreationTime datetime2(7) NULL,
 	EventId bigint,
 	IsProcessed bit NOT NULL DEFAULT 0,
+	AuthorId bigint,
 	CONSTRAINT FK_EventReport_Event FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId),
+	CONSTRAINT FK_EventReport_Author FOREIGN KEY (AuthorId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT PK_EventReportId PRIMARY KEY CLUSTERED (EventReportId)
 );
 

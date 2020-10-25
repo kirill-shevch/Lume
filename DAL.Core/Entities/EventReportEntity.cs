@@ -12,5 +12,7 @@ namespace DAL.Core.Entities
 		public long EventId { get; set; }
 		public EventEntity Event { get; set; }
 		public bool IsProcessed { get; set; }
+		public long AuthorId { get; set; }
+		public PersonEntity Author { get; set; }
 	}
 }
