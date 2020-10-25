@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BLL.Core.Interfaces;
+﻿using BLL.Core.Interfaces;
 using BLL.Core.Models.Event;
 using Constants;
-using DAL.Core.Entities;
 using LumeWebApp.Responses.Event;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Utils;
 
 namespace LumeWebApp.Controllers
@@ -199,6 +198,20 @@ namespace LumeWebApp.Controllers
 			}
 			await _personLogic.AddPersonSwipeHistory(eventUid, uid);
 			return Ok(Messages.GetMessageJson(MessageTitles.RandomEventRejected, CultureParser.GetCultureFromHttpContext(HttpContext)));
+		}
+
+		[HttpPost]
+		[Route("add-report")]
+		public async Task<ActionResult> AddReport(EventReportModel model)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _eventValidation.ValidateAddReport(model);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _eventLogic.AddReport(model, uid);
+			return Ok(Messages.GetMessageJson(MessageTitles.ReportAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
 	}
 }

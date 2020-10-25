@@ -279,5 +279,19 @@ namespace BLL.Core
 			await _eventRepository.RemoveEventImage(imageEntity);
 			await _imageLogic.RemoveImage(request.ImageUid);
 		}
+
+		public async Task AddReport(EventReportModel model, Guid uid)
+		{
+			var eventEntity = await _eventRepository.GetEvent(model.EventUid);
+			var authorEntity = await _personRepository.GetPerson(uid);
+			var reportEntity = new EventReportEntity();
+			reportEntity.Text = model.Text;
+			reportEntity.EventId = eventEntity.EventId;
+			reportEntity.AuthorId = authorEntity.PersonId;
+			reportEntity.CreationTime = DateTime.UtcNow;
+			reportEntity.IsProcessed = false;
+			reportEntity.EventReportUid = Guid.NewGuid();
+			await _eventRepository.AddReport(reportEntity);
+		}
 	}
 }

@@ -19,5 +19,6 @@ namespace BLL.Core.Interfaces
 		Task AddEventSwipeHistory(Guid personUid, Guid eventUid);
 		Task AddPromoRewardRequest(PromoRewardRequestModel request);
 		Task RemoveEventImage(RemoveEventImageModel request);
+		Task AddReport(EventReportModel model, Guid uid);
 	}
 }

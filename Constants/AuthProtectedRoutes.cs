@@ -20,6 +20,7 @@ namespace Constants
              "/api/person/remove-person-token",
              "/api/person/add-feedback",
              "/api/person/get-badges",
+             "/api/person/add-report",
 
              "/api/event/add-event",
              "/api/event/get-event",
@@ -34,6 +35,7 @@ namespace Constants
              "/api/event/reject-random-event",
              "/api/event/add-promo-reward-request",
              "/api/event/remove-event-image",
+             "/api/event/add-report",
 
              "/api/friends/add-friend",
              "/api/friends/remove-friend",

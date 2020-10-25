@@ -323,5 +323,14 @@ namespace BLL.Core
 			}
 			return (true, string.Empty);
 		}
+
+		public (bool ValidationResult, string ValidationMessage) ValidateAddReport(EventReportModel model)
+		{
+			if (!_eventRepository.CheckEventExistence(model.EventUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(10, _culture));
+			}
+			return (true, string.Empty);
+		}
 	}
 }
