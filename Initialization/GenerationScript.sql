@@ -76,7 +76,7 @@ CREATE TABLE LumeDB.dbo.Person (
 CREATE TABLE LumeDB.dbo.PersonReport (
 	PersonReportId bigint IDENTITY(1,1) NOT NULL UNIQUE,
 	PersonReportUid uniqueidentifier NOT NULL UNIQUE,
-	Text nvarchar NULL,
+	Text nvarchar(MAX) NULL,
 	CreationTime datetime2(7) NULL,
 	PersonId bigint,
 	IsProcessed bit NOT NULL DEFAULT 0,
@@ -139,7 +139,7 @@ CREATE TABLE LumeDB.dbo.Event (
 CREATE TABLE LumeDB.dbo.EventReport (
 	EventReportId bigint IDENTITY(1,1) NOT NULL UNIQUE,
 	EventReportUid uniqueidentifier NOT NULL UNIQUE,
-	Text nvarchar NULL,
+	Text nvarchar(MAX) NULL,
 	CreationTime datetime2(7) NULL,
 	EventId bigint,
 	IsProcessed bit NOT NULL DEFAULT 0,
