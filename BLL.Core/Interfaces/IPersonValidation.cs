@@ -11,5 +11,6 @@ namespace BLL.Core.Interfaces
 		(bool ValidationResult, string ValidationMessage) ValidateGetPersonListByPage(GetPersonListFilter request);
 		(bool ValidationResult, string ValidationMessage) ValidateRejectRandomPerson(Guid eventUid, Guid personUid);
 		(bool ValidationResult, string ValidationMessage) ValidateFeedback(FeedbackModel model);
+		(bool ValidationResult, string ValidationMessage) ValidateAddReport(PersonReportModel model);
 	}
 }

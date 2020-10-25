@@ -115,6 +115,20 @@ namespace LumeWebApp.Controllers
 			return Ok(Messages.GetMessageJson(MessageTitles.FeedbackAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
 		}
 
+		[HttpPost]
+		[Route("add-report")]
+		public async Task<ActionResult> AddReport(PersonReportModel model)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _personValidation.ValidateAddReport(model);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _personLogic.AddReport(model, uid);
+			return Ok(Messages.GetMessageJson(MessageTitles.ReportAdded, CultureParser.GetCultureFromHttpContext(HttpContext)));
+		}
+
 		[HttpGet]
 		[Route("get-person-notifications")]
 		public async Task<ActionResult<PersonNotificationsModel>> GetPersonNotifications()

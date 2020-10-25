@@ -29,5 +29,6 @@ namespace DAL.Core.Interfaces
 		Task<List<PersonEntity>> GetPersonList(List<Guid> personUids);
 		Task<PersonEntity> GetPersonByToken(string token);
 		Task RemoveTokenForEveryPerson(string token);
+		Task AddReport(PersonReportEntity reportEntity);
 	}
 }

@@ -308,5 +308,14 @@ namespace DAL.Core.Repositories
 				return await context.PersonImageContentEntities.SingleOrDefaultAsync(x => x.PersonImageContentUid == imageUid);
 			}
 		}
+
+		public async Task AddReport(PersonReportEntity reportEntity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.PersonReportEntities.AddAsync(reportEntity);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

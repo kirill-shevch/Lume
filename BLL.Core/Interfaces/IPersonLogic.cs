@@ -23,5 +23,6 @@ namespace BLL.Core.Interfaces
 		Task<PersonNotificationsModel> GetPersonNotifications(Guid uid);
 		Task<PersonModel> RemovePersonToken(Guid uid);
 		Task AddFeedback(FeedbackModel model, Guid uid);
+		Task AddReport(PersonReportModel model, Guid uid);
 	}
 }
