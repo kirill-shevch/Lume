@@ -22,7 +22,9 @@ namespace Constants
 		ParticipantJoinedTheEvent,
 		EventPreLaunchNotification,
 		ReportAdded,
-		OperationsSuccessful
+		OperationsSuccessful,
+		NewChatMessageWithImage,
+		NewChatMessageWithoutImage
 	}
 
 	public static class Messages
@@ -66,7 +68,11 @@ namespace Constants
 			[(MessageTitles.ReportAdded, "en-US")] = "Report added!",
 			[(MessageTitles.ReportAdded, "ru-RU")] = "Жалоба отправлена!",			
 			[(MessageTitles.OperationsSuccessful, "en-US")] = "Success!",
-			[(MessageTitles.OperationsSuccessful, "ru-RU")] = "Успех!",
+			[(MessageTitles.OperationsSuccessful, "ru-RU")] = "Успех!",			
+			[(MessageTitles.NewChatMessageWithImage, "en-US")] = "Image",
+			[(MessageTitles.NewChatMessageWithImage, "ru-RU")] = "Изображение",			
+			[(MessageTitles.NewChatMessageWithoutImage, "en-US")] = "{0}",
+			[(MessageTitles.NewChatMessageWithoutImage, "ru-RU")] = "{0}",
 
 		};
 

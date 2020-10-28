@@ -272,5 +272,29 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task<List<PersonEntity>> GetChatMembers(ChatEntity chat)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				if (chat.IsGroupChat.HasValue && chat.IsGroupChat.Value)
+				{
+					return await context.PersonToEventEntities
+						.Include(x => x.Event)
+						.Include(x => x.Person)
+						.Where(x => x.Event.ChatId == chat.ChatId && x.ParticipantStatusId == (long)ParticipantStatus.Active)
+						.Select(x => x.Person)
+						.ToListAsync();
+				}
+				else
+				{
+					return await context.PersonToChatEntities
+						.Include(x => x.FirstPerson)
+						.Where(x => x.ChatId == chat.ChatId)
+						.Select(x => x.FirstPerson)
+						.ToListAsync();
+				}
+			}
+		}
 	}
 }
