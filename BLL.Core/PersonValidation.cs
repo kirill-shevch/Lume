@@ -24,6 +24,15 @@ namespace BLL.Core
 			_cityLogic = cityLogic;
 		}
 
+		public (bool ValidationResult, string ValidationMessage) ValidateAddReport(PersonReportModel model)
+		{
+			if (!_personRepository.CheckPersonExistence(model.PersonUid).Result)
+			{
+				return (false, ErrorDictionary.GetErrorMessage(2, _culture));
+			}
+			return (true, string.Empty);
+		}
+
 		public (bool ValidationResult, string ValidationMessage) ValidateFeedback(FeedbackModel model)
 		{
 			if (string.IsNullOrWhiteSpace(model.Text))

@@ -390,5 +390,14 @@ namespace DAL.Core.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
+
+		public async Task AddReport(EventReportEntity reportEntity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				await context.EventReportEntities.AddAsync(reportEntity);
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

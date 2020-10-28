@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS LumeDB.dbo.PersonAuth; 
 DROP TABLE IF EXISTS LumeDB.dbo.FeedbackImageContent; 
 DROP TABLE IF EXISTS LumeDB.dbo.Feedback; 
+DROP TABLE IF EXISTS LumeDB.dbo.PersonReport;
+DROP TABLE IF EXISTS LumeDB.dbo.EventReport;
 DROP TABLE IF EXISTS LumeDB.dbo.PromoRewardRequestImageContent; 
 DROP TABLE IF EXISTS LumeDB.dbo.PromoRewardRequest; 
 DROP TABLE IF EXISTS LumeDB.dbo.PersonFriendList;
@@ -71,6 +73,19 @@ CREATE TABLE LumeDB.dbo.Person (
 	CONSTRAINT PK_PersonId PRIMARY KEY CLUSTERED (PersonId)
 );
 
+CREATE TABLE LumeDB.dbo.PersonReport (
+	PersonReportId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	PersonReportUid uniqueidentifier NOT NULL UNIQUE,
+	Text nvarchar(MAX) NULL,
+	CreationTime datetime2(7) NULL,
+	PersonId bigint,
+	IsProcessed bit NOT NULL DEFAULT 0,
+	AuthorId bigint,
+	CONSTRAINT FK_PersonReport_Person FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
+	CONSTRAINT FK_PersonReport_Author FOREIGN KEY (AuthorId) REFERENCES LumeDB.dbo.Person (PersonId),
+	CONSTRAINT PK_PersonReportId PRIMARY KEY CLUSTERED (PersonReportId)
+);
+
 CREATE TABLE LumeDB.dbo.EventType (
 	EventTypeId bigint IDENTITY(0,1) NOT NULL UNIQUE,
 	EventTypeName nvarchar(100) NOT NULL UNIQUE,
@@ -119,6 +134,19 @@ CREATE TABLE LumeDB.dbo.Event (
 	CONSTRAINT FK_Event_Chat FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId),
 	CONSTRAINT FK_Event_City FOREIGN KEY (CityId) REFERENCES LumeDB.dbo.City (CityId),
 	CONSTRAINT PK_EventId PRIMARY KEY CLUSTERED (EventId)
+);
+
+CREATE TABLE LumeDB.dbo.EventReport (
+	EventReportId bigint IDENTITY(1,1) NOT NULL UNIQUE,
+	EventReportUid uniqueidentifier NOT NULL UNIQUE,
+	Text nvarchar(MAX) NULL,
+	CreationTime datetime2(7) NULL,
+	EventId bigint,
+	IsProcessed bit NOT NULL DEFAULT 0,
+	AuthorId bigint,
+	CONSTRAINT FK_EventReport_Event FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId),
+	CONSTRAINT FK_EventReport_Author FOREIGN KEY (AuthorId) REFERENCES LumeDB.dbo.Person (PersonId),
+	CONSTRAINT PK_EventReportId PRIMARY KEY CLUSTERED (EventReportId)
 );
 
 CREATE TABLE LumeDB.dbo.EventTypeToEvent (

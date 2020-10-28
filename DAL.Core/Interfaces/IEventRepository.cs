@@ -30,5 +30,6 @@ namespace DAL.Core.Interfaces
 		Task AddPromoRewardRequest(PromoRewardRequestEntity entity);
 		Task RemoveEventImage(EventImageContentEntity entity);
 		Task SetPrelaunchNotificationsFlag(List<EventEntity> eventEntities, CancellationToken cancellationToken = default);
+		Task AddReport(EventReportEntity reportEntity);
 	}
 }

@@ -248,5 +248,19 @@ namespace BLL.Core
 
 			return personModels;
 		}
+
+		public async Task AddReport(PersonReportModel model, Guid uid)
+		{
+			var personEntity = await _personRepository.GetPerson(model.PersonUid);
+			var authorEntity = await _personRepository.GetPerson(uid);
+			var reportEntity = new PersonReportEntity();
+			reportEntity.Text = model.Text;
+			reportEntity.PersonId = personEntity.PersonId;
+			reportEntity.AuthorId = authorEntity.PersonId;
+			reportEntity.CreationTime = DateTime.UtcNow;
+			reportEntity.IsProcessed = false;
+			reportEntity.PersonReportUid = Guid.NewGuid();
+			await _personRepository.AddReport(reportEntity);
+		}
 	}
 }
