@@ -39,6 +39,7 @@ namespace DAL.Core
 			builder.ApplyConfiguration(new PromoRewardRequestImageContentEntityConfiguration());
 			builder.ApplyConfiguration(new EventReportEntityConfiguration());
 			builder.ApplyConfiguration(new PersonReportEntityConfiguration());
+			builder.ApplyConfiguration(new PersonalChatTuningEntityConfiguration());
 		}
 
 		public DbSet<ChatEntity> ChatEntities { get; set; }
@@ -66,5 +67,6 @@ namespace DAL.Core
 		public DbSet<PromoRewardRequestImageContentEntity> PromoRewardRequestImageContentEntities { get; set; }
 		public DbSet<EventReportEntity> EventReportEntities { get; set; }
 		public DbSet<PersonReportEntity> PersonReportEntities { get; set; }
+		public DbSet<PersonalChatTuningEntity> personalChatTuningEntities { get; set; }
 	}
 }

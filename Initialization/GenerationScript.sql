@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS LumeDB.dbo.PromoRewardRequest;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonFriendList;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToEvent;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToChat;
+DROP TABLE IF EXISTS LumeDB.dbo.PersonalChatTuning;
 DROP TABLE IF EXISTS LumeDB.dbo.PersonToBadge;
 DROP TABLE IF EXISTS LumeDB.dbo.EventImageContent;
 DROP TABLE IF EXISTS LumeDB.dbo.EventSwipeHistory;
@@ -211,6 +212,15 @@ CREATE TABLE LumeDB.dbo.PersonToEvent (
   	CONSTRAINT FK_Person_PersonToEvent FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
   	CONSTRAINT FK_Event_PersonToEvent FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId),
   	CONSTRAINT FK_ParticipantStatus_PersonToEvent FOREIGN KEY (ParticipantStatusId) REFERENCES LumeDB.dbo.ParticipantStatus (ParticipantStatusId)
+);
+
+CREATE TABLE LumeDB.dbo.PersonalChatTuning (
+	ChatId bigint,
+	PersonId bigint,
+	IsMuted bit NOT NULL DEFAULT 0,
+	CONSTRAINT PK_PersonalChatTuning PRIMARY KEY (ChatId, PersonId),
+  	CONSTRAINT FK_Chat_PersonalChatTuning FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId),
+  	CONSTRAINT FK_Person_PersonalChatTuning FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId)
 );
 
 CREATE TABLE LumeDB.dbo.PersonToChat (
