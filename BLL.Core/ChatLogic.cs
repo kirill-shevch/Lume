@@ -180,5 +180,12 @@ namespace BLL.Core
 			}
 			return chatModels.OrderByDescending(x => x.LastMessage?.MessageTime).ToList();
 		}
+
+		public async Task MuteChat(Guid chatUid, bool mute, Guid personUid)
+		{
+			var personEntity = await _personRepository.GetPerson(personUid);
+			var chatEntity = await _chatRepository.GetChat(chatUid);
+			await _chatRepository.UpsertPersonalChatTuningEntity(new PersonalChatTuningEntity { ChatId = chatEntity.ChatId, PersonId = personEntity.PersonId, IsMuted = mute });
+		}
 	}
 }

@@ -250,5 +250,22 @@ namespace DAL.Core.Repositories
 				return 0;
 			}
 		}
+
+		public async Task UpsertPersonalChatTuningEntity(PersonalChatTuningEntity personalChatTuningEntity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var settingExists = await context.PersonalChatTuningEntities.Where(x => x.PersonId == personalChatTuningEntity.PersonId && x.ChatId == personalChatTuningEntity.ChatId).AnyAsync();
+				if (settingExists)
+				{
+					context.PersonalChatTuningEntities.Update(personalChatTuningEntity);
+				}
+				else
+				{
+					await context.PersonalChatTuningEntities.AddAsync(personalChatTuningEntity);
+				}
+				await context.SaveChangesAsync();
+			}
+		}
 	}
 }

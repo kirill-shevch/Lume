@@ -23,5 +23,6 @@ namespace DAL.Core.Interfaces
 		Task AddLastReadChatMessage(ChatEntity chatEntity, Guid personUid, long messageId);
 		Task<bool> CheckPersonForNewChatMessages(Guid personUid);
 		Task<int> GetChatUnreadMessagesCount(ChatEntity chat, Guid uid);
+		Task UpsertPersonalChatTuningEntity(PersonalChatTuningEntity personalChatTuningEntity);
 	}
 }

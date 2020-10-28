@@ -11,5 +11,6 @@ namespace BLL.Core.Interfaces
 		(bool ValidationResult, string ValidationMessage) ValidateGetPersonChat(Guid userUid, Guid personUid);
 		(bool ValidationResult, string ValidationMessage) ValidateAddChatMessage(AddMessageModel request, Guid personUid);
 		(bool ValidationResult, string ValidationMessage) ValidateGetNewChatMessages(Guid chatUid, Guid? messageUid);
+		(bool ValidationResult, string ValidationMessage) ValidateMuteChat(Guid chatUid, Guid personUid);
 	}
 }

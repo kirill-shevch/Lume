@@ -67,6 +67,6 @@ namespace DAL.Core
 		public DbSet<PromoRewardRequestImageContentEntity> PromoRewardRequestImageContentEntities { get; set; }
 		public DbSet<EventReportEntity> EventReportEntities { get; set; }
 		public DbSet<PersonReportEntity> PersonReportEntities { get; set; }
-		public DbSet<PersonalChatTuningEntity> personalChatTuningEntities { get; set; }
+		public DbSet<PersonalChatTuningEntity> PersonalChatTuningEntities { get; set; }
 	}
 }
