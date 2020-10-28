@@ -22,7 +22,10 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				return await context.ChatEntities.SingleOrDefaultAsync(x => x.ChatUid == uid, cancellationToken);
+				return await context.ChatEntities
+					.Include(x => x.PersonalSettings)
+						.ThenInclude(x => x.Person)
+					.SingleOrDefaultAsync(x => x.ChatUid == uid, cancellationToken);
 			}
 		}
 
@@ -67,6 +70,8 @@ namespace DAL.Core.Repositories
 					.Include(x => x.FirstPerson)
 					.Include(x => x.SecondPerson)
 					.Include(x => x.Chat)
+						.ThenInclude(x => x.PersonalSettings)
+							.ThenInclude(x => x.Person)
 						.Where(x => x.FirstPerson.PersonUid == userUid && x.SecondPerson.PersonUid == friendUid)
 					.SingleOrDefaultAsync();
 				return personToChat?.Chat;

@@ -72,6 +72,8 @@ namespace BLL.Core
 			var chatEntity = await _chatRepository.GetChat(chatUid);
 			var unreadMessagesCount = await _chatRepository.GetChatUnreadMessagesCount(chatEntity, personUid);
 			var chatModel = _mapper.Map<ChatModel>(chatEntity);
+			var personSetting = chatEntity.PersonalSettings.SingleOrDefault(x => x.Person.PersonUid == personUid);
+			chatModel.IsMuted = personSetting == null ? false : personSetting.IsMuted;
 			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, pageNumber, pageSize);
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
 			if (chatEntity.IsGroupChat.HasValue && chatEntity.IsGroupChat.Value)
@@ -142,6 +144,8 @@ namespace BLL.Core
 			chatModel.ChatName = personEntity.Name;
 			chatModel.PersonUid = personEntity.PersonUid;
 			chatModel.PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid;
+			var personSetting = chatEntity.PersonalSettings.SingleOrDefault(x => x.Person.PersonUid == uid);
+			chatModel.IsMuted = personSetting == null ? false : personSetting.IsMuted;
 			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, 1, pageSize);
 			if (chatMessageEntities.Any())
 			{
