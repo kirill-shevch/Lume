@@ -170,7 +170,7 @@ namespace BLL.Authorization
 
 		public async Task SendPushNotification(string code, string token)
 		{
-			await _pushNotificationService.SendPushNotification(token, MessageTitles.PushNotificationMessage, null, code);
+			await _pushNotificationService.SendPushNotification(token, MessageTitles.PushNotificationMessage, null, "Lume", code);
 		}
 	}
 }

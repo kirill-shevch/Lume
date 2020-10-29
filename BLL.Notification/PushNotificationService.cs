@@ -23,7 +23,7 @@ namespace BLL.Notification
 			_configuration = configuration;
 		}
 
-		public async Task SendPushNotification(string token, MessageTitles messageBodyTitle, Dictionary<FirebaseNotificationKeys, string> data, string title = "Lume", params string[] args)
+		public async Task SendPushNotification(string token, MessageTitles messageBodyTitle, Dictionary<FirebaseNotificationKeys, string> data, string title, params string[] args)
 		{
 			var key = _configuration.GetValue<string>(ConfigurationKeys.FirebaseKey);
 			if (!string.IsNullOrEmpty(key))
