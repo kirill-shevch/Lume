@@ -21,7 +21,10 @@ namespace Constants
 		ParticipantWaitingForApproval,
 		ParticipantJoinedTheEvent,
 		EventPreLaunchNotification,
-		ReportAdded
+		ReportAdded,
+		OperationsSuccessful,
+		NewChatMessageWithImage,
+		NewChatMessageWithoutImage
 	}
 
 	public static class Messages
@@ -63,7 +66,14 @@ namespace Constants
 			[(MessageTitles.EventPreLaunchNotification, "en-US")] = @"The event ""{0}"" will start soon",
 			[(MessageTitles.EventPreLaunchNotification, "ru-RU")] = @"Скоро начнётся событие ""{0}""",
 			[(MessageTitles.ReportAdded, "en-US")] = "Report added!",
-			[(MessageTitles.ReportAdded, "ru-RU")] = "Жалоба отправлена!",
+			[(MessageTitles.ReportAdded, "ru-RU")] = "Жалоба отправлена!",			
+			[(MessageTitles.OperationsSuccessful, "en-US")] = "Success!",
+			[(MessageTitles.OperationsSuccessful, "ru-RU")] = "Успех!",			
+			[(MessageTitles.NewChatMessageWithImage, "en-US")] = "Image",
+			[(MessageTitles.NewChatMessageWithImage, "ru-RU")] = "Изображение",			
+			[(MessageTitles.NewChatMessageWithoutImage, "en-US")] = "{0}",
+			[(MessageTitles.NewChatMessageWithoutImage, "ru-RU")] = "{0}",
+
 		};
 
 		public static string GetMessageJson(MessageTitles title, string culture) => $"{{ \"data\":\"{MessageContent[(title, culture)]}\" }}";

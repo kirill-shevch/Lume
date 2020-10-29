@@ -12,5 +12,6 @@ namespace DAL.Core.Entities
 		public bool? IsGroupChat { get; set; }
 		public IEnumerable<ChatMessageEntity> ChatMessageEntities { get; set; }
 		public IEnumerable<PersonToChatEntity> PersonList { get; set; }
+		public IEnumerable<PersonalChatTuningEntity> PersonalSettings { get; set; }
 	}
 }

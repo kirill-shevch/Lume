@@ -179,7 +179,7 @@ namespace BLL.Core
 			{
 				await _pushNotificationService.SendPushNotification(person.Token, 
 					MessageTitles.AddParticipantNotificationMessage, 
-					new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.UrlTemplate, eventEntity.EventUid) }, 
+					new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.EventUrlTemplate, eventEntity.EventUid) }, 
 					eventEntity.Name);
 			}
 			if (eventEntity.Administrator != null && eventEntity.Administrator.Token != null && eventEntity.Administrator.PersonUid != personUid)
@@ -188,14 +188,14 @@ namespace BLL.Core
 				{
 					await _pushNotificationService.SendPushNotification(eventEntity.Administrator.Token,
 						MessageTitles.ParticipantWaitingForApproval,
-						new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.UrlTemplate, eventEntity.EventUid) },
+						new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.EventUrlTemplate, eventEntity.EventUid) },
 						eventEntity.Name);
 				}
 				else if (eventParticipantModel.ParticipantStatus == ParticipantStatus.Active)
 				{
 					await _pushNotificationService.SendPushNotification(eventEntity.Administrator.Token,
 						MessageTitles.ParticipantJoinedTheEvent,
-						new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.UrlTemplate, eventEntity.EventUid) },
+						new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.EventUrlTemplate, eventEntity.EventUid) },
 						eventEntity.Name);
 				}
 			}

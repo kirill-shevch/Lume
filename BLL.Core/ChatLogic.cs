@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Core.Interfaces;
 using BLL.Core.Models.Chat;
+using BLL.Notification.Interfaces;
 using Constants;
 using DAL.Core.Entities;
 using DAL.Core.Interfaces;
@@ -18,17 +19,20 @@ namespace BLL.Core
 		private readonly IEventRepository _eventRepository;
 		private readonly IImageLogic _imageLogic;
 		private readonly IPersonRepository _personRepository;
+		private readonly IPushNotificationService _pushNotificationService;
 		private readonly IMapper _mapper;
 		public ChatLogic(IChatRepository chatRepository,
 			IEventRepository eventRepository,
 			IImageLogic imageLogic,
 			IPersonRepository personRepository,
+			IPushNotificationService pushNotificationService,
 			IMapper mapper)
 		{
 			_chatRepository = chatRepository;
 			_eventRepository = eventRepository;
 			_imageLogic = imageLogic;
 			_personRepository = personRepository;
+			_pushNotificationService = pushNotificationService;
 			_mapper = mapper;
 		}
 
@@ -55,6 +59,7 @@ namespace BLL.Core
 				chatImageUids.Add(chatImageUid);
 			}
 			await _chatRepository.AddLastReadChatMessage(chatEntity, personUid, messageEntity.ChatMessageId);
+			await SendPushNotificationsToChatMembers(chatEntity, personEntity, request.Content);
 			return new ChatMessageModel 
 			{ 
 				Images = chatImageUids,
@@ -72,6 +77,8 @@ namespace BLL.Core
 			var chatEntity = await _chatRepository.GetChat(chatUid);
 			var unreadMessagesCount = await _chatRepository.GetChatUnreadMessagesCount(chatEntity, personUid);
 			var chatModel = _mapper.Map<ChatModel>(chatEntity);
+			var personSetting = chatEntity.PersonalSettings.SingleOrDefault(x => x.Person.PersonUid == personUid);
+			chatModel.IsMuted = personSetting == null ? false : personSetting.IsMuted;
 			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, pageNumber, pageSize);
 			chatModel.Messages = _mapper.Map<List<ChatMessageModel>>(chatMessageEntities);
 			if (chatEntity.IsGroupChat.HasValue && chatEntity.IsGroupChat.Value)
@@ -142,6 +149,8 @@ namespace BLL.Core
 			chatModel.ChatName = personEntity.Name;
 			chatModel.PersonUid = personEntity.PersonUid;
 			chatModel.PersonImageUid = personEntity.PersonImageContentEntity?.PersonImageContentUid;
+			var personSetting = chatEntity.PersonalSettings.SingleOrDefault(x => x.Person.PersonUid == uid);
+			chatModel.IsMuted = personSetting == null ? false : personSetting.IsMuted;
 			var chatMessageEntities = await _chatRepository.GetChatMessages(chatEntity.ChatId, 1, pageSize);
 			if (chatMessageEntities.Any())
 			{
@@ -179,6 +188,44 @@ namespace BLL.Core
 				chatModels.Add(personalChatModel);
 			}
 			return chatModels.OrderByDescending(x => x.LastMessage?.MessageTime).ToList();
+		}
+
+		public async Task MuteChat(Guid chatUid, bool mute, Guid personUid)
+		{
+			var personEntity = await _personRepository.GetPerson(personUid);
+			var chatEntity = await _chatRepository.GetChat(chatUid);
+			await _chatRepository.UpsertPersonalChatTuningEntity(new PersonalChatTuningEntity { ChatId = chatEntity.ChatId, PersonId = personEntity.PersonId, IsMuted = mute });
+		}
+
+		private async Task SendPushNotificationsToChatMembers(ChatEntity chatEntity, PersonEntity personEntity, string content)
+		{
+			var chatMembers = await _chatRepository.GetChatMembers(chatEntity);
+			var mutedPersonIds = chatEntity.PersonalSettings
+				.Where(x => x.IsMuted)
+				.Select(x => x.PersonId);
+			var notificationList = chatMembers
+				.Where(x => x.PersonId != personEntity.PersonId && !mutedPersonIds.Contains(x.PersonId));
+			string title;
+			if (chatEntity.IsGroupChat.HasValue && chatEntity.IsGroupChat.Value)
+			{
+				var eventEntity = await _eventRepository.GetEventByChatId(chatEntity.ChatId);
+				title = eventEntity.Name;
+			}
+			else
+			{
+				title = personEntity.Name;
+			}
+			var messageBody = string.IsNullOrWhiteSpace(content) ? MessageTitles.NewChatMessageWithImage : MessageTitles.NewChatMessageWithoutImage;
+			foreach (var person in notificationList)
+			{
+				if (!string.IsNullOrWhiteSpace(person.Token))
+				{
+					_ = _pushNotificationService.SendPushNotification(person.Token, messageBody,
+						new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.ChatUrlTemplate, chatEntity.ChatUid) },
+						title,
+						string.IsNullOrWhiteSpace(content) ? null : content);
+				}
+			}
 		}
 	}
 }

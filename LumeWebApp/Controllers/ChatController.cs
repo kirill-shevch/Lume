@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Utils;
 
 namespace LumeWebApp.Controllers
 {
@@ -82,5 +83,19 @@ namespace LumeWebApp.Controllers
 			}
 			return await _chatLogic.GetNewChatMessages(chatUid, messageUid, uid);
 		}
-	}
+
+		[HttpPost]
+		[Route("mute-chat")]
+		public async Task<ActionResult> MuteChat(Guid chatUid, bool mute)
+		{
+			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
+			var validationResult = _chatValidation.ValidateMuteChat(chatUid, uid);
+			if (!validationResult.ValidationResult)
+			{
+				return BadRequest(validationResult.ValidationMessage);
+			}
+			await _chatLogic.MuteChat(chatUid, mute, uid);
+			return Ok(Messages.GetMessageJson(MessageTitles.OperationsSuccessful, CultureParser.GetCultureFromHttpContext(HttpContext)));
+		}
+	} 
 }

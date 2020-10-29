@@ -47,6 +47,7 @@ namespace Constants
              "/api/chat/get-person-chat-list",
              "/api/chat/add-chat-message",
              "/api/chat/get-new-chat-messages",
+             "/api/chat/mute-chat",
 
              "/api/city/get-cities",
              "/api/city/check-city-for-promo-reward",

@@ -22,7 +22,10 @@ namespace DAL.Core.Repositories
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				return await context.ChatEntities.SingleOrDefaultAsync(x => x.ChatUid == uid, cancellationToken);
+				return await context.ChatEntities
+					.Include(x => x.PersonalSettings)
+						.ThenInclude(x => x.Person)
+					.SingleOrDefaultAsync(x => x.ChatUid == uid, cancellationToken);
 			}
 		}
 
@@ -67,6 +70,8 @@ namespace DAL.Core.Repositories
 					.Include(x => x.FirstPerson)
 					.Include(x => x.SecondPerson)
 					.Include(x => x.Chat)
+						.ThenInclude(x => x.PersonalSettings)
+							.ThenInclude(x => x.Person)
 						.Where(x => x.FirstPerson.PersonUid == userUid && x.SecondPerson.PersonUid == friendUid)
 					.SingleOrDefaultAsync();
 				return personToChat?.Chat;
@@ -248,6 +253,47 @@ namespace DAL.Core.Repositories
 					return await context.ChatMessageEntities.Where(x => x.ChatId == chat.ChatId).CountAsync(x => x.ChatMessageId > personToChatEntity.LastReadChatMessageId);
 				}
 				return 0;
+			}
+		}
+
+		public async Task UpsertPersonalChatTuningEntity(PersonalChatTuningEntity personalChatTuningEntity)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				var settingExists = await context.PersonalChatTuningEntities.Where(x => x.PersonId == personalChatTuningEntity.PersonId && x.ChatId == personalChatTuningEntity.ChatId).AnyAsync();
+				if (settingExists)
+				{
+					context.PersonalChatTuningEntities.Update(personalChatTuningEntity);
+				}
+				else
+				{
+					await context.PersonalChatTuningEntities.AddAsync(personalChatTuningEntity);
+				}
+				await context.SaveChangesAsync();
+			}
+		}
+
+		public async Task<List<PersonEntity>> GetChatMembers(ChatEntity chat)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				if (chat.IsGroupChat.HasValue && chat.IsGroupChat.Value)
+				{
+					return await context.PersonToEventEntities
+						.Include(x => x.Event)
+						.Include(x => x.Person)
+						.Where(x => x.Event.ChatId == chat.ChatId && x.ParticipantStatusId == (long)ParticipantStatus.Active)
+						.Select(x => x.Person)
+						.ToListAsync();
+				}
+				else
+				{
+					return await context.PersonToChatEntities
+						.Include(x => x.FirstPerson)
+						.Where(x => x.ChatId == chat.ChatId)
+						.Select(x => x.FirstPerson)
+						.ToListAsync();
+				}
 			}
 		}
 	}

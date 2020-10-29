@@ -40,7 +40,7 @@ namespace BLL.Core
 				{
 					_ = _pushNotificationService.SendPushNotification(participant.Person.Token,
 						MessageTitles.EventPreLaunchNotification,
-						new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.UrlTemplate, participant.Event.EventUid) },
+						new Dictionary<FirebaseNotificationKeys, string> { [FirebaseNotificationKeys.Url] = string.Format(FirebaseNotificationTemplates.EventUrlTemplate, participant.Event.EventUid) },
 						participant.Event.Name);
                 }
             }
