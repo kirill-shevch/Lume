@@ -28,7 +28,6 @@ namespace DAL.Core.Repositories
 						.ThenInclude(x => x.Friend)
 							.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.City)
-					.Include(x => x.SwipeHistory)
 					.SingleOrDefaultAsync(x => x.PersonUid == uid, cancellationToken);
 			}
 		}
@@ -39,6 +38,15 @@ namespace DAL.Core.Repositories
 			{
 				await context.AddAsync(new PersonEntity { PersonUid = personUid }, cancellationToken);
 				await context.SaveChangesAsync(cancellationToken);
+			}
+		}
+
+		public async Task<List<long>> GetPersonSwipeHistory(long personId)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonSwipeHistoryEntities.Where(x => x.PersonId == personId)
+					.Select(x => x.EventId).ToListAsync();
 			}
 		}
 
@@ -269,7 +277,6 @@ namespace DAL.Core.Repositories
 						.ThenInclude(x => x.Friend)
 							.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.City)
-					.Include(x => x.SwipeHistory)
 					.Where(x => personUids.Contains(x.PersonUid))
 					.ToListAsync();
 			}

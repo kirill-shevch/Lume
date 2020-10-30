@@ -30,5 +30,6 @@ namespace DAL.Core.Interfaces
 		Task<PersonEntity> GetPersonByToken(string token);
 		Task RemoveTokenForEveryPerson(string token);
 		Task AddReport(PersonReportEntity reportEntity);
+		Task<List<long>> GetPersonSwipeHistory(long personId);
 	}
 }

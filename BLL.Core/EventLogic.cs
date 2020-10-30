@@ -235,7 +235,7 @@ namespace BLL.Core
 			var personEntity = await _personRepository.GetPerson(personUid);
 			repositoryFilter.Age = personEntity.Age.Value;
 			repositoryFilter.PersonUid = personUid;
-			repositoryFilter.IgnoringEventList = personEntity.SwipeHistory.Select(x => x.EventId).ToList();
+			repositoryFilter.IgnoringEventList = await _personRepository.GetPersonSwipeHistory(personEntity.PersonId);
 			var entity = await _eventRepository.GetRandomEvent(repositoryFilter);
 			return _mapper.Map<GetEventModel>(entity);
 		}
