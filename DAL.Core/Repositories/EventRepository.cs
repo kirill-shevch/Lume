@@ -40,30 +40,32 @@ namespace DAL.Core.Repositories
 			}
 		}
 
+		public async Task<EventEntity> GetPureEvent(Guid eventUid, CancellationToken cancellationToken = default)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.EventEntities.Include(x => x.Administrator).SingleOrDefaultAsync(x => x.EventUid == eventUid, cancellationToken);
+			}
+		}
+
 		public async Task<EventEntity> GetEvent(Guid eventUid, CancellationToken cancellationToken = default)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())
 			{
-				return await context.EventEntities
+				var entity = await context.EventEntities
 					.Include(x => x.EventStatus)
 					.Include(x => x.EventTypes)
 						.ThenInclude(x => x.EventType)
 					.Include(x => x.EventImageContentEntities)
-					.Include(x => x.Administrator)
-						.ThenInclude(x => x.PersonImageContentEntity)
-					.Include(x => x.Administrator)
-						.ThenInclude(x => x.City)
-					.Include(x => x.Participants)
-						.ThenInclude(x => x.Person)
-							.ThenInclude(x => x.PersonImageContentEntity)
-					.Include(x => x.Participants)
-						.ThenInclude(x => x.Person)
-							.ThenInclude(x => x.City)
 					.Include(x => x.Chat)
 					.Include(x => x.City)
-					.Include(x => x.SwipeHistory)
 					.Include(x => x.PromoRewardRequests)
 					.SingleOrDefaultAsync(x => x.EventUid == eventUid, cancellationToken);
+				if (entity != null)
+				{
+					await GetEventParticipants(context, entity);
+				}
+				return entity;
 			}
 		}
 
@@ -86,15 +88,14 @@ namespace DAL.Core.Repositories
 						.ThenInclude(x => x.EventType)
 					.Include(x => x.EventImageContentEntities)
 					.Include(x => x.Administrator)
-						.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Participants)
 						.ThenInclude(x => x.Person)
-							.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Chat)
 					.Include(x => x.City)
-					.Where(x => x.Administrator.PersonUid == personUid || x.Participants.Any(x => x.Person.PersonUid == personUid))
+					.Where(x => x.Participants.Any(x => x.Person.PersonUid == personUid))
 					.OrderBy(x => x.StartTime)
 					.ToListAsync();
+				
 			}
 		}
 
@@ -210,19 +211,19 @@ namespace DAL.Core.Repositories
 					return null;
 				}
 				var randomEventId = events.ElementAt(random.Next(0, events.Count()));
-				return await context.EventEntities
+				var entity = await context.EventEntities
 					.Include(x => x.EventStatus)
 					.Include(x => x.EventTypes)
 						.ThenInclude(x => x.EventType)
 					.Include(x => x.EventImageContentEntities)
-					.Include(x => x.Administrator)
-						.ThenInclude(x => x.PersonImageContentEntity)
-					.Include(x => x.Participants)
-						.ThenInclude(x => x.Person)
-							.ThenInclude(x => x.PersonImageContentEntity)
 					.Include(x => x.Chat)
 					.Include(x => x.City)
 					.SingleOrDefaultAsync(x => x.EventId == randomEventId);
+				if (entity != null)
+				{
+					await GetEventParticipants(context, entity);
+				}
+				return entity;
 			}
 		}
 
@@ -398,6 +399,29 @@ namespace DAL.Core.Repositories
 				await context.EventReportEntities.AddAsync(reportEntity);
 				await context.SaveChangesAsync();
 			}
+		}
+
+		public async Task<List<long>> GetEventSwipeHistory(long eventId)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.EventSwipeHistoryEntities.Where(x => x.EventId == eventId)
+					.Select(x => x.PersonId)
+					.ToListAsync();
+			}
+		}
+
+		private async Task GetEventParticipants(CoreDbContext context, EventEntity entity)
+		{
+			var participants = await context.PersonToEventEntities
+				.Include(x => x.Person)
+					.ThenInclude(x => x.City)
+				.Include(x => x.Person)
+					.ThenInclude(x => x.PersonImageContentEntity)
+				.Where(x => x.EventId == entity.EventId)
+				.ToListAsync();
+			entity.Participants = participants;
+			entity.Administrator = participants.Single(x => x.PersonId == entity.AdministratorId).Person;
 		}
 	}
 }

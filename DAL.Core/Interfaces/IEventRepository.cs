@@ -31,5 +31,7 @@ namespace DAL.Core.Interfaces
 		Task RemoveEventImage(EventImageContentEntity entity);
 		Task SetPrelaunchNotificationsFlag(List<EventEntity> eventEntities, CancellationToken cancellationToken = default);
 		Task AddReport(EventReportEntity reportEntity);
+		Task<List<long>> GetEventSwipeHistory(long eventId);
+		Task<EventEntity> GetPureEvent(Guid eventUid, CancellationToken cancellationToken = default);
 	}
 }

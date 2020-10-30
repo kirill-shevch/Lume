@@ -174,7 +174,7 @@ namespace BLL.Core
 			var entity = await CreateParticipantEntity(eventParticipantModel);
 			await _eventRepository.AddParticipant(entity);
 			var person = await _personRepository.GetPerson(eventParticipantModel.PersonUid);
-			var eventEntity = await _eventRepository.GetEvent(eventParticipantModel.EventUid);
+			var eventEntity = await _eventRepository.GetPureEvent(eventParticipantModel.EventUid);
 			if (!string.IsNullOrEmpty(person.Token) && eventParticipantModel.PersonUid != personUid)
 			{
 				await _pushNotificationService.SendPushNotification(person.Token, 
@@ -220,7 +220,7 @@ namespace BLL.Core
 		private async Task<PersonToEventEntity> CreateParticipantEntity(EventParticipantModel eventParticipantModel)
 		{
 			var personEntity = await _personRepository.GetPerson(eventParticipantModel.PersonUid);
-			var eventEntity = await _eventRepository.GetEvent(eventParticipantModel.EventUid);
+			var eventEntity = await _eventRepository.GetPureEvent(eventParticipantModel.EventUid);
 			return new PersonToEventEntity
 			{
 				EventId = eventEntity.EventId,
@@ -249,14 +249,14 @@ namespace BLL.Core
 
 		public async Task AddEventSwipeHistory(Guid personUid, Guid eventUid)
 		{
-			var eventEntity = await _eventRepository.GetEvent(eventUid);
+			var eventEntity = await _eventRepository.GetPureEvent(eventUid);
 			var personEntity = await _personRepository.GetPerson(personUid);
 			await _eventRepository.AddEventSwipeHistoryRecord(new EventSwipeHistoryEntity { EventId = eventEntity.EventId, PersonId = personEntity.PersonId });
 		}
 
 		public async Task AddPromoRewardRequest(PromoRewardRequestModel request)
 		{
-			var eventEntity = await _eventRepository.GetEvent(request.EventUid);
+			var eventEntity = await _eventRepository.GetPureEvent(request.EventUid);
 			var entity = new PromoRewardRequestEntity();
 			entity.AccountingNumber = request.AccountingNumber;
 			entity.PromoRewardRequestUid = Guid.NewGuid();
@@ -285,7 +285,7 @@ namespace BLL.Core
 
 		public async Task AddReport(EventReportModel model, Guid uid)
 		{
-			var eventEntity = await _eventRepository.GetEvent(model.EventUid);
+			var eventEntity = await _eventRepository.GetPureEvent(model.EventUid);
 			var authorEntity = await _personRepository.GetPerson(uid);
 			var reportEntity = new EventReportEntity();
 			reportEntity.Text = model.Text;
