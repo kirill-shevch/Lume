@@ -166,17 +166,17 @@ namespace BLL.Core
 		public async Task<PersonModel> GetRandomPerson(RandomPersonFilter randomPersonFilter, Guid uid)
 		{
 			var personEntity = await _personRepository.GetPerson(uid);
-			var eventEntity = await _eventRepository.GetEvent(randomPersonFilter.EventUid);
+			var eventEntity = await _eventRepository.GetPureEvent(randomPersonFilter.EventUid);
 			var filter = _mapper.Map<RepositoryRandomPersonFilter>(randomPersonFilter);
 			filter.EventId = eventEntity.EventId;
-			filter.IgnoringPersonList = eventEntity.SwipeHistory.Select(x => x.PersonId).ToList();
+			filter.IgnoringPersonList = await _eventRepository.GetEventSwipeHistory(eventEntity.EventId);
 			var randomPersonEntity = await _personRepository.GetRandomPerson(filter, personEntity.PersonId);
 			return _mapper.Map<PersonModel>(randomPersonEntity);
 		}
 
 		public async Task AddPersonSwipeHistory(Guid eventUid, Guid personUid)
 		{
-			var eventEntity = await _eventRepository.GetEvent(eventUid);
+			var eventEntity = await _eventRepository.GetPureEvent(eventUid);
 			var personEntity = await _personRepository.GetPerson(personUid);
 			await _personRepository.AddPersonSwipeHistoryRecord(new PersonSwipeHistoryEntity { PersonId = personEntity.PersonId, EventId = eventEntity.EventId });
 		}
