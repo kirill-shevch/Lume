@@ -23,6 +23,7 @@ namespace DAL.Core.Entities
 		public long ChatId { get; set; }
 		public long? CityId { get; set; }
 		public bool IsPrelaunchNotificationSent { get; set; }
+		public DateTime? CreationTime { get; set; }
 		public IEnumerable<EventImageContentEntity> EventImageContentEntities { get; set; }
 		public EventStatusEntity EventStatus { get; set; }
 		public PersonEntity Administrator { get; set; }
