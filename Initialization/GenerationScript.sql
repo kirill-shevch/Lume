@@ -36,6 +36,7 @@ CREATE TABLE LumeDB.dbo.PersonAuth (
 	TemporaryCodeTime datetime2(7) NULL,
 	PhoneNumber nvarchar(20) NOT NULL UNIQUE,
 	IsBlocked bit NOT NULL DEFAULT 0, 
+	CreationTime datetime2(7) NULL,
 	CONSTRAINT PK_PersonAuthId PRIMARY KEY CLUSTERED (PersonAuthId)
 );
 
@@ -69,6 +70,7 @@ CREATE TABLE LumeDB.dbo.Person (
 	PersonImageContentId bigint NULL,
 	CityId bigint NULL,
 	Token nvarchar(400) NULL,
+	IsAdministrator bit NOT NULL DEFAULT 0,
 	CONSTRAINT FK_Person_PersonImageContent FOREIGN KEY (PersonImageContentId) REFERENCES LumeDB.dbo.PersonImageContent (PersonImageContentId),
 	CONSTRAINT FK_Person_City FOREIGN KEY (CityId) REFERENCES LumeDB.dbo.City (CityId),
 	CONSTRAINT PK_PersonId PRIMARY KEY CLUSTERED (PersonId)
@@ -82,6 +84,7 @@ CREATE TABLE LumeDB.dbo.PersonReport (
 	PersonId bigint,
 	IsProcessed bit NOT NULL DEFAULT 0,
 	AuthorId bigint,
+	IsResolved bit NOT NULL DEFAULT 0,
 	CONSTRAINT FK_PersonReport_Person FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT FK_PersonReport_Author FOREIGN KEY (AuthorId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT PK_PersonReportId PRIMARY KEY CLUSTERED (PersonReportId)
@@ -130,6 +133,7 @@ CREATE TABLE LumeDB.dbo.Event (
 	ChatId bigint null,
 	CityId bigint null,
 	IsPrelaunchNotificationSent bit NOT NULL DEFAULT 0,
+	CreationTime datetime2(7) NULL,
 	CONSTRAINT FK_Event_EventStatus FOREIGN KEY (EventStatusId) REFERENCES LumeDB.dbo.EventStatus (EventStatusId),
 	CONSTRAINT FK_Event_Person FOREIGN KEY (AdministratorId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT FK_Event_Chat FOREIGN KEY (ChatId) REFERENCES LumeDB.dbo.Chat (ChatId),
@@ -145,6 +149,7 @@ CREATE TABLE LumeDB.dbo.EventReport (
 	EventId bigint,
 	IsProcessed bit NOT NULL DEFAULT 0,
 	AuthorId bigint,
+	IsResolved bit NOT NULL DEFAULT 0,
 	CONSTRAINT FK_EventReport_Event FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId),
 	CONSTRAINT FK_EventReport_Author FOREIGN KEY (AuthorId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT PK_EventReportId PRIMARY KEY CLUSTERED (EventReportId)
@@ -261,6 +266,7 @@ CREATE TABLE LumeDB.dbo.Feedback (
 	PhoneModel nvarchar(800) NULL,
 	ApplicationVersion nvarchar(400) NULL,
 	FeedbackTime datetime2(7) NULL,
+	IsResolved bit NOT NULL DEFAULT 0,
 	CONSTRAINT FK_Feedback_Person FOREIGN KEY (PersonId) REFERENCES LumeDB.dbo.Person (PersonId),
 	CONSTRAINT PK_FeedbackId PRIMARY KEY CLUSTERED (FeedbackId)
 );
@@ -279,6 +285,7 @@ CREATE TABLE LumeDB.dbo.PromoRewardRequest (
 	PromoRewardRequestUid uniqueidentifier NOT NULL UNIQUE,
 	AccountingNumber nvarchar(150) NULL,
 	PromoRewardRequestTime datetime2(7) NULL,
+	IsResolved bit NOT NULL DEFAULT 0,
 	CONSTRAINT FK_PromoRewardRequest_Event FOREIGN KEY (EventId) REFERENCES LumeDB.dbo.Event (EventId),
 	CONSTRAINT PK_PromoRewardRequestId PRIMARY KEY CLUSTERED (PromoRewardRequestId)
 );
