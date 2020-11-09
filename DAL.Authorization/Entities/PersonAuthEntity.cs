@@ -17,5 +17,6 @@ namespace DAL.Authorization.Entities
 		public string TemporaryCode { get; set; }
 		public DateTime? TemporaryCodeTime { get; set; }
 		public bool IsBlocked { get; set; }
+		public DateTime? CreationTime { get; set; }
 	}
 }

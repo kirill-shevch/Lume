@@ -25,6 +25,7 @@ namespace DAL.Core.Configurations
 			builder.Property(t => t.AdministratorId);
 			builder.Property(t => t.ChatId);
 			builder.Property(t => t.IsPrelaunchNotificationSent);
+			builder.Property(t => t.CreationTime);
 			builder.HasMany(t => t.EventImageContentEntities).WithOne().HasForeignKey(x => x.EventId);
 			builder.HasMany(t => t.EventTypes).WithOne(t => t.Event).HasForeignKey(x => x.EventTypeId);
 			builder.HasMany(t => t.PromoRewardRequests).WithOne(t => t.Event).HasForeignKey(t => t.EventId);

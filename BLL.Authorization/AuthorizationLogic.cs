@@ -45,7 +45,8 @@ namespace BLL.Authorization
 				PersonUid = uid,
 				TemporaryCode = code,
 				TemporaryCodeTime = DateTime.UtcNow,
-				PhoneNumber = phoneNumber
+				PhoneNumber = phoneNumber,
+				CreationTime = DateTime.UtcNow
 			});
 			return uid;
 		}

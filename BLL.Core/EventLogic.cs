@@ -42,6 +42,7 @@ namespace BLL.Core
 			entity.EventUid = eventUid;
 			entity.AdministratorId = person.PersonId;
 			entity.Chat = new ChatEntity { ChatUid = Guid.NewGuid(), IsGroupChat = true };
+			entity.CreationTime = DateTime.UtcNow;
 			var imageList = new List<EventImageContentEntity>();
 			if (addEventModel.PrimaryImage != null && addEventModel.PrimaryImage.Any())
 			{
