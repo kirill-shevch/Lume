@@ -120,8 +120,11 @@ namespace BLL.Core
 			{
 				if (item.Length > login.Length && char.IsDigit(item, login.Length))
 				{
-					var number = int.Parse(item.Substring(login.Length));
-					loginNumber = loginNumber < number ? number : loginNumber;
+					int number;
+					if (int.TryParse(item.Substring(login.Length), out number))
+					{
+						loginNumber = loginNumber < number ? number : loginNumber;
+					}
 				}
 			}
 			loginNumber++;
