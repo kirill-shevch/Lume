@@ -41,6 +41,14 @@ namespace DAL.Core.Repositories
 			}
 		}
 
+		public async Task<List<string>> GetLoginList(string login)
+		{
+			using (var context = _dbContextFactory.CreateDbContext())
+			{
+				return await context.PersonEntities.Where(x => x.Login.StartsWith(login)).Select(x => x.Login).ToListAsync();
+			}
+		}
+
 		public async Task<List<long>> GetPersonSwipeHistory(long personId)
 		{
 			using (var context = _dbContextFactory.CreateDbContext())

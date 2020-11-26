@@ -31,5 +31,6 @@ namespace DAL.Core.Interfaces
 		Task RemoveTokenForEveryPerson(string token);
 		Task AddReport(PersonReportEntity reportEntity);
 		Task<List<long>> GetPersonSwipeHistory(long personId);
+		Task<List<string>> GetLoginList(string login);
 	}
 }

@@ -71,6 +71,10 @@ namespace BLL.Core
 				entity.CityId = updatePersonModel.CityId;
 			if (!string.IsNullOrEmpty(updatePersonModel.Login))
 				entity.Login = updatePersonModel.Login;
+			if (string.IsNullOrWhiteSpace(entity.Login) && string.IsNullOrWhiteSpace(updatePersonModel.Login))
+			{
+				entity.Login = await GenarateLogin(updatePersonModel.Name);
+			}
 			if (updatePersonModel.Token != null)
 			{
 				entity.Token = updatePersonModel.Token;
@@ -105,6 +109,23 @@ namespace BLL.Core
 				}
 			}
 			return model;
+		}
+
+		private async Task<string> GenarateLogin(string name)
+		{
+			var login = RussianTransliteration.RussianTransliterator.GetTransliteration(name.ToLower());
+			var loginList = await _personRepository.GetLoginList(login);
+			var loginNumber = 0;
+			foreach (var item in loginList)
+			{
+				if (item.Length > login.Length && char.IsDigit(item, login.Length))
+				{
+					var number = int.Parse(item.Substring(login.Length));
+					loginNumber = loginNumber < number ? number : loginNumber;
+				}
+			}
+			loginNumber++;
+			return login + loginNumber;
 		}
 
 		public async Task<bool> IsPersonFilledUp(Guid personUid)
