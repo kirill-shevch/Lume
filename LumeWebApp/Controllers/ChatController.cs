@@ -29,7 +29,7 @@ namespace LumeWebApp.Controllers
 		public async Task<ActionResult<ChatModel>> GetChat(Guid chatUid, int pageNumber, int pageSize) 
 		{
 			var uid = new Guid(HttpContext.Request.Headers[AuthorizationHeaders.PersonUid].First());
-			var validationResult = _chatValidation.ValidateGetChat(chatUid, pageNumber, pageSize);
+			var validationResult = _chatValidation.ValidateGetChat(chatUid, pageNumber, pageSize, uid);
 			if (!validationResult.ValidationResult)
 			{
 				return BadRequest(validationResult.ValidationMessage);
