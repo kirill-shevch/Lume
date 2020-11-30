@@ -46,7 +46,7 @@ namespace BLL.Core
 			return (true, string.Empty);
 		}
 
-		public (bool ValidationResult, string ValidationMessage) ValidateGetChat(Guid chatUid, int pageNumber, int pageSize)
+		public (bool ValidationResult, string ValidationMessage) ValidateGetChat(Guid chatUid, int pageNumber, int pageSize, Guid personUid)
 		{
 			if (!_chatRepository.CheckChatExistence(chatUid).Result)
 			{
@@ -59,6 +59,11 @@ namespace BLL.Core
 			if (pageSize < 1)
 			{
 				return (false, ErrorDictionary.GetErrorMessage(29, _culture));
+			}
+			var personChatList = _chatLogic.GetPersonChatList(personUid).Result;
+			if (!personChatList.Any(x => x.ChatUid == chatUid))
+			{
+				return (false, ErrorDictionary.GetErrorMessage(20, _culture));
 			}
 			return (true, string.Empty);
 		}
