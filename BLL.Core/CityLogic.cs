@@ -4,6 +4,7 @@ using BLL.Core.Models.City;
 using DAL.Core.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace BLL.Core
 {
@@ -47,7 +48,9 @@ namespace BLL.Core
 		public async Task<List<CityModel>> GetCities()
 		{
 			var entities = await _cityRepository.GetCities();
-			return _mapper.Map<List<CityModel>>(entities);
+			return _mapper.Map<List<CityModel>>(entities
+					.OrderByDescending(x => x.CityName == "Москва")
+					.ThenByDescending(x => x.CityName == "Санкт-Петербург"));
 		}
 	}
 }
