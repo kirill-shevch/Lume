@@ -21,6 +21,7 @@ namespace LumeWebApp.Controllers
 		{
 			var listOfPromo = new ListOfPromo();
 			listOfPromo.IsEventPromoRewardEnabled = _configuration.GetValue<bool?>(ConfigurationKeys.AzureIsEventPromoRewardEnabled) ?? _configuration.GetValue<bool>(ConfigurationKeys.IsEventPromoRewardEnabled);
+			listOfPromo.IsNewYearPromoRewardEnabled = _configuration.GetValue<bool?>(ConfigurationKeys.AzureIsNewYearPromoRewardEnabled) ?? _configuration.GetValue<bool>(ConfigurationKeys.IsNewYearPromoRewardEnabled);
 			return listOfPromo;
 		}
 	}

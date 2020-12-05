@@ -14,5 +14,7 @@
 		public const string AzureStorageBlobContainerName = "AzureStorageBlobContainerName";
 		public const string IsEventPromoRewardEnabled = "IsEventPromoRewardEnabled";
 		public const string AzureIsEventPromoRewardEnabled = "AZURE_ISEVENTPROMOREWARDENABLED";
+		public const string IsNewYearPromoRewardEnabled = "IsNewYearPromoRewardEnabled";
+		public const string AzureIsNewYearPromoRewardEnabled = "AZURE_ISNEWYEARPROMOREWARDENABLED";
 	}
 }

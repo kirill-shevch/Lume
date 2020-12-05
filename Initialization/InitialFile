@@ -30,6 +30,8 @@ After creating them you will need to create configurations in your app service:
 * SMSSENDING_APIKEY (ApiKey for sms)
 * WEBSITE_HTTPLOGGING_RETENTION_DAYS (number of days, I use 10)
 * WEBSITE_WEBDEPLOY_USE_SCM (false by default)
+* AZURE_ISEVENTPROMOREWARDENABLED (true or false for enable or disable rewarding for new events)
+* AZURE_ISNEWYEARPROMOREWARDENABLED (true or false for enable or disable new year promotion program)
 
 And add connection string to your database:
 * AZURESQLCONNSTR_CONNECTIONSTRING
