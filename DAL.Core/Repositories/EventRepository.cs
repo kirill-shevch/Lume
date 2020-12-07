@@ -295,6 +295,7 @@ namespace DAL.Core.Repositories
 				await inProgressEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.InProgress, cancellationToken);
 				var endedEvents = context.EventEntities.Where(x => x.EndTime < date && (x.EventStatusId == (long)EventStatus.InProgress || x.EventStatusId == (long)EventStatus.Preparing));
 				await endedEvents.ForEachAsync(x => x.EventStatusId = (long)EventStatus.Ended, cancellationToken);
+				await context.SaveChangesAsync(cancellationToken);
 				var listOfEvents = await endedEvents
 					.Include(x => x.Administrator)
 						.ThenInclude(x => x.Badges)
@@ -303,7 +304,6 @@ namespace DAL.Core.Repositories
 							.ThenInclude(x => x.Badges)
 					.Include(x => x.EventTypes)
 					.ToListAsync();
-				await context.SaveChangesAsync(cancellationToken);
 				return listOfEvents;
 			}
 		}
@@ -315,7 +315,11 @@ namespace DAL.Core.Repositories
 				var outdatedParticipants = context.PersonToEventEntities.Include(x => x.Event)
 					.Where(x => (x.Event.EventStatusId == (long)EventStatus.Ended || x.Event.EventStatusId == (long)EventStatus.Canceled) &&
 					(x.ParticipantStatusId == (long)ParticipantStatus.WaitingForApproveFromEvent || x.ParticipantStatusId == (long)ParticipantStatus.WaitingForApproveFromUser));
-				await outdatedParticipants.ForEachAsync(x => x.ParticipantStatusId = (long)ParticipantStatus.Rejected, cancellationToken);
+				await outdatedParticipants.ForEachAsync(x => 
+				{ 
+					x.ParticipantStatusId = (long)ParticipantStatus.Rejected; 
+					x.Event = null; 
+				}, cancellationToken);
 				context.PersonToEventEntities.UpdateRange(outdatedParticipants);
 				await context.SaveChangesAsync(cancellationToken);
 			}
@@ -386,6 +390,7 @@ namespace DAL.Core.Repositories
 				foreach (var entity in eventEntities)
 				{
 					entity.IsPrelaunchNotificationSent = true;
+					entity.Participants = null;
 				}
 				context.UpdateRange(eventEntities);
 				await context.SaveChangesAsync();
